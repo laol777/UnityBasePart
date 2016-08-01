@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DepthSensor : MonoBehaviour {
+public class DepthSensor : MonoBehaviour{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    static nuitrack.DepthSensor depthSensor = null;
+
+    static nuitrack.DepthFrame depthFrame = null;
+
+    public void Init()
+    {
+        depthSensor = nuitrack.DepthSensor.Create();
+        depthSensor.OnUpdateEvent += HandleOnDepthUpdateEvent;
+    }
+
+    static void HandleOnDepthUpdateEvent(nuitrack.DepthFrame _depthFrame)
+    {
+        depthFrame = _depthFrame;
+    }
 }

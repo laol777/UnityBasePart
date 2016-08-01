@@ -30,7 +30,7 @@ public class NuitrackManager2 : MonoBehaviour
     
 	public static event UserLost onUserLoss;
 
-	static NuitrackManager instance;
+	static NuitrackManager2 instance;
 
     static nuitrack.DepthFrame depthFrame = null;
     static nuitrack.UserFrame userFrame = null;
@@ -41,18 +41,18 @@ public class NuitrackManager2 : MonoBehaviour
     public static nuitrack.DepthSensor DepthSensor { get { return NuitrackManager2.depthSensor; } }
     public static nuitrack.UserTracker UserTracker { get { return NuitrackManager2.userTracker; } }
 
-    public static NuitrackManager Instance
+    public static NuitrackManager2 Instance
 	{
 		get 
 		{
 			if (instance == null)
 			{
-				instance = FindObjectOfType<NuitrackManager>();
+				instance = FindObjectOfType<NuitrackManager2>();
                 if (instance == null)
                 {
                     GameObject container = new GameObject();
                     container.name = "NuitrackManager";
-                    instance = container.AddComponent<NuitrackManager>();
+                    instance = container.AddComponent<NuitrackManager2>();
                 }
 			
                 DontDestroyOnLoad(instance);

@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SkeletonTracker : MonoBehaviour {
+public class SkeletonTracker : MonoBehaviour{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    static nuitrack.SkeletonTracker skeletonTracker;
+
+    public void Init()
+    {
+        skeletonTracker = nuitrack.SkeletonTracker.Create();
+        skeletonTracker.OnSkeletonUpdateEvent += HandleOnSkeletonUpdateEvent;
+    }
+
+    static void HandleOnSkeletonUpdateEvent(nuitrack.SkeletonData skeletonData)
+    {
+
+    }
 }

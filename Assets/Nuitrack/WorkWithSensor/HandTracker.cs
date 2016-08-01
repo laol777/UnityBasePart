@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HandTracker : MonoBehaviour {
+public class HandTracker : MonoBehaviour{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    static nuitrack.HandTracker handTracker;
+
+    public void Init()
+    {
+        handTracker = nuitrack.HandTracker.Create();
+        handTracker.OnUpdateEvent += HandleOnHandsUpdateEvent;
+    }
+
+    static void HandleOnHandsUpdateEvent(nuitrack.HandTrackerData handTrackerData)
+    {
+
+    }
 }

@@ -37,7 +37,7 @@ public static class NuitrackLoader
 		}
 		catch (System.Exception ex)
 		{
-			Debug.Log("Exception: " + ex);
+			Debug.Log("Exception: InitNuitrackLibrariesFail. " + ex);
 		}
 		return initState;
 	}

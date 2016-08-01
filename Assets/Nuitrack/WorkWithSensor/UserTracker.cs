@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UserTracker : MonoBehaviour {
+public class UserTracker : MonoBehaviour{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    static nuitrack.UserTracker userTracker;
+
+    static nuitrack.UserFrame userFrame = null;
+
+    public void Init()
+    {
+        userTracker = nuitrack.UserTracker.Create();
+        userTracker.OnUpdateEvent += UserUpdateEvent;
+    }
+
+    static void UserUpdateEvent(nuitrack.UserFrame _userFrame)
+    {
+        userFrame = _userFrame;
+    }
 }

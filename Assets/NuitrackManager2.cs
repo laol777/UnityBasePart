@@ -8,8 +8,6 @@ public class NuitrackManager2 : MonoBehaviour
 
     static nuitrack.HandTracker handTracker;
 	static nuitrack.SkeletonTracker skeletonTracker;
-    static nuitrack.DepthSensor depthSensor;
-    static nuitrack.UserTracker userTracker;
 
     static int currentUser = 0;
 	public static int CurrentUser{get {return currentUser;}}
@@ -32,14 +30,6 @@ public class NuitrackManager2 : MonoBehaviour
 
 	static NuitrackManager2 instance;
 
-    static nuitrack.DepthFrame depthFrame = null;
-    static nuitrack.UserFrame userFrame = null;
-
-    static public nuitrack.DepthFrame DepthFrame { get { return NuitrackManager2.depthFrame; } }
-    static public nuitrack.UserFrame UserFrame { get { return NuitrackManager2.userFrame; } }
-
-    public static nuitrack.DepthSensor DepthSensor { get { return NuitrackManager2.depthSensor; } }
-    public static nuitrack.UserTracker UserTracker { get { return NuitrackManager2.userTracker; } }
 
     public static NuitrackManager2 Instance
 	{
@@ -93,29 +83,13 @@ public class NuitrackManager2 : MonoBehaviour
             handTracker = nuitrack.HandTracker.Create();
             handTracker.OnUpdateEvent += HandleOnHandsUpdateEvent;
 
-            depthSensor = nuitrack.DepthSensor.Create();
-            depthSensor.OnUpdateEvent += DepthUpdate;
-
-            userTracker = nuitrack.UserTracker.Create();
-            userTracker.OnUpdateEvent += UserUpdate;
-
 
             nuitrack.Nuitrack.Run();
         }
         //catch{ }
         
     }
-
-    static void DepthUpdate(nuitrack.DepthFrame _depthFrame)
-    {
-        depthFrame = _depthFrame;
-    }
-
-    static void UserUpdate(nuitrack.UserFrame _userFrame)
-    {
-        userFrame = _userFrame;
-    }
-
+   
     static void HandleOnHandsUpdateEvent (nuitrack.HandTrackerData handTrackerData)
     {
         if (handTrackerData == null) return;
@@ -158,7 +132,7 @@ public class NuitrackManager2 : MonoBehaviour
 			// we'll let TPoseCalibration script handle it
 			//currentUser = skeletonData.Skeletons[0].ID;
 		}
-        currentUser = skeletonData.Skeletons[0].ID; //del it!!!! after debug
+        //currentUser = skeletonData.Skeletons[0].ID; //del it!!!! after debug
         currentSkeleton = skeletonData.GetSkeletonByID(currentUser);
 	}
 

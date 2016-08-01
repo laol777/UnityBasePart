@@ -11,6 +11,7 @@ public class UserTracker : MonoBehaviour{
     {
         userTracker = nuitrack.UserTracker.Create();
         userTracker.OnUpdateEvent += UserUpdateEvent;
+        Debug.Log("UserTracker.Init() success.");
     }
 
     static void UserUpdateEvent(nuitrack.UserFrame _userFrame)

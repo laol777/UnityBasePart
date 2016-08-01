@@ -11,6 +11,7 @@ public class DepthSensor : MonoBehaviour{
     {
         depthSensor = nuitrack.DepthSensor.Create();
         depthSensor.OnUpdateEvent += HandleOnDepthUpdateEvent;
+        Debug.Log("DepthSensor.Init() success.");
     }
 
     static void HandleOnDepthUpdateEvent(nuitrack.DepthFrame _depthFrame)

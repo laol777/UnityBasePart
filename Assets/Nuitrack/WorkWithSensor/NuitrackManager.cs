@@ -14,12 +14,11 @@ public class NuitrackManager : MonoBehaviour {
     UserTracker userTracker;
     DepthSensor depthSensor;
 
-    static int currentUser = 0;
-    public static int CurrentUser { get { return currentUser; } }
+    public static int currentUser = 0;
 
     T CreateAndAddToObjNuitrackPart<T>() where T : UnityEngine.Component
     {
-        gameObject.AddComponent<T>();
+        this.gameObject.AddComponent<T>();
         return this.gameObject.GetComponent<T>();
     }
 
@@ -61,9 +60,17 @@ public class NuitrackManager : MonoBehaviour {
         nuitrack.Nuitrack.Run();
     }
 
-	void Update ()
+    void Update()
     {
-	
-	}
+
+        try
+        {
+            nuitrack.Nuitrack.Update();
+        }
+        catch(System.Exception ex)
+        {
+            Debug.Log("ErrorUpdateNuitrack : " + ex); 
+        }
+    }
 
 }

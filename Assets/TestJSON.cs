@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
 public class TestJSON : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class TestJSON : MonoBehaviour {
     float timeBetweenFrame = 0.05f;
 
     JSONData frameData;
+    List<JSONData> serializeData;
 
     DepthSensor depthSensor;
 
@@ -37,7 +39,14 @@ public class TestJSON : MonoBehaviour {
 
         //Debug.Log(json);
     }
-
+    public void LoadJson()
+    {
+        using (StreamReader r = new StreamReader("file.json"))
+        {
+            string json = r.ReadToEnd();
+            List<JSONData> items = JsonConvert.DeserializeObject<List<JSONData>>(json);
+        }
+    }
 
     int write = 0;
 
@@ -66,23 +75,29 @@ public class TestJSON : MonoBehaviour {
                 frameData.depth = new int[frameData.rows * frameData.cols];
                 Debug.Log(frameData.depth.Length);
             }
-            float mean = 0f;
+
             for (int i = 0; i < frameData.rows; ++i)
                 for (int j = 0; j < frameData.cols; ++j)
                 {
                     frameData.depth[i * frameData.cols + j] = depthSensor.DepthFrame[i, j];
-                    mean += depthSensor.DepthFrame[i, j];
                 }
-
-            mean /= 4800;
-
-            Debug.Log(mean);
 
             if (write == 50)
             {
-                Debug.Log(frameData.depth[30 * 80 + 40]);
+                //Debug.Log(JsonUtility.ToJson(frameData));
+                json.Add(JsonUtility.ToJson(frameData));
+                serializeData.Add(frameData);
+            }
+            if (write == 100)
+            {
+                //Debug.Log(JsonUtility.ToJson(frameData));
+                json.Add(JsonUtility.ToJson(frameData));
+                serializeData.Add(frameData);
+                string serialized = JsonConvert.SerializeObject(serializeData);
+                Debug.Log(serialized);
             }
             //json.Add(JsonUtility.ToJson(frameData));
+
         }
     }
 }

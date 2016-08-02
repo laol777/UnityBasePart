@@ -52,10 +52,10 @@ public class NuitrackManager : MonoBehaviour {
         userTracker = isHaveUserTracker ? CreateAndAddToObjNuitrackPart<UserTracker>() : null;
         depthSensor = isHaveDepthSensor ? CreateAndAddToObjNuitrackPart<DepthSensor>() : null;
 
-        skeletonTracker.Init();
-        handTracker.Init();
-        userTracker.Init();
-        depthSensor.Init();
+        if (skeletonTracker != null) skeletonTracker.Init();
+        if (handTracker != null) handTracker.Init();
+        if (userTracker != null) userTracker.Init();
+        if (depthSensor != null) depthSensor.Init();
 
         nuitrack.Nuitrack.Run();
     }

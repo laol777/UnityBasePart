@@ -7,8 +7,6 @@ using System;
 
 public class TestJSON : MonoBehaviour {
 
-    List<string> json;
-
     public bool addData;
 
     float timeBetweenFrame = 0.05f;
@@ -18,12 +16,8 @@ public class TestJSON : MonoBehaviour {
 
     DepthSensor depthSensor;
 
-    int[] testData;
-    FileInfo f;
     void Start()
     {
-        f = new FileInfo(Application.persistentDataPath + "/playerSave.json");
-
         serializeData = new List<JSONData>();
 
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
@@ -32,41 +26,6 @@ public class TestJSON : MonoBehaviour {
         frameData.rows = 2;
         frameData.cols = 2;
         frameData.depth = new int[] { 1, 2, 3, 4 };
-    }
-
-    void Save(string data)
-    {
-        StreamWriter w;
-        if (!f.Exists)
-        {
-            w = f.CreateText();
-        }
-        else
-        {
-            f.Delete();
-            w = f.CreateText();
-        }
-        w.WriteLine(data);
-        w.Close();
-    }
-
-    void SaveJSON<T>(List<T> serializeData)
-    {
-        string serialized = JsonConvert.SerializeObject(serializeData);
-        Save(serialized);
-    }
-
-    string Load()
-    {
-        StreamReader r = File.OpenText(Application.persistentDataPath + "/playerSave.json");
-        string info = r.ReadToEnd();
-        r.Close();
-        return info;
-    }
-
-    List<T> LoadJSON<T>()
-    {
-        return JsonConvert.DeserializeObject<List<T>>(Load());
     }
 
     int write = 0;
@@ -85,8 +44,6 @@ public class TestJSON : MonoBehaviour {
         if (addData && depthSensor != null && depthSensor.DepthFrame != null)
         {
             addData = false;
-            write++;
-
 
             if (frameData.rows != depthSensor.DepthFrame.Rows && frameData.cols != depthSensor.DepthFrame.Cols)
             {
@@ -102,7 +59,7 @@ public class TestJSON : MonoBehaviour {
                     frameData.depth[i * frameData.cols + j] = depthSensor.DepthFrame[i, j];
                 }
 
-            int a = 5;
+            int a = 3;
 
             if (write < a)
             {
@@ -111,20 +68,13 @@ public class TestJSON : MonoBehaviour {
             }
             if (write == a)
             {
-                serializeData.Add(frameData);
+                SerializeData.SaveJSON(serializeData, "testNewClass");
 
-
-                Debug.Log("testWrite");
-                SaveJSON(serializeData);
-
-
-                List<JSONData> test2 = LoadJSON<JSONData>();
+                List<JSONData> test2 = SerializeData.LoadJSON<JSONData>("testNewClass");
                 Debug.Log(test2);
 
-              
-                Debug.Log(Application.persistentDataPath);
-
             }
+            write++;
 
         }
     }

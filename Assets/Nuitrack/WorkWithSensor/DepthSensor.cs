@@ -6,6 +6,8 @@ public class DepthSensor : MonoBehaviour{
     static nuitrack.DepthSensor depthSensor = null;
 
     static nuitrack.DepthFrame depthFrame = null;
+    public nuitrack.DepthFrame DepthFrame { get { return depthFrame; } set { depthFrame = value; } }
+
 
     public void Init()
     {

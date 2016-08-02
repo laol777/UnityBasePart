@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using System;
 
 public class TestJSON : MonoBehaviour {
 
@@ -18,34 +19,54 @@ public class TestJSON : MonoBehaviour {
     DepthSensor depthSensor;
 
     int[] testData;
-
+    FileInfo f;
     void Start()
     {
-        frameData = new JSONData();
+        f = new FileInfo(Application.persistentDataPath + "/playerSave.json");
+
+        serializeData = new List<JSONData>();
 
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
 
-
         frameData = new JSONData();
-        frameData.cols = 2;
         frameData.rows = 2;
-        frameData.depth = new int[4] {1, 2, 3, 4 };
-        //Debug.Log(JsonUtility.ToJson(frameData));
-
-        //json = new List<string>();
-
-        //json.Add(JsonUtility.ToJson(frameData));
-        //json.Add(JsonUtility.ToJson(frameData));
-
-        //Debug.Log(json);
+        frameData.cols = 2;
+        frameData.depth = new int[] { 1, 2, 3, 4 };
     }
-    public void LoadJson()
+
+    void Save(string data)
     {
-        using (StreamReader r = new StreamReader("file.json"))
+        StreamWriter w;
+        if (!f.Exists)
         {
-            string json = r.ReadToEnd();
-            List<JSONData> items = JsonConvert.DeserializeObject<List<JSONData>>(json);
+            w = f.CreateText();
         }
+        else
+        {
+            f.Delete();
+            w = f.CreateText();
+        }
+        w.WriteLine(data);
+        w.Close();
+    }
+
+    void SaveJSON<T>(List<T> serializeData)
+    {
+        string serialized = JsonConvert.SerializeObject(serializeData);
+        Save(serialized);
+    }
+
+    string Load()
+    {
+        StreamReader r = File.OpenText(Application.persistentDataPath + "/playerSave.json");
+        string info = r.ReadToEnd();
+        r.Close();
+        return info;
+    }
+
+    List<T> LoadJSON<T>()
+    {
+        return JsonConvert.DeserializeObject<List<T>>(Load());
     }
 
     int write = 0;
@@ -66,15 +87,14 @@ public class TestJSON : MonoBehaviour {
             addData = false;
             write++;
 
+
+            if (frameData.rows != depthSensor.DepthFrame.Rows && frameData.cols != depthSensor.DepthFrame.Cols)
+            {
+                frameData.depth = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols];
+            }
+
             frameData.rows = depthSensor.DepthFrame.Rows;
             frameData.cols = depthSensor.DepthFrame.Cols;
-
-            if (frameData.rows != (frameData.depth.Length / frameData.cols) && frameData.cols != (frameData.depth.Length / frameData.rows))
-            {
-                Debug.Log(frameData.depth.Length);
-                frameData.depth = new int[frameData.rows * frameData.cols];
-                Debug.Log(frameData.depth.Length);
-            }
 
             for (int i = 0; i < frameData.rows; ++i)
                 for (int j = 0; j < frameData.cols; ++j)
@@ -82,21 +102,29 @@ public class TestJSON : MonoBehaviour {
                     frameData.depth[i * frameData.cols + j] = depthSensor.DepthFrame[i, j];
                 }
 
-            if (write == 50)
+            int a = 5;
+
+            if (write < a)
             {
-                //Debug.Log(JsonUtility.ToJson(frameData));
-                json.Add(JsonUtility.ToJson(frameData));
                 serializeData.Add(frameData);
+                Debug.Log("1");
             }
-            if (write == 100)
+            if (write == a)
             {
-                //Debug.Log(JsonUtility.ToJson(frameData));
-                json.Add(JsonUtility.ToJson(frameData));
                 serializeData.Add(frameData);
-                string serialized = JsonConvert.SerializeObject(serializeData);
-                Debug.Log(serialized);
+
+
+                Debug.Log("testWrite");
+                SaveJSON(serializeData);
+
+
+                List<JSONData> test2 = LoadJSON<JSONData>();
+                Debug.Log(test2);
+
+              
+                Debug.Log(Application.persistentDataPath);
+
             }
-            //json.Add(JsonUtility.ToJson(frameData));
 
         }
     }

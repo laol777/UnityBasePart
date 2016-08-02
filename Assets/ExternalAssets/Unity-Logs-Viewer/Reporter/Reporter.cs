@@ -138,7 +138,7 @@ public class Reporter : MonoBehaviour
 	//show hide In Game Logs
 	public bool show = false;
 	//collapse logs
-	bool collapse;
+	bool collapse = true;
 	//to decide if you want to clean logs for new loaded scene
 	bool clearOnNewSceneLoaded;
 

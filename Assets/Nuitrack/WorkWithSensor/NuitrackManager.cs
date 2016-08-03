@@ -16,12 +16,6 @@ public class NuitrackManager : MonoBehaviour {
 
     public static int currentUser = 0;
 
-    T CreateAndAddToObjNuitrackPart<T>() where T : UnityEngine.Component
-    {
-        this.gameObject.AddComponent<T>();
-        return this.gameObject.GetComponent<T>();
-    }
-
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -42,6 +36,11 @@ public class NuitrackManager : MonoBehaviour {
         
     }
 
+    T CreateAndAddToObjNuitrackPart<T>() where T : UnityEngine.Component
+    {
+        this.gameObject.AddComponent<T>();
+        return this.gameObject.GetComponent<T>();
+    }
 
     void Init()
     {
@@ -51,11 +50,6 @@ public class NuitrackManager : MonoBehaviour {
         handTracker = isHaveHandTracker ? CreateAndAddToObjNuitrackPart<HandTracker>() : null;
         userTracker = isHaveUserTracker ? CreateAndAddToObjNuitrackPart<UserTracker>() : null;
         depthSensor = isHaveDepthSensor ? CreateAndAddToObjNuitrackPart<DepthSensor>() : null;
-
-        if (skeletonTracker != null) skeletonTracker.Init();
-        if (handTracker != null) handTracker.Init();
-        if (userTracker != null) userTracker.Init();
-        if (depthSensor != null) depthSensor.Init();
 
         nuitrack.Nuitrack.Run();
     }
@@ -69,7 +63,7 @@ public class NuitrackManager : MonoBehaviour {
         }
         catch(System.Exception ex)
         {
-            Debug.Log("ErrorUpdateNuitrack : " + ex); 
+            //Debug.Log("ErrorUpdateNuitrack : " + ex); 
         }
     }
 

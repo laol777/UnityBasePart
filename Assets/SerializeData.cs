@@ -28,9 +28,9 @@ public static class SerializeData{
         Save(JsonConvert.SerializeObject(serializeData), nameFile);
     }
 
-    public static string Load(string nameFile)
+    public static string Load(string path, string nameFile)
     {
-        StreamReader streamReader = File.OpenText(Application.persistentDataPath + "/" + nameFile + ".json");
+        StreamReader streamReader = File.OpenText(path + "\\" + nameFile + ".json");
         string info = streamReader.ReadToEnd();
         streamReader.Close();
         return info;
@@ -38,6 +38,13 @@ public static class SerializeData{
 
     public static List<T> LoadJSON<T>(string nameFile)
     {
-        return JsonConvert.DeserializeObject<List<T>>(Load(nameFile));
+        try
+        {
+            return JsonConvert.DeserializeObject<List<T>>(Load(Application.persistentDataPath, nameFile));
+        }
+        catch
+        {
+             return JsonConvert.DeserializeObject<List<T>>(Load("C:\\BasePart\\Assets\\", nameFile));
+        }
     }
 }

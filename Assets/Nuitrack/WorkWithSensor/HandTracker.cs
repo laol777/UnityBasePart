@@ -11,11 +11,11 @@ public class HandTracker : MonoBehaviour{
     static nuitrack.UserHands currentHands;
     public static nuitrack.UserHands СurrentHands { get { return currentHands; } }
 
-    public void Init()
+    HandTracker()
     {
         handTracker = nuitrack.HandTracker.Create();
         handTracker.OnUpdateEvent += HandleOnHandsUpdateEvent;
-        Debug.Log("HandTracker.Init() success.");
+        Debug.Log("___HandTracker.Init() success.");
     }
 
     static void HandleOnHandsUpdateEvent(nuitrack.HandTrackerData handTrackerData)

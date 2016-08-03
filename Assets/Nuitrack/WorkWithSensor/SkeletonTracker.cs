@@ -11,13 +11,12 @@ public class SkeletonTracker : MonoBehaviour{
     static nuitrack.Skeleton[] skeletons;
     public static nuitrack.Skeleton[] Skeletons { get { return skeletons; } }
 
-    public void Init()
+    SkeletonTracker()
     {
         skeletonTracker = nuitrack.SkeletonTracker.Create();
         skeletonTracker.OnSkeletonUpdateEvent += HandleOnSkeletonUpdateEvent;
-        Debug.Log("SkeletonTracker.Init() success.");
+        Debug.Log("___SkeletonTracker.Init() success.");
     }
-
     static void HandleOnSkeletonUpdateEvent(nuitrack.SkeletonData skeletonData)
     {
         if (skeletonData == null) return; //just in case

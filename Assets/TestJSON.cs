@@ -24,10 +24,6 @@ public class TestJSON : MonoBehaviour {
 
         serializeData = new List<JSONData>();
 
-        frameData = new JSONData();
-        frameData.rows = 2;
-        frameData.cols = 2;
-        frameData.depth = new int[] { 1, 2, 3, 4 };
 
         text.text = "press to write";
 
@@ -55,16 +51,16 @@ public class TestJSON : MonoBehaviour {
                     frameData.userTracker = new int[DepthSensor.DepthFrame.Rows * DepthSensor.DepthFrame.Cols];
                 }
 
-                frameData.rows = DepthSensor.DepthFrame.Rows;
-                frameData.cols = DepthSensor.DepthFrame.Cols;
+                frameData.yMax = DepthSensor.DepthFrame.Rows;
+                frameData.xMax = DepthSensor.DepthFrame.Cols;
 
-                for (int i = 0; i < frameData.rows; ++i)
-                    for (int j = 0; j < frameData.cols; ++j)
+                for (int j = 0; j < frameData.xMax; ++j)
+                    for (int i = 0; i < frameData.yMax; ++i) 
                     {
                         //try
                         {
-                            frameData.depth[i * frameData.cols + j] = DepthSensor.DepthFrame[i, j];
-                            frameData.userTracker[i * frameData.cols + j] = userTracker.UserFrame[i, j];
+                            frameData.depth[i * frameData.xMax + j] = DepthSensor.DepthFrame[i, j];
+                            frameData.userTracker[i * frameData.xMax + j] = userTracker.UserFrame[i, j];
                         }
                         //catch
                         //{

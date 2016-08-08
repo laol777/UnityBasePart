@@ -4,6 +4,7 @@ using System.Collections;
 public class DepthSensor : MonoBehaviour{
 
     static nuitrack.DepthSensor depthSensor = null;
+    public static nuitrack.DepthSensor GetDepthSensor { get { return depthSensor; } }
 
     static nuitrack.DepthFrame depthFrame = null;
     public static nuitrack.DepthFrame DepthFrame { get { return depthFrame; } }

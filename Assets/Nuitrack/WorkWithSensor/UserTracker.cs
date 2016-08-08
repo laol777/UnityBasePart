@@ -5,8 +5,10 @@ public class UserTracker : MonoBehaviour{
 
     static nuitrack.UserTracker userTracker;
 
+    public static nuitrack.UserTracker GetUserTracker { get { return userTracker; } }
+
     static nuitrack.UserFrame userFrame = null;
-    public nuitrack.UserFrame UserFrame { get { return userFrame; } }
+    public static nuitrack.UserFrame UserFrame { get { return userFrame; } }
 
     UserTracker()
     {

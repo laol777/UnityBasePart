@@ -60,7 +60,7 @@ public class TestJSON : MonoBehaviour {
                         //try
                         {
                             frameData.depth[i * frameData.xMax + j] = DepthSensor.DepthFrame[i, j];
-                            frameData.userTracker[i * frameData.xMax + j] = userTracker.UserFrame[i, j];
+                            frameData.userTracker[i * frameData.xMax + j] = UserTracker.UserFrame[i, j];
                         }
                         //catch
                         //{

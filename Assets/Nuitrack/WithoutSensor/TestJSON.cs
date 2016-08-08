@@ -51,16 +51,16 @@ public class TestJSON : MonoBehaviour {
                     frameData.userTracker = new int[DepthSensor.DepthFrame.Rows * DepthSensor.DepthFrame.Cols];
                 }
 
-                frameData.yMax = DepthSensor.DepthFrame.Rows;
-                frameData.xMax = DepthSensor.DepthFrame.Cols;
+                frameData.YRes = DepthSensor.DepthFrame.Rows;
+                frameData.XRes = DepthSensor.DepthFrame.Cols;
 
-                for (int j = 0; j < frameData.xMax; ++j)
-                    for (int i = 0; i < frameData.yMax; ++i) 
+                for (int j = 0; j < frameData.XRes; ++j)
+                    for (int i = 0; i < frameData.YRes; ++i) 
                     {
                         //try
                         {
-                            frameData.depth[i * frameData.xMax + j] = DepthSensor.DepthFrame[i, j];
-                            frameData.userTracker[i * frameData.xMax + j] = UserTracker.UserFrame[i, j];
+                            frameData.depth[i * frameData.XRes + j] = DepthSensor.DepthFrame[i, j];
+                            frameData.userTracker[i * frameData.XRes + j] = UserTracker.UserFrame[i, j];
                         }
                         //catch
                         //{

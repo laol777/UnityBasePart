@@ -52,7 +52,6 @@ public class UserTrackerExample: MonoBehaviour
 
     void Start () 
     {
-        //nuitrack initialization and creation of depth and userTracker modules:
         try
         {
             nuitrack.Nuitrack.Init();
@@ -64,7 +63,7 @@ public class UserTrackerExample: MonoBehaviour
             if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
             hRes = mode.XRes / frameStep;
 
-            depthToScale = 0.9f * 2f * Mathf.Tan (0.5f * mode.HFOV) / hRes;
+            depthToScale = 0.9f * 2f * Mathf.Tan (0.5f * /*mode.HFOV ~ 1*/ 1f) / hRes;
 
             InitMeshes(
                 ((mode.XRes / frameStep) + (mode.XRes % frameStep == 0 ? 0 : 1)) * 

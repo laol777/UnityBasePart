@@ -9,14 +9,14 @@ public class GenerationMesh : MonoBehaviour {
     Vector3[,] ToVector3Data(JSONData data)
     {
         Vector3 tmpPos;
-        Vector3[,] dataToCoord = new Vector3[data.yMax, data.xMax];//60, 80
+        Vector3[,] dataToCoord = new Vector3[data.YRes, data.XRes];//60, 80
 
-        for (int i = 0; i < data.yMax; ++i)
-            for (int j = 0; j < data.xMax; ++j)
+        for (int i = 0; i < data.YRes; ++i)
+            for (int j = 0; j < data.XRes; ++j)
             {
                 tmpPos.x = j;
-                tmpPos.y = data.yMax - i;
-                tmpPos.z = (float)(data.depth[i * data.xMax + j] / 100f);
+                tmpPos.y = data.YRes - i;
+                tmpPos.z = (float)(data.depth[i * data.XRes + j] / 100f);
 
                 dataToCoord[i, j] = tmpPos;
                 //cube[i, j].SetActive(tmpPos.z != 0f ? true : false);
@@ -36,9 +36,9 @@ public class GenerationMesh : MonoBehaviour {
 
         data = SerializeData.LoadJSON<JSONData>("testDepthData");
 
-        cube = new GameObject[data[0].yMax, data[0].xMax];
-        for (int i = 0; i < data[0].yMax; ++i)
-            for (int j = 0; j < data[0].xMax; ++j)
+        cube = new GameObject[data[0].YRes, data[0].XRes];
+        for (int i = 0; i < data[0].YRes; ++i)
+            for (int j = 0; j < data[0].XRes; ++j)
             {
                 cube[i, j] = (GameObject)Instantiate(prefab);
             }

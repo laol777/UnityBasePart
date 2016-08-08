@@ -8,8 +8,8 @@ public class UserTrackerVisualization: MonoBehaviour
 {
     #region Fields
 
-    nuitrack.DepthFrame depthFrame = null;
-    nuitrack.UserFrame userFrame = null;
+    int[,] depthFrame = null;
+    int[,] userFrame = null;
 
     [SerializeField]int hRes;
     int frameStep;
@@ -51,8 +51,12 @@ public class UserTrackerVisualization: MonoBehaviour
 
     #endregion
 
+    ChoiceStream choiceStream;
+
     void Start () 
     {
+        choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
+
         occludedUserCols = new Color[userCols.Length];
         userCurrentCols = new Color[userCols.Length];
         for (int i = 0; i < userCols.Length; i++)
@@ -67,20 +71,34 @@ public class UserTrackerVisualization: MonoBehaviour
 
         try
         {
+            /*
             nuitrack.OutputMode mode = DepthSensor.GetDepthSensor.GetOutputMode();
 
 
-        frameStep = mode.XRes / hRes;
-        if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
-        hRes = mode.XRes / frameStep;
+            frameStep = mode.XRes / hRes;
+            if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
+            hRes = mode.XRes / frameStep;
 
-        depthToScale = meshScaling * 2f * Mathf.Tan (0.5f * mode.HFOV) / hRes;
-		
-        InitMeshes( 
-            ((mode.XRes / frameStep) + (mode.XRes % frameStep == 0 ? 0 : 1)),
-            ((mode.YRes / frameStep) + (mode.YRes % frameStep == 0 ? 0 : 1)),
-            mode.HFOV
-            );
+            depthToScale = meshScaling * 2f * Mathf.Tan (0.5f * mode.HFOV 1f) / hRes;
+
+            InitMeshes( 
+                ((mode.XRes / frameStep) + (mode.XRes % frameStep == 0 ? 0 : 1)),
+                ((mode.YRes / frameStep) + (mode.YRes % frameStep == 0 ? 0 : 1)),
+                mode.HFOV
+                );
+            */
+
+            frameStep = 80 / hRes;
+            if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
+            hRes = 80 / frameStep;
+
+            depthToScale = meshScaling * 2f * Mathf.Tan(0.5f *  1f) / hRes;
+
+            InitMeshes(
+                ((80 / frameStep) + (80 % frameStep == 0 ? 0 : 1)),
+                ((60 / frameStep) + (60 % frameStep == 0 ? 0 : 1)),
+                1
+                );
         }
         catch (Exception ex)
         {
@@ -220,18 +238,22 @@ public class UserTrackerVisualization: MonoBehaviour
         }
     }
     #endregion
-	
+
+    int frame = -1;
+
     void Update () 
     {
         bool haveNewFrame = false;
-        if ( DepthSensor.DepthFrame != null)
+        if ( choiceStream.GetDepthFrame() != null)
         {
             if (depthFrame != null)
             {
-                haveNewFrame = (depthFrame != DepthSensor.DepthFrame);
+                haveNewFrame = (frame != choiceStream.Frame);
+                frame = choiceStream.Frame;
             }
-            depthFrame = DepthSensor.DepthFrame;
-            userFrame = UserTracker.UserFrame;
+            depthFrame = choiceStream.GetDepthFrame();
+            
+            userFrame = choiceStream.GetUserFrame();
             if (haveNewFrame) ProcessFrame(depthFrame, userFrame);
         }
         else
@@ -248,7 +270,7 @@ public class UserTrackerVisualization: MonoBehaviour
         }
     }
 
-    void ProcessFrame(nuitrack.DepthFrame depthFrame, nuitrack.UserFrame userFrame)
+    void ProcessFrame(int[,] depthFrame, int[,] userFrame)
     {
         for (int i = 0; i < parts; i++)
         {
@@ -263,17 +285,17 @@ public class UserTrackerVisualization: MonoBehaviour
 
     
 
-        for (int i = 0, pointIndex = 0; i < depthFrame.Rows; i += frameStep)
+        for (int i = 0, pointIndex = 0; i < choiceStream.YRes; i += frameStep)
         {
-            for (int j = 0; j < depthFrame.Cols; j += frameStep, ++pointIndex)
+            for (int j = 0; j < choiceStream.XRes; j += frameStep, ++pointIndex)
             {
                 depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
 
                 uint userId = 0u; 
                 if (userFrame != null) 
                 {
-                    userId = userFrame[i * userFrame.Rows / depthFrame.Rows,
-                    j * userFrame.Cols / depthFrame.Cols];
+                    userId = (uint)userFrame[i * choiceStream.YRes / choiceStream.YRes,
+                    j * choiceStream.XRes / choiceStream.XRes];
                 }
                 pointColor = userCurrentCols[userId];
 

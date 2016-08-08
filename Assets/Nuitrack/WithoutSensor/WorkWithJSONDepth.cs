@@ -22,9 +22,9 @@ public class WorkWithJSONDepth : MonoBehaviour {
 
         oneFrame = data[0];
 
-        cube = new GameObject[oneFrame.yMax, oneFrame.xMax];
-        for (int i = 0; i < oneFrame.yMax; ++i)
-            for (int j = 0; j < oneFrame.xMax; ++j)
+        cube = new GameObject[oneFrame.YRes, oneFrame.XRes];
+        for (int i = 0; i < oneFrame.YRes; ++i)
+            for (int j = 0; j < oneFrame.XRes; ++j)
             {
                 //cube[i, j] = new GameObject(i.ToString() + "_" + j.ToString());
                 cube[i, j] = (GameObject)Instantiate(prefab);
@@ -37,14 +37,14 @@ public class WorkWithJSONDepth : MonoBehaviour {
 
     void UpdatePositionCube(JSONData data)
     {
-        for (int i = 0; i < data.yMax; ++i)
-            for (int j = 0; j < data.xMax; ++j)
+        for (int i = 0; i < data.YRes; ++i)
+            for (int j = 0; j < data.XRes; ++j)
             {
                 tmpPos.x = j;
-                tmpPos.y = data.yMax - i;
-                tmpPos.z = (float)(data.depth[i * data.xMax + j] / 100f);
+                tmpPos.y = data.YRes - i;
+                tmpPos.z = (float)(data.depth[i * data.XRes + j] / 100f);
 
-                cube[i, j].SetActive(tmpPos.z != 0f  && data.userTracker[i * data.xMax + j] != 0 ? true : false);
+                cube[i, j].SetActive(tmpPos.z != 0f  && data.userTracker[i * data.XRes + j] != 0 ? true : false);
                 cube[i, j].transform.position = tmpPos;
             }
     }

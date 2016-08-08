@@ -7,7 +7,6 @@ using nuitrack.issues;
 public class UserTrackerVisualization: MonoBehaviour 
 {
     #region Fields
-    IssuesProcessor issuesProcessor;
 
     nuitrack.DepthFrame depthFrame = null;
     nuitrack.UserFrame userFrame = null;
@@ -66,8 +65,11 @@ public class UserTrackerVisualization: MonoBehaviour
             occludedUserCols[i].a = userCols[i].a;
         }
 
-        issuesProcessor = IssuesProcessor.Instance;
-        nuitrack.OutputMode mode = DepthSensor.GetDepthSensor.GetOutputMode();
+        try
+        {
+            nuitrack.OutputMode mode = DepthSensor.GetDepthSensor.GetOutputMode();
+
+
         frameStep = mode.XRes / hRes;
         if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
         hRes = mode.XRes / frameStep;
@@ -79,6 +81,11 @@ public class UserTrackerVisualization: MonoBehaviour
             ((mode.YRes / frameStep) + (mode.YRes % frameStep == 0 ? 0 : 1)),
             mode.HFOV
             );
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex);
+        }
     }
 	
     #region Mesh generation and mesh update methods
@@ -254,24 +261,7 @@ public class UserTrackerVisualization: MonoBehaviour
         int pointInd = 0;
         int pointsPerVisTotal = pointsPerVis * vertsPerMesh;
 
-        if (userFrame != null)
-        {
-            if (issuesProcessor.userIssues != null)
-            {
-                for (int i = 1; i < userCurrentCols.Length; i++)
-                {
-                    if (issuesProcessor.userIssues.ContainsKey(i))
-                    {
-                        userCurrentCols[i] = 
-                        (issuesProcessor.userIssues[i].isOccluded || 
-                        issuesProcessor.userIssues[i].onBorderLeft || 
-                        issuesProcessor.userIssues[i].onBorderRight || 
-                        issuesProcessor.userIssues[i].onBorderTop) ?
-                        occludedUserCols[i] : userCols[i];
-                    }
-                }
-            }
-        }
+    
 
         for (int i = 0, pointIndex = 0; i < depthFrame.Rows; i += frameStep)
         {
@@ -310,7 +300,5 @@ public class UserTrackerVisualization: MonoBehaviour
                 Destroy(visualizationParts[i]);
             }
         }
-
-        if (issuesProcessor != null) Destroy (issuesProcessor.gameObject);
     }
 }

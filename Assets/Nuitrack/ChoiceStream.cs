@@ -20,7 +20,7 @@ public class ChoiceStream : MonoBehaviour {
     {
         //if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            return nuitrackManagerEmulation.GetDepthFrame();
+            return nuitrackManagerEmulation.DepthFrame;
         }
         //else
         //{
@@ -30,7 +30,7 @@ public class ChoiceStream : MonoBehaviour {
 
     public int[,] GetUserFrame()
     {
-        return nuitrackManagerEmulation.GetUserFrame();
+        return nuitrackManagerEmulation.UserFrame;
     }
 
     public int Frame { get { return nuitrackManagerEmulation.Frame; } }

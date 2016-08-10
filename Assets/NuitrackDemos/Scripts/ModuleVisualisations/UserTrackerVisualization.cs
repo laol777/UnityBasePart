@@ -269,7 +269,7 @@ public class UserTrackerVisualization: MonoBehaviour
             if (visualizationParts[i].activeSelf) visualizationParts[i].SetActive(false);
         }
     }
-
+    public float f = 0f;
     void ProcessFrame(int[,] depthFrame, int[,] userFrame)
     {
         for (int i = 0; i < parts; i++)
@@ -294,12 +294,20 @@ public class UserTrackerVisualization: MonoBehaviour
                 uint userId = 0u; 
                 if (userFrame != null) 
                 {
-                    userId = (uint)userFrame[i * choiceStream.YRes / choiceStream.YRes,
-                    j * choiceStream.XRes / choiceStream.XRes];
+                    userId = (uint)userFrame[i /** choiceStream.YRes / choiceStream.YRes*/,
+                    j /** choiceStream.XRes / choiceStream.XRes*/];
+
+
                 }
                 pointColor = userCurrentCols[userId];
 
+                
+                //if(userFrame != null) pointColor = new Color(userFrame[i, j], userFrame[i, j], userFrame[i, j], userFrame[i, j]);
+                //pointColor = new Color(f, f, f, f);
+                //if (userFrame != null) Debug.Log("1");
+
                 segmentationColors[pointIndex] = pointColor;
+
             }
         }
         depthTexture.SetPixels(depthColors);

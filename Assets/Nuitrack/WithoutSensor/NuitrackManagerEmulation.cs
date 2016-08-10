@@ -10,7 +10,10 @@ public class NuitrackManagerEmulation : MonoBehaviour {
     public int Frame { get { return frame; } }
 
     int[,] depthFrame;
+    public int[,] DepthFrame { get { return depthFrame; } }
+
     int[,] userFrame;
+    public int[,] UserFrame { get { return userFrame; } }
 
     public int XRes, YRes; //suppose that the size constant
 
@@ -30,6 +33,7 @@ public class NuitrackManagerEmulation : MonoBehaviour {
         YRes = data[0].YRes;
 
         depthFrame = new int[YRes, XRes];
+        userFrame = new int[YRes, XRes];
 
         StartCoroutine(FrameCounter());
     }
@@ -44,53 +48,37 @@ public class NuitrackManagerEmulation : MonoBehaviour {
         if (frame >= data.Count)
             frame = 0;
 
+        UpdateDataFrame();
+
         StartCoroutine(FrameCounter());
     }
 
     int pastSentFrame = -1;
 
-    public int[,] GetDepthFrame()
+    void UpdateDataFrame()
     {
-        if (pastSentFrame != frame)
-        {
-            for (int i = 0; i < YRes; ++i)
-                for (int j = 0; j < XRes; ++j)
-                {
-                    //try
-                    {
-                        //Debug.Log(i.ToString() + " " + j.ToString());
-                        depthFrame[i, j] = data[frame].depth[i * XRes + j];
-                    }
-                    //catch (System.Exception ex)
-                    {
-                        //Debug.Log(i.ToString() + "_" + j.ToString() + " " + ex);
-                        //Application.Quit();
-                    }
-                }
+        depthFrame = UpdateDepthFrame();
+        userFrame = UpdateUserTracker();
+    }
 
-            pastSentFrame = frame;
-        }
+    public int[,] UpdateDepthFrame()
+    {
+        for (int i = 0; i < YRes; ++i)
+            for (int j = 0; j < XRes; ++j)
+            {
+                depthFrame[i, j] = data[frame].depth[i * XRes + j];
+            }
+        
         return depthFrame;
     }
 
-    public int[,] GetUserFrame()
+    public int[,] UpdateUserTracker()
     {
-        if (pastSentFrame != frame)
-        {
-            for (int i = 0; i < YRes; ++i)
-                for (int j = 0; j < XRes; ++j)
-                {
-                    //try
-                    {
-                        userFrame[i, j] = data[frame].userTracker[i * XRes + j];
-                    }
-                    //catch (System.Exception ex)
-                    {
-                        //Debug.Log(i.ToString() + "_" + j.ToString() + " " + ex);
-                    }
-                }
-            pastSentFrame = frame;
-        }
+        for (int i = 0; i < YRes; ++i)
+            for (int j = 0; j < XRes; ++j)
+            {
+                userFrame[i, j] = data[frame].userTracker[i * XRes + j];
+            }
         return userFrame;
     }
 }

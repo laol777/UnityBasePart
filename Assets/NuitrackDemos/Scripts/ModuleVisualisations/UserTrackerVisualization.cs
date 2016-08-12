@@ -7,6 +7,7 @@ using nuitrack.issues;
 public class UserTrackerVisualization: MonoBehaviour 
 {
     #region Fields
+    public int numberUser;
 
     int[,] depthFrame = null;
     int[,] userFrame = null;
@@ -269,7 +270,7 @@ public class UserTrackerVisualization: MonoBehaviour
             if (visualizationParts[i].activeSelf) visualizationParts[i].SetActive(false);
         }
     }
-    public float f = 0f;
+
     void ProcessFrame(int[,] depthFrame, int[,] userFrame)
     {
         for (int i = 0; i < parts; i++)
@@ -290,6 +291,10 @@ public class UserTrackerVisualization: MonoBehaviour
             for (int j = 0; j < choiceStream.XRes; j += frameStep, ++pointIndex)
             {
                 depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
+                //depthColors[pointIndex].g = depthFrame[i, j] / 16384f;
+                //depthColors[pointIndex].b = depthFrame[i, j] / 16384f;
+                //depthColors[pointIndex].a = depthFrame[i, j] / 16384f;
+
 
                 uint userId = 0u; 
                 if (userFrame != null) 
@@ -299,12 +304,17 @@ public class UserTrackerVisualization: MonoBehaviour
 
 
                 }
+                //pointColor = userCurrentCols[userId];
                 pointColor = userCurrentCols[userId];
 
-                
                 //if(userFrame != null) pointColor = new Color(userFrame[i, j], userFrame[i, j], userFrame[i, j], userFrame[i, j]);
                 //pointColor = new Color(f, f, f, f);
                 //if (userFrame != null) Debug.Log("1");
+
+                if(userFrame[i, j] == numberUser)
+                    pointColor = new Color(1f, 1f, 1f, 1f);
+                else
+                    pointColor = new Color(0f, 0f, 0f, 0f);
 
                 segmentationColors[pointIndex] = pointColor;
 

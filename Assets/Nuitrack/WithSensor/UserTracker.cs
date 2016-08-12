@@ -22,6 +22,15 @@ public class UserTracker : MonoBehaviour{
     static void UserUpdateEvent(nuitrack.UserFrame _userFrame)
     {
         userFrame = _userFrame;
+        try
+        {
+            Debug.Log(_userFrame.Users[0].ID.ToString() + " " + _userFrame.Users[1].ID.ToString());
+        }
+        catch (System.Exception ex)
+        {
+            Debug.Log(_userFrame.Users[0].ID);
+        }
+         
         ++frame;
     }
 }

@@ -44,8 +44,8 @@ public class SkeletonTracker : MonoBehaviour{
             //currentUser = skeletonData.Skeletons[0].ID;
         }
         //NuitrackManager.currentUser = skeletonData.Skeletons[0].ID; //del it!!!! after debug
-        if(skeletonData.NumUsers != 0)
-            Debug.Log(skeletonData.NumUsers.ToString() + " " + skeletonData.Skeletons[0].ID);
+        //if(skeletonData.NumUsers != 0)
+            //Debug.Log(skeletonData.NumUsers.ToString() + " " + skeletonData.Skeletons[0].ID);
         currentSkeleton = skeletonData.GetSkeletonByID(NuitrackManager.currentUser);
     }
 }

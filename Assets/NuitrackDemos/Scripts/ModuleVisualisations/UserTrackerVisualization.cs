@@ -173,69 +173,69 @@ public class UserTrackerVisualization: MonoBehaviour
 
         for (int i = 0, row = 0, col = 0; i < parts; i++)
         {
-        int numPartPoints = Mathf.Min (pointsPerVis, numPoints - i * pointsPerVis);
+            int numPartPoints = Mathf.Min (pointsPerVis, numPoints - i * pointsPerVis);
       
-        int[] partTriangles =     new int     [numPartPoints * trisPerMesh];
-        Vector3[] partVertices =  new Vector3 [numPartPoints * vertsPerMesh];
-        Vector3[] partNormals =   new Vector3 [numPartPoints * vertsPerMesh];
-        Vector2[] partUvs =       new Vector2 [numPartPoints * vertsPerMesh];
-        Vector2[] partUv2s =      new Vector2 [numPartPoints * vertsPerMesh];
-        Vector2[] partUv3s =      new Vector2 [numPartPoints * vertsPerMesh];
-        Color[] partColors =      new Color   [numPartPoints * vertsPerMesh];
+            int[] partTriangles =     new int     [numPartPoints * trisPerMesh];
+            Vector3[] partVertices =  new Vector3 [numPartPoints * vertsPerMesh];
+            Vector3[] partNormals =   new Vector3 [numPartPoints * vertsPerMesh];
+            Vector2[] partUvs =       new Vector2 [numPartPoints * vertsPerMesh];
+            Vector2[] partUv2s =      new Vector2 [numPartPoints * vertsPerMesh];
+            Vector2[] partUv3s =      new Vector2 [numPartPoints * vertsPerMesh];
+            Color[] partColors =      new Color   [numPartPoints * vertsPerMesh];
       
-        for (int j = 0; j < numPartPoints; j++)
-        {
-            for (int k = 0; k < trisPerMesh; k++)
+            for (int j = 0; j < numPartPoints; j++)
             {
-                partTriangles[j * trisPerMesh + k] = sampleTriangles[k] + j * vertsPerMesh;
-            }
-            Vector2 depthTextureUV = new Vector2( ((float)col + 0.5f) / cols, ((float)row + 0.5f) / rows );
-            for (int k = 0; k < vertsPerMesh; k++)
-            {
-                partUv2s[j * vertsPerMesh + k] = depthTextureUV;
-                partUv3s[j * vertsPerMesh + k] = new Vector2(k, 0);
-            }
-            System.Array.Copy(sampleVertices,     0, partVertices,  j * vertsPerMesh, vertsPerMesh);
-            System.Array.Copy(sampleNormals,      0, partNormals,   j * vertsPerMesh, vertsPerMesh);
-            System.Array.Copy(sampleUvs,          0, partUvs,       j * vertsPerMesh, vertsPerMesh);
+                for (int k = 0; k < trisPerMesh; k++)
+                {
+                    partTriangles[j * trisPerMesh + k] = sampleTriangles[k] + j * vertsPerMesh;
+                }
+                Vector2 depthTextureUV = new Vector2( ((float)col + 0.5f) / cols, ((float)row + 0.5f) / rows );
+                for (int k = 0; k < vertsPerMesh; k++)
+                {
+                    partUv2s[j * vertsPerMesh + k] = depthTextureUV;
+                    partUv3s[j * vertsPerMesh + k] = new Vector2(k, 0);
+                }
+                System.Array.Copy(sampleVertices,     0, partVertices,  j * vertsPerMesh, vertsPerMesh);
+                System.Array.Copy(sampleNormals,      0, partNormals,   j * vertsPerMesh, vertsPerMesh);
+                System.Array.Copy(sampleUvs,          0, partUvs,       j * vertsPerMesh, vertsPerMesh);
 
-            col++;
-            if (col == cols)
-            {
-                row++;
-                col = 0;
+                col++;
+                if (col == cols)
+                {
+                    row++;
+                    col = 0;
+                }
             }
-        }
 			
-        triangles.Add (partTriangles);
-        vertices.Add 	(partVertices);
-        normals.Add 	(partNormals);
-        uvs.Add 		  (partUvs);
-        uv2s.Add      (partUv2s);
-        uv3s.Add      (partUv3s);
-        colors.Add 		(partColors);
+            triangles.Add (partTriangles);
+            vertices.Add 	(partVertices);
+            normals.Add 	(partNormals);
+            uvs.Add 		  (partUvs);
+            uv2s.Add      (partUv2s);
+            uv3s.Add      (partUv3s);
+            colors.Add 		(partColors);
 			
-        visualizationMeshes[i] = new Mesh();
-        visualizationMeshes[i].vertices = vertices[i];
-        visualizationMeshes[i].triangles = triangles[i];
-        visualizationMeshes[i].normals = normals[i];
-        visualizationMeshes[i].uv = uvs[i];
-        visualizationMeshes[i].uv2 = uv2s[i];
-        visualizationMeshes[i].uv3 = uv3s[i];
-        visualizationMeshes[i].colors = colors[i];
+            visualizationMeshes[i] = new Mesh();
+            visualizationMeshes[i].vertices = vertices[i];
+            visualizationMeshes[i].triangles = triangles[i];
+            visualizationMeshes[i].normals = normals[i];
+            visualizationMeshes[i].uv = uvs[i];
+            visualizationMeshes[i].uv2 = uv2s[i];
+            visualizationMeshes[i].uv3 = uv3s[i];
+            visualizationMeshes[i].colors = colors[i];
 			
-        Bounds meshBounds = new Bounds(500f * Vector3.one, 1000f * Vector3.one);
-        visualizationMeshes[i].bounds = meshBounds;
-        visualizationMeshes[i].MarkDynamic();
+            Bounds meshBounds = new Bounds(500f * Vector3.one, 1000f * Vector3.one);
+            visualizationMeshes[i].bounds = meshBounds;
+            visualizationMeshes[i].MarkDynamic();
 			
-        visualizationParts[i] = new GameObject();
-        visualizationParts[i].name = "Visualization_" + i.ToString();
-        visualizationParts[i].transform.position = Vector3.zero;
-        visualizationParts[i].transform.rotation = Quaternion.identity;
-        visualizationParts[i].AddComponent<MeshFilter>();
-        visualizationParts[i].GetComponent<MeshFilter>().mesh = visualizationMeshes[i];
-        visualizationParts[i].AddComponent<MeshRenderer>();
-        visualizationParts[i].GetComponent<Renderer>().sharedMaterial = visualizationMaterial;
+            visualizationParts[i] = new GameObject();
+            visualizationParts[i].name = "Visualization_" + i.ToString();
+            visualizationParts[i].transform.position = Vector3.zero;
+            visualizationParts[i].transform.rotation = Quaternion.identity;
+            visualizationParts[i].AddComponent<MeshFilter>();
+            visualizationParts[i].GetComponent<MeshFilter>().mesh = visualizationMeshes[i];
+            visualizationParts[i].AddComponent<MeshRenderer>();
+            visualizationParts[i].GetComponent<Renderer>().sharedMaterial = visualizationMaterial;
         }
     }
     #endregion
@@ -311,10 +311,10 @@ public class UserTrackerVisualization: MonoBehaviour
                 //pointColor = new Color(f, f, f, f);
                 //if (userFrame != null) Debug.Log("1");
 
-                if(userFrame[i, j] == numberUser)
-                    pointColor = new Color(1f, 1f, 1f, 1f);
-                else
-                    pointColor = new Color(0f, 0f, 0f, 0f);
+                //if(userFrame[i, j] == numberUser)
+                //    pointColor = new Color(1f, 1f, 1f, 1f);
+                //else
+                //    pointColor = new Color(0f, 0f, 0f, 0f);
 
                 segmentationColors[pointIndex] = pointColor;
 

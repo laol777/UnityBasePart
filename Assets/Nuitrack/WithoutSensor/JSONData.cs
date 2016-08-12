@@ -9,5 +9,7 @@ public class JSONData{
     public int[] depth;
 
     public int[] userTracker;
+
+    public int[] userID;
     
 }

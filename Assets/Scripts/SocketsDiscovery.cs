@@ -48,8 +48,8 @@ public class SocketsDiscovery : MonoBehaviour
     void Start()
     {
         GameNetworkManager netMan = (GameNetworkManager)NetworkManager.singleton;
-        netMan.onServerStop += StopDiscovery;
         netMan.onServerStart += StartBroadcasting;
+        netMan.onServerStop += StopDiscovery;
     }
 
     static byte[] StringToBytes (string str)

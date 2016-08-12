@@ -395,10 +395,12 @@ public class Reporter : MonoBehaviour
 		showWarning = (PlayerPrefs.GetInt("Reporter_showWarning", 1) == 1) ? true : false;
 		showError = (PlayerPrefs.GetInt("Reporter_showError", 1) == 1) ? true : false;
 		filterText = PlayerPrefs.GetString("Reporter_filterText");
-		size.x = size.y = PlayerPrefs.GetFloat("Reporter_size", 60);
+        if(Application.platform == RuntimePlatform.Android)
+		    size.x = size.y = PlayerPrefs.GetFloat("Reporter_size", 60);
+        else
+            size.x = size.y = PlayerPrefs.GetFloat("Reporter_size", 16);
 
-
-		showClearOnNewSceneLoadedButton = (PlayerPrefs.GetInt("Reporter_showClearOnNewSceneLoadedButton", 1) == 1) ? true : false;
+        showClearOnNewSceneLoadedButton = (PlayerPrefs.GetInt("Reporter_showClearOnNewSceneLoadedButton", 1) == 1) ? true : false;
 		showTimeButton = (PlayerPrefs.GetInt("Reporter_showTimeButton", 1) == 1) ? true : false;
 		showSceneButton = (PlayerPrefs.GetInt("Reporter_showSceneButton", 1) == 1) ? true : false;
 		showMemButton = (PlayerPrefs.GetInt("Reporter_showMemButton", 1) == 1) ? true : false;

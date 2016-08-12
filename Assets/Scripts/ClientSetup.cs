@@ -29,13 +29,18 @@ public class ClientSetup : NetworkBehaviour
     void CmdSpawnPlayer()
     {
         GameObject player = (GameObject)Instantiate(playerObject, Vector3.zero, Quaternion.identity);
+
+        player.name = "player";
+
         NetworkServer.SpawnWithClientAuthority(player, gameObject);
+
+        //Destroy(gameObject); //???????
     }
 
     [Command(channel = 0)]
     void CmdSpawnSpectator()
     {
-        GameObject spec = (GameObject)Instantiate(spectatorObject, Vector3.zero, Quaternion.identity);
-        NetworkServer.SpawnWithClientAuthority(spec, gameObject);
+        GameObject spectator = (GameObject)Instantiate(spectatorObject, Vector3.zero, Quaternion.identity);
+        NetworkServer.SpawnWithClientAuthority(spectator, gameObject);
     }
 }

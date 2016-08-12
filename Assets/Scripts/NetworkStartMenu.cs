@@ -13,6 +13,19 @@ public class NetworkStartMenu : MonoBehaviour
     void Awake()
     {
         discovery = FindObjectOfType<SocketsDiscovery>();
+
+    }
+
+    void SearchGame()
+    {
+        discovery.StartListening();
+        status.text = "Searching for a game to connect to.";
+    }
+
+    public void StartHost()
+    {
+        PlayerTypeDecision.type = PlayerTypeDecision.PlayerType.PLAYER;
+        NetworkManager.singleton.StartHost();
     }
 
     public void StartClient()
@@ -27,18 +40,6 @@ public class NetworkStartMenu : MonoBehaviour
         PlayerTypeDecision.type = PlayerTypeDecision.PlayerType.SPECTATOR;
         SearchGame();
         SwitchPanels();
-    }
-
-    void SearchGame()
-    {
-        discovery.StartListening();
-        status.text = "Searching for a game to connect to.";
-    }
-
-    public void StartHost()
-    {
-        PlayerTypeDecision.type = PlayerTypeDecision.PlayerType.PLAYER;
-        NetworkManager.singleton.StartHost();
     }
 
     void SwitchPanels()

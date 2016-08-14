@@ -65,6 +65,8 @@ public class NuitrackManager : MonoBehaviour {
         {
             //Debug.Log("ErrorUpdateNuitrack : " + ex); 
         }
+
+        
     }
 
 }

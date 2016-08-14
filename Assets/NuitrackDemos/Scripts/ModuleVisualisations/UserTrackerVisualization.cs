@@ -313,6 +313,7 @@ public class UserTrackerVisualization: MonoBehaviour
                 //if(userFrame != null) pointColor = new Color(userFrame[i, j], userFrame[i, j], userFrame[i, j], userFrame[i, j]);
                 //pointColor = new Color(f, f, f, f);
                 //if (userFrame != null) Debug.Log("1");
+                pointColor = new Color(0f, 0f, 0f, 0f);
                 if (choiceStream.GetUserID() != null)
                     try
                     {

@@ -72,6 +72,30 @@ public class ChoiceStream : MonoBehaviour {
         }
     }
 
+    public int[] GetUserID()
+    {
+        if (Application.platform == RuntimePlatform.WindowsEditor)
+        {
+            return nuitrackManagerEmulation.UsersID;
+        }
+        else if (UserTracker.UserFrame != null)
+        {
+            int[] nuitrackId = new int[UserTracker.UserFrame.NumUsers];
+
+            for (int i = 0; i < UserTracker.UserFrame.NumUsers; ++i)
+                nuitrackId[i] = UserTracker.UserFrame.Users[i].ID;
+
+            return nuitrackId;
+        }
+        else
+        {
+            return null;
+        }
+        
+    }
+
+
+
     public int Frame
     {
         get

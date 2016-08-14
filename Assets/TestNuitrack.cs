@@ -3,10 +3,17 @@ using System.Collections;
 
 public class TestNuitrack : MonoBehaviour {
 
+    ChoiceStream cs;
+
+    void Start()
+    {
+        cs = GameObject.FindObjectOfType<ChoiceStream>();
+    }
+
+    public int[] test;
 
     void Update () {
-        if (UserTracker.UserFrame != null)
-            Debug.Log(UserTracker.UserFrame.NumUsers);
+        test = cs.GetUserID();
 
     }
 }

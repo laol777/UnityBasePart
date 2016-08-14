@@ -7,7 +7,7 @@ using nuitrack.issues;
 public class UserTrackerVisualization: MonoBehaviour 
 {
     #region Fields
-    public int numberUser;
+    public int numberUser = 0;
 
     int[,] depthFrame = null;
     int[,] userFrame = null;
@@ -53,6 +53,8 @@ public class UserTrackerVisualization: MonoBehaviour
     #endregion
 
     ChoiceStream choiceStream;
+    [SerializeField]
+    Transform initPosition;
 
     void Start () 
     {
@@ -230,8 +232,10 @@ public class UserTrackerVisualization: MonoBehaviour
 			
             visualizationParts[i] = new GameObject();
             visualizationParts[i].name = "Visualization_" + i.ToString();
-            visualizationParts[i].transform.position = Vector3.zero;
-            visualizationParts[i].transform.rotation = Quaternion.identity;
+            visualizationParts[i].transform.position = initPosition.position;
+            visualizationParts[i].transform.rotation = initPosition.rotation;
+            //visualizationParts[i].transform.position = Vector3.zero;
+            //visualizationParts[i].transform.rotation = Quaternion.identity;
             visualizationParts[i].AddComponent<MeshFilter>();
             visualizationParts[i].GetComponent<MeshFilter>().mesh = visualizationMeshes[i];
             visualizationParts[i].AddComponent<MeshRenderer>();
@@ -305,17 +309,19 @@ public class UserTrackerVisualization: MonoBehaviour
 
                 }
                 //pointColor = userCurrentCols[userId];
-                pointColor = userCurrentCols[userId];
 
                 //if(userFrame != null) pointColor = new Color(userFrame[i, j], userFrame[i, j], userFrame[i, j], userFrame[i, j]);
                 //pointColor = new Color(f, f, f, f);
                 //if (userFrame != null) Debug.Log("1");
-
-                //if(userFrame[i, j] == numberUser)
-                //    pointColor = new Color(1f, 1f, 1f, 1f);
-                //else
-                //    pointColor = new Color(0f, 0f, 0f, 0f);
-
+                if (choiceStream.GetUserID() != null)
+                    try
+                    {
+                        if (userFrame[i, j] == choiceStream.GetUserID()[choiceStream.GetUserID().Length - numberUser - 1])
+                            pointColor = new Color(1f, 1f, 1f, 1f);
+                        else
+                            pointColor = new Color(0f, 0f, 0f, 0f);
+                    }
+                    catch (Exception ex) { }
                 segmentationColors[pointIndex] = pointColor;
 
             }

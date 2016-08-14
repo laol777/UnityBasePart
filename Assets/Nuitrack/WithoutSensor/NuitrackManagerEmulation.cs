@@ -15,6 +15,9 @@ public class NuitrackManagerEmulation : MonoBehaviour {
     int[,] userFrame;
     public int[,] UserFrame { get { return userFrame; } }
 
+    int[] usersID;
+    public int[] UsersID { get { return usersID; } }
+
     public int XRes, YRes; //suppose that the size constant
 
     void Awake()
@@ -59,6 +62,7 @@ public class NuitrackManagerEmulation : MonoBehaviour {
     {
         depthFrame = UpdateDepthFrame();
         userFrame = UpdateUserTracker();
+
     }
 
     public int[,] UpdateDepthFrame()
@@ -79,6 +83,8 @@ public class NuitrackManagerEmulation : MonoBehaviour {
             {
                 userFrame[i, j] = data[frame].userTracker[i * XRes + j];
             }
+        usersID = data[frame].userID;
+
         return userFrame;
     }
 }

@@ -215,12 +215,12 @@ public class UserTrackerVisualization: MonoBehaviour
             }
 			
             triangles.Add (partTriangles);
-            vertices.Add 	(partVertices);
-            normals.Add 	(partNormals);
-            uvs.Add 		  (partUvs);
+            vertices.Add  (partVertices);
+            normals.Add   (partNormals);
+            uvs.Add 	  (partUvs);
             uv2s.Add      (partUv2s);
             uv3s.Add      (partUv3s);
-            colors.Add 		(partColors);
+            colors.Add 	  (partColors);
 			
             visualizationMeshes[i] = new Mesh();
             visualizationMeshes[i].vertices = vertices[i];
@@ -264,17 +264,21 @@ public class UserTrackerVisualization: MonoBehaviour
             //depthFrame = choiceStream.GetDepthFrame();
 
             //userFrame = choiceStream.GetUserFrame();
-            //if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame());
-
             if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame());
+
+            //if (haveNewFrame) Test(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame());
         }
         else
         {
             HideVisualization();
         }
     }
-  
-    void HideVisualization()
+
+    void Test(int[,] depthFrame, int[,] userFrame)
+    {
+    }
+
+        void HideVisualization()
     {
         for (int i = 0; i < parts; i++)
         {
@@ -282,6 +286,8 @@ public class UserTrackerVisualization: MonoBehaviour
         }
     }
 
+    int[] userID;
+    int countUserInFrame;
     void ProcessFrame(int[,] depthFrame, int[,] userFrame)
     {
         for (int i = 0; i < parts; i++)
@@ -294,28 +300,21 @@ public class UserTrackerVisualization: MonoBehaviour
         int visPartInd = 0;
         int pointInd = 0;
         int pointsPerVisTotal = pointsPerVis * vertsPerMesh;
-
-    
+        try
+        {
+            userID = choiceStream.GetUserID();
+            countUserInFrame = userID.Length;
+        }
+        catch (System.Exception ex) { }
 
         for (int i = 0, pointIndex = 0; i < choiceStream.YRes; i += frameStep)
         {
             for (int j = 0; j < choiceStream.XRes; j += frameStep, ++pointIndex)
             {
                 depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
-                //depthColors[pointIndex].g = depthFrame[i, j] / 16384f;
-                //depthColors[pointIndex].b = depthFrame[i, j] / 16384f;
-                //depthColors[pointIndex].a = depthFrame[i, j] / 16384f;
+                //depthColors[pointIndex].r = DepthSensor.DepthFrame[i, j] / 16384f;
 
-
-                uint userId = 0u; 
-                if (userFrame != null) 
-                {
-                    userId = (uint)userFrame[i /** choiceStream.YRes / choiceStream.YRes*/,
-                    j /** choiceStream.XRes / choiceStream.XRes*/];
-
-
-                }
-                //pointColor = userCurrentCols[userId];
+                
 
                 //if(userFrame != null) pointColor = new Color(userFrame[i, j], userFrame[i, j], userFrame[i, j], userFrame[i, j]);
                 //pointColor = new Color(f, f, f, f);
@@ -324,7 +323,8 @@ public class UserTrackerVisualization: MonoBehaviour
                 if (choiceStream.GetUserID() != null)
                     try
                     {
-                        if (userFrame[i, j] == choiceStream.GetUserID()[choiceStream.GetUserID().Length - numberUser - 1])
+                        if (userFrame[i, j] == userID[countUserInFrame - numberUser - 1])
+                        //if (UserTracker.UserFrame[i, j] == userID[countUserInFrame - numberUser - 1])
                             pointColor = ones;
                         else
                             pointColor = zeros;

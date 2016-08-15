@@ -56,8 +56,13 @@ public class UserTrackerVisualization: MonoBehaviour
     [SerializeField]
     Transform initPosition;
 
+    Color zeros, ones;
+
     void Start () 
     {
+        zeros = new Color(0f, 0f, 0f, 0f);
+        ones = new Color(1f, 1f, 1f, 1f);
+
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
 
         occludedUserCols = new Color[userCols.Length];
@@ -251,15 +256,17 @@ public class UserTrackerVisualization: MonoBehaviour
         bool haveNewFrame = false;
         if ( choiceStream.GetDepthFrame() != null)
         {
-            if (depthFrame != null)
+            //if (depthFrame != null)
             {
                 haveNewFrame = (frame != choiceStream.Frame);
                 frame = choiceStream.Frame;
             }
-            depthFrame = choiceStream.GetDepthFrame();
-            
-            userFrame = choiceStream.GetUserFrame();
-            if (haveNewFrame) ProcessFrame(depthFrame, userFrame);
+            //depthFrame = choiceStream.GetDepthFrame();
+
+            //userFrame = choiceStream.GetUserFrame();
+            //if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame());
+
+            if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame());
         }
         else
         {
@@ -313,14 +320,14 @@ public class UserTrackerVisualization: MonoBehaviour
                 //if(userFrame != null) pointColor = new Color(userFrame[i, j], userFrame[i, j], userFrame[i, j], userFrame[i, j]);
                 //pointColor = new Color(f, f, f, f);
                 //if (userFrame != null) Debug.Log("1");
-                pointColor = new Color(0f, 0f, 0f, 0f);
+                pointColor = zeros;
                 if (choiceStream.GetUserID() != null)
                     try
                     {
                         if (userFrame[i, j] == choiceStream.GetUserID()[choiceStream.GetUserID().Length - numberUser - 1])
-                            pointColor = new Color(1f, 1f, 1f, 1f);
+                            pointColor = ones;
                         else
-                            pointColor = new Color(0f, 0f, 0f, 0f);
+                            pointColor = zeros;
                     }
                     catch (Exception ex) { }
                 segmentationColors[pointIndex] = pointColor;

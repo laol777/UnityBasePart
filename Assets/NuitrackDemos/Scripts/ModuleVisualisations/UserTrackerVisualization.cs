@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿#define WINDOWS
+//#define ANDROID
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -62,6 +65,9 @@ public class UserTrackerVisualization: MonoBehaviour
     {
         zeros = new Color(0f, 0f, 0f, 0f);
         ones = new Color(1f, 1f, 1f, 1f);
+
+        //depthFrame = new int[60, 80];
+        //userFrame = new int[60, 80];
 
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
 
@@ -249,24 +255,19 @@ public class UserTrackerVisualization: MonoBehaviour
     }
     #endregion
 
+#if WINDOWS
     int frame = -1;
 
-    void Update () 
+    void Update()
     {
         bool haveNewFrame = false;
-        if ( choiceStream.GetDepthFrame() != null)
+        if (choiceStream.GetDepthFrame() != null)
         {
-            //if (depthFrame != null)
-            {
-                haveNewFrame = (frame != choiceStream.Frame);
-                frame = choiceStream.Frame;
-            }
-            //depthFrame = choiceStream.GetDepthFrame();
 
-            //userFrame = choiceStream.GetUserFrame();
+            haveNewFrame = (frame != choiceStream.Frame);
+            frame = choiceStream.Frame;
+
             if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame());
-
-            //if (haveNewFrame) Test(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame());
         }
         else
         {
@@ -274,17 +275,10 @@ public class UserTrackerVisualization: MonoBehaviour
         }
     }
 
-    void Test(int[,] depthFrame, int[,] userFrame)
-    {
-    }
 
-        void HideVisualization()
-    {
-        for (int i = 0; i < parts; i++)
-        {
-            if (visualizationParts[i].activeSelf) visualizationParts[i].SetActive(false);
-        }
-    }
+    /// <summary>
+    /// Without sensor
+    /// </summary>
 
     int[] userID;
     int countUserInFrame;
@@ -297,9 +291,7 @@ public class UserTrackerVisualization: MonoBehaviour
 
         Color pointColor = Color.white;
 
-        int visPartInd = 0;
-        int pointInd = 0;
-        int pointsPerVisTotal = pointsPerVis * vertsPerMesh;
+
         try
         {
             userID = choiceStream.GetUserID();
@@ -312,22 +304,13 @@ public class UserTrackerVisualization: MonoBehaviour
             for (int j = 0; j < choiceStream.XRes; j += frameStep, ++pointIndex)
             {
                 depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
-                //depthColors[pointIndex].r = DepthSensor.DepthFrame[i, j] / 16384f;
 
-                
-
-                //if(userFrame != null) pointColor = new Color(userFrame[i, j], userFrame[i, j], userFrame[i, j], userFrame[i, j]);
-                //pointColor = new Color(f, f, f, f);
-                //if (userFrame != null) Debug.Log("1");
                 pointColor = zeros;
                 if (choiceStream.GetUserID() != null)
                     try
                     {
                         if (userFrame[i, j] == userID[countUserInFrame - numberUser - 1])
-                        //if (UserTracker.UserFrame[i, j] == userID[countUserInFrame - numberUser - 1])
                             pointColor = ones;
-                        else
-                            pointColor = zeros;
                     }
                     catch (Exception ex) { }
                 segmentationColors[pointIndex] = pointColor;
@@ -340,7 +323,93 @@ public class UserTrackerVisualization: MonoBehaviour
         depthTexture.Apply();
         segmentationTexture.Apply();
     }
-	
+#endif
+
+
+
+
+#if ANDROID
+
+    nuitrack.DepthFrame depth;
+    /// <summary>
+    ///Sensor
+    /// </summary>
+    void Update()
+    {
+
+        if(depth != DepthSensor.DepthFrame)
+        {
+            depth = DepthSensor.DepthFrame;
+            if (DepthSensor.DepthFrame != null && UserTracker.UserFrame != null)
+            {
+
+                ProcessFrame(DepthSensor.DepthFrame, UserTracker.UserFrame);
+            }
+            else
+            {
+                HideVisualization();
+            }
+
+        }
+        
+
+    }
+    int[] userID;
+    int countUserInFrame;
+    void ProcessFrame(nuitrack.DepthFrame depthFrame, nuitrack.UserFrame userFrame)
+    {
+        for (int i = 0; i < parts; i++)
+        {
+            if (!visualizationParts[i].activeSelf) visualizationParts[i].SetActive(true);
+        }
+
+        Color pointColor = Color.white;
+        
+        for (int i = 0, pointIndex = 0; i < 60; i += frameStep)
+        {
+            for (int j = 0; j < 80; j += frameStep, ++pointIndex)
+            {
+                //depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
+                //depthColors[pointIndex].r = choiceStream.GetDepthFrame()[i, j] / 16384f;
+
+                depthColors[pointIndex].r = DepthSensor.DepthFrame[i, j] / 16384f;
+
+                pointColor = zeros;
+                //if (choiceStream.GetUserID() != null)
+                //try
+                {
+                    //if (userFrame[i, j] == userID[countUserInFrame - numberUser - 1])
+                    //if (UserTracker.UserFrame[i, j] == userID[countUserInFrame - numberUser - 1])
+                    if (userFrame[i, j] == userFrame.Users[userFrame.Users.Length - numberUser].ID)
+
+                        pointColor = ones;
+                    else
+                        pointColor = zeros;
+                }
+                //catch (Exception ex) { }
+                segmentationColors[pointIndex] = pointColor;
+
+            }
+        }
+        depthTexture.SetPixels(depthColors);
+        segmentationTexture.SetPixels(segmentationColors);
+
+        depthTexture.Apply();
+        segmentationTexture.Apply();
+    }
+
+#endif
+
+    void Test(int[,] depthFrame, int[,] userFrame) { }
+
+    void HideVisualization()
+    {
+        for (int i = 0; i < parts; i++)
+        {
+            if (visualizationParts[i].activeSelf) visualizationParts[i].SetActive(false);
+        }
+    }
+
     void OnDestroy()
     {
         if (depthTexture != null) Destroy(depthTexture);

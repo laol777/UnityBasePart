@@ -25,13 +25,13 @@ public class TestNetwork : NetworkBehaviour
         if ((hasAuthority && isServer) || (!hasAuthority && !isServer))
         {
             gameObject.name = "hostPlayer";
-            offset = new Vector3(0f, 0f, -2.5f);
+            //offset = new Vector3(0f, 0f, -2.5f);
             startRotation = Quaternion.Euler(0f, 180f, 0f);
         }
         else
         {
             gameObject.name = "clientPlayer";
-            offset = new Vector3(0f, 0f, 2.5f);
+            //offset = new Vector3(0f, 0f, 2.5f);
             startRotation = Quaternion.Euler(0f, 0f, 0f);
         }
         transform.position += offset;

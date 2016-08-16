@@ -36,20 +36,6 @@ public class ChoiceStream : MonoBehaviour {
             }
     }
 
-    void TestConvertNuitrackObjToIntArray<T>(T[,] array, ref T[,] resault) where T : struct
-    {
-
-        //nuitrack.UserFrame tt = new nuitrack.UserFrame();
-        //return;
-        int YRes = 60;
-        int XRes = 80;
-
-        for (int i = 0; i < YRes; ++i)
-            for (int j = 0; j < XRes; ++j)
-            {
-                resault[i, j] = array[i, j];
-            }
-    }
 
     public int[,] GetDepthFrame()
     {

@@ -1,7 +1,4 @@
-﻿#define WINDOWS
-//#define ANDROID
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -10,10 +7,14 @@ using nuitrack.issues;
 public class UserTrackerVisualization: MonoBehaviour 
 {
     #region Fields
-    public int numberUser = 0;
 
-    int[,] depthFrame = null;
-    int[,] userFrame = null;
+    public Vector3 offset;
+
+    DepthSensor depthSensor;
+    UserTracker userTracker;
+
+    nuitrack.DepthFrame depthFrame = null;
+    nuitrack.UserFrame userFrame = null;
 
     [SerializeField]int hRes;
     int frameStep;
@@ -52,25 +53,10 @@ public class UserTrackerVisualization: MonoBehaviour
     Texture2D depthTexture, segmentationTexture;
     Color[] depthColors;
     Color[] segmentationColors;
-
     #endregion
-
-    ChoiceStream choiceStream;
-    [SerializeField]
-    Transform initPosition;
-
-    Color zeros, ones;
 
     void Start () 
     {
-        zeros = new Color(0f, 0f, 0f, 0f);
-        ones = new Color(1f, 1f, 1f, 1f);
-
-        //depthFrame = new int[60, 80];
-        //userFrame = new int[60, 80];
-
-        choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
-
         occludedUserCols = new Color[userCols.Length];
         userCurrentCols = new Color[userCols.Length];
         for (int i = 0; i < userCols.Length; i++)
@@ -83,41 +69,20 @@ public class UserTrackerVisualization: MonoBehaviour
             occludedUserCols[i].a = userCols[i].a;
         }
 
-        try
-        {
-            /*
-            nuitrack.OutputMode mode = DepthSensor.GetDepthSensor.GetOutputMode();
+        depthSensor = GameObject.FindObjectOfType<DepthSensor>();
+        userTracker = GameObject.FindObjectOfType<UserTracker>();
+        nuitrack.OutputMode mode = DepthSensor.GetDepthSensor.GetOutputMode();
+        frameStep = mode.XRes / hRes;
+        if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
+        hRes = mode.XRes / frameStep;
 
-
-            frameStep = mode.XRes / hRes;
-            if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
-            hRes = mode.XRes / frameStep;
-
-            depthToScale = meshScaling * 2f * Mathf.Tan (0.5f * mode.HFOV 1f) / hRes;
-
-            InitMeshes( 
-                ((mode.XRes / frameStep) + (mode.XRes % frameStep == 0 ? 0 : 1)),
-                ((mode.YRes / frameStep) + (mode.YRes % frameStep == 0 ? 0 : 1)),
-                mode.HFOV
-                );
-            */
-
-            frameStep = 80 / hRes;
-            if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
-            hRes = 80 / frameStep;
-
-            depthToScale = meshScaling * 2f * Mathf.Tan(0.5f *  1f) / hRes;
-
-            InitMeshes(
-                ((80 / frameStep) + (80 % frameStep == 0 ? 0 : 1)),
-                ((60 / frameStep) + (60 % frameStep == 0 ? 0 : 1)),
-                1
-                );
-        }
-        catch (Exception ex)
-        {
-            Debug.Log(ex);
-        }
+        depthToScale = meshScaling * 2f * Mathf.Tan (0.5f * mode.HFOV) / hRes;
+		
+        InitMeshes( 
+            ((mode.XRes / frameStep) + (mode.XRes % frameStep == 0 ? 0 : 1)),
+            ((mode.YRes / frameStep) + (mode.YRes % frameStep == 0 ? 0 : 1)),
+            mode.HFOV
+            );
     }
 	
     #region Mesh generation and mesh update methods
@@ -139,6 +104,7 @@ public class UserTrackerVisualization: MonoBehaviour
 
         depthTexture.Apply();
         segmentationTexture.Apply();
+
 
         visualizationMaterial.SetTexture("_DepthTex", depthTexture);
         visualizationMaterial.SetTexture("_SegmentationTex", segmentationTexture);
@@ -163,7 +129,7 @@ public class UserTrackerVisualization: MonoBehaviour
         vertices = 	new List<Vector3[]>();
         triangles = new List<int[]>();
         normals = 	new List<Vector3[]>();
-        uvs = 		new List<Vector2[]>();
+        uvs = 		  new List<Vector2[]>();
         uv2s =      new List<Vector2[]>();
         uv3s =      new List<Vector2[]>();
 
@@ -221,12 +187,12 @@ public class UserTrackerVisualization: MonoBehaviour
             }
 			
             triangles.Add (partTriangles);
-            vertices.Add  (partVertices);
-            normals.Add   (partNormals);
-            uvs.Add 	  (partUvs);
+            vertices.Add 	(partVertices);
+            normals.Add 	(partNormals);
+            uvs.Add 		  (partUvs);
             uv2s.Add      (partUv2s);
             uv3s.Add      (partUv3s);
-            colors.Add 	  (partColors);
+            colors.Add 		(partColors);
 			
             visualizationMeshes[i] = new Mesh();
             visualizationMeshes[i].vertices = vertices[i];
@@ -243,10 +209,11 @@ public class UserTrackerVisualization: MonoBehaviour
 			
             visualizationParts[i] = new GameObject();
             visualizationParts[i].name = "Visualization_" + i.ToString();
-            visualizationParts[i].transform.position = initPosition.position;
-            visualizationParts[i].transform.rotation = initPosition.rotation;
-            //visualizationParts[i].transform.position = Vector3.zero;
-            //visualizationParts[i].transform.rotation = Quaternion.identity;
+            visualizationParts[i].transform.position = Vector3.zero;
+
+            visualizationParts[i].transform.position += offset;
+
+            visualizationParts[i].transform.rotation = Quaternion.identity;
             visualizationParts[i].AddComponent<MeshFilter>();
             visualizationParts[i].GetComponent<MeshFilter>().mesh = visualizationMeshes[i];
             visualizationParts[i].AddComponent<MeshRenderer>();
@@ -254,154 +221,26 @@ public class UserTrackerVisualization: MonoBehaviour
         }
     }
     #endregion
-
-#if WINDOWS
-    int frame = -1;
-
-    void Update()
+	
+    void Update () 
     {
         bool haveNewFrame = false;
-        if (choiceStream.GetDepthFrame() != null)
+        if (DepthSensor.DepthFrame != null)
         {
-
-            haveNewFrame = (frame != choiceStream.Frame);
-            frame = choiceStream.Frame;
-
-            if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame());
+            if (depthFrame != null)
+            {
+                haveNewFrame = (depthFrame != DepthSensor.DepthFrame);
+            }
+            depthFrame = DepthSensor.DepthFrame;
+            userFrame = UserTracker.UserFrame;
+            if (haveNewFrame) ProcessFrame(depthFrame, userFrame);
         }
         else
         {
             HideVisualization();
         }
     }
-
-
-    /// <summary>
-    /// Without sensor
-    /// </summary>
-
-    int[] userID;
-    int countUserInFrame;
-    void ProcessFrame(int[,] depthFrame, int[,] userFrame)
-    {
-        for (int i = 0; i < parts; i++)
-        {
-            if (!visualizationParts[i].activeSelf) visualizationParts[i].SetActive(true);
-        }
-
-        Color pointColor = Color.white;
-
-
-        try
-        {
-            userID = choiceStream.GetUserID();
-            countUserInFrame = userID.Length;
-        }
-        catch (System.Exception ex) { }
-
-        for (int i = 0, pointIndex = 0; i < choiceStream.YRes; i += frameStep)
-        {
-            for (int j = 0; j < choiceStream.XRes; j += frameStep, ++pointIndex)
-            {
-                depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
-
-                pointColor = zeros;
-                if (choiceStream.GetUserID() != null)
-                    try
-                    {
-                        if (userFrame[i, j] == userID[countUserInFrame - numberUser - 1])
-                            pointColor = ones;
-                    }
-                    catch (Exception ex) { }
-                segmentationColors[pointIndex] = pointColor;
-
-            }
-        }
-        depthTexture.SetPixels(depthColors);
-        segmentationTexture.SetPixels(segmentationColors);
-
-        depthTexture.Apply();
-        segmentationTexture.Apply();
-    }
-#endif
-
-
-
-
-#if ANDROID
-
-    nuitrack.DepthFrame depth;
-    /// <summary>
-    ///Sensor
-    /// </summary>
-    void Update()
-    {
-
-        if(depth != DepthSensor.DepthFrame)
-        {
-            depth = DepthSensor.DepthFrame;
-            if (DepthSensor.DepthFrame != null && UserTracker.UserFrame != null)
-            {
-
-                ProcessFrame(DepthSensor.DepthFrame, UserTracker.UserFrame);
-            }
-            else
-            {
-                HideVisualization();
-            }
-
-        }
-        
-
-    }
-    int[] userID;
-    int countUserInFrame;
-    void ProcessFrame(nuitrack.DepthFrame depthFrame, nuitrack.UserFrame userFrame)
-    {
-        for (int i = 0; i < parts; i++)
-        {
-            if (!visualizationParts[i].activeSelf) visualizationParts[i].SetActive(true);
-        }
-
-        Color pointColor = Color.white;
-        
-        for (int i = 0, pointIndex = 0; i < 60; i += frameStep)
-        {
-            for (int j = 0; j < 80; j += frameStep, ++pointIndex)
-            {
-                //depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
-                //depthColors[pointIndex].r = choiceStream.GetDepthFrame()[i, j] / 16384f;
-
-                depthColors[pointIndex].r = DepthSensor.DepthFrame[i, j] / 16384f;
-
-                pointColor = zeros;
-                //if (choiceStream.GetUserID() != null)
-                //try
-                {
-                    //if (userFrame[i, j] == userID[countUserInFrame - numberUser - 1])
-                    //if (UserTracker.UserFrame[i, j] == userID[countUserInFrame - numberUser - 1])
-                    if (userFrame[i, j] == userFrame.Users[userFrame.Users.Length - numberUser].ID)
-
-                        pointColor = ones;
-                    else
-                        pointColor = zeros;
-                }
-                //catch (Exception ex) { }
-                segmentationColors[pointIndex] = pointColor;
-
-            }
-        }
-        depthTexture.SetPixels(depthColors);
-        segmentationTexture.SetPixels(segmentationColors);
-
-        depthTexture.Apply();
-        segmentationTexture.Apply();
-    }
-
-#endif
-
-    void Test(int[,] depthFrame, int[,] userFrame) { }
-
+  
     void HideVisualization()
     {
         for (int i = 0; i < parts; i++)
@@ -410,6 +249,56 @@ public class UserTrackerVisualization: MonoBehaviour
         }
     }
 
+    void ProcessFrame(nuitrack.DepthFrame depthFrame, nuitrack.UserFrame userFrame)
+    {
+        for (int i = 0; i < parts; i++)
+        {
+            if (!visualizationParts[i].activeSelf) visualizationParts[i].SetActive(true);
+        }
+
+        Color pointColor = Color.white;
+
+        int visPartInd = 0;
+        int pointInd = 0;
+        int pointsPerVisTotal = pointsPerVis * vertsPerMesh;
+
+
+        for (int i = 0, pointIndex = 0; i < depthFrame.Rows; i += frameStep)
+        {
+            for (int j = 0; j < depthFrame.Cols; j += frameStep, ++pointIndex)
+            {
+                depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
+
+                uint userId = 0u; 
+                if (userFrame != null) 
+                {
+                    userId = userFrame[i * userFrame.Rows / depthFrame.Rows,
+                    j * userFrame.Cols / depthFrame.Cols];
+                }
+
+                #region RGB coloring
+                int rgbOffset = 3 * (i * depthFrame.Cols + j);
+                //Color rgbCol = new Color32(depthFrame.rgb[rgbOffset + 2], depthFrame.rgb[rgbOffset + 1], depthFrame.rgb[rgbOffset + 0], 255);
+                //pointColor = rgbCol;
+                //Debug.Log(j.ToString() + ", " + i.ToString() + " : " + rgbCol);
+                #endregion
+                pointColor = userCurrentCols[userId]; //user segmentation coloring
+                if (userId != 0)
+                {
+                    pointColor = Color.white;
+                }
+
+
+                segmentationColors[pointIndex] = pointColor;
+            }
+        }
+        depthTexture.SetPixels(depthColors);
+        segmentationTexture.SetPixels(segmentationColors);
+
+        depthTexture.Apply();
+        segmentationTexture.Apply();
+    }
+	
     void OnDestroy()
     {
         if (depthTexture != null) Destroy(depthTexture);

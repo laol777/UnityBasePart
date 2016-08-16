@@ -23,8 +23,6 @@ public class ChoiceStream : MonoBehaviour {
 
     void ConvertNuitrackObjToIntArray<T>(T array, ref int[,] resault) where T : nuitrack.Frame<ushort>
     {
-        //return;
-        //nuitrack.UserFrame tt = new nuitrack.UserFrame();
 
         int YRes = DepthSensor.DepthFrame.Rows;
         int XRes = DepthSensor.DepthFrame.Cols;
@@ -36,13 +34,13 @@ public class ChoiceStream : MonoBehaviour {
             }
     }
 
+  
 
     public int[,] GetDepthFrame()
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            //depthFrame = nuitrackManagerEmulation.DepthFrame;
-            TestConvertNuitrackObjToIntArray<int>(nuitrackManagerEmulation.DepthFrame, ref depthFrame);
+            depthFrame = nuitrackManagerEmulation.DepthFrame;
             return depthFrame;
         }
         else
@@ -101,6 +99,7 @@ public class ChoiceStream : MonoBehaviour {
         }
         
     }
+
 
 
 

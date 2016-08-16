@@ -8,7 +8,12 @@ public class UserTrackerVisualization: MonoBehaviour
 {
     #region Fields
 
-    public Vector3 offset;
+    [Range(1, 2), SerializeField]
+    int numberUser = 1;
+
+
+    public Vector3 offsetCreatingMesh;
+    public Vector3 rotationCreatedMesh;
 
     DepthSensor depthSensor;
     UserTracker userTracker;
@@ -55,8 +60,15 @@ public class UserTrackerVisualization: MonoBehaviour
     Color[] segmentationColors;
     #endregion
 
+
+    ChoiceStream choiceStream;
+
+    Color transparentColor;
+
     void Start () 
     {
+
+        choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
         occludedUserCols = new Color[userCols.Length];
         userCurrentCols = new Color[userCols.Length];
         for (int i = 0; i < userCols.Length; i++)
@@ -71,19 +83,42 @@ public class UserTrackerVisualization: MonoBehaviour
 
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
         userTracker = GameObject.FindObjectOfType<UserTracker>();
-        nuitrack.OutputMode mode = DepthSensor.GetDepthSensor.GetOutputMode();
-        frameStep = mode.XRes / hRes;
-        if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
-        hRes = mode.XRes / frameStep;
+        //nuitrack.OutputMode mode = DepthSensor.GetDepthSensor.GetOutputMode();
+        //frameStep = mode.XRes / hRes;
+        //if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
+        //hRes = mode.XRes / frameStep;
 
-        depthToScale = meshScaling * 2f * Mathf.Tan (0.5f * mode.HFOV) / hRes;
-		
-        InitMeshes( 
-            ((mode.XRes / frameStep) + (mode.XRes % frameStep == 0 ? 0 : 1)),
-            ((mode.YRes / frameStep) + (mode.YRes % frameStep == 0 ? 0 : 1)),
-            mode.HFOV
+        //depthToScale = meshScaling * 2f * Mathf.Tan(0.5f * mode.HFOV) / hRes;
+
+        //InitMeshes(
+        //    ((mode.XRes / frameStep) + (mode.XRes % frameStep == 0 ? 0 : 1)),
+        //    ((mode.YRes / frameStep) + (mode.YRes % frameStep == 0 ? 0 : 1)),
+        //    mode.HFOV
+        //    );
+
+        //Debug.Log("mode.XRes " + mode.XRes.ToString() + " mode.YRes " + mode.YRes.ToString() + " mode.HFOV " + mode.HFOV.ToString());
+
+        transparentColor = new Color(0f, 0f, 0f, 0f);
+
+        int XRes = 80;
+        int YRes = 60;
+        int HFOV = 1;
+
+        frameStep = XRes / hRes;
+        if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
+        hRes = XRes / frameStep;
+
+        depthToScale = meshScaling * 2f * Mathf.Tan(0.5f * HFOV) / hRes;
+
+        InitMeshes(
+            ((XRes / frameStep) + (XRes % frameStep == 0 ? 0 : 1)),
+            ((YRes / frameStep) + (YRes % frameStep == 0 ? 0 : 1)),
+            HFOV
             );
+
     }
+
+
 	
     #region Mesh generation and mesh update methods
     void InitMeshes(int cols, int rows, float hfov)
@@ -210,10 +245,11 @@ public class UserTrackerVisualization: MonoBehaviour
             visualizationParts[i] = new GameObject();
             visualizationParts[i].name = "Visualization_" + i.ToString();
             visualizationParts[i].transform.position = Vector3.zero;
-
-            visualizationParts[i].transform.position += offset;
-
             visualizationParts[i].transform.rotation = Quaternion.identity;
+
+            visualizationParts[i].transform.position += offsetCreatingMesh;
+            visualizationParts[i].transform.rotation *= Quaternion.Euler(rotationCreatedMesh);
+
             visualizationParts[i].AddComponent<MeshFilter>();
             visualizationParts[i].GetComponent<MeshFilter>().mesh = visualizationMeshes[i];
             visualizationParts[i].AddComponent<MeshRenderer>();
@@ -221,19 +257,20 @@ public class UserTrackerVisualization: MonoBehaviour
         }
     }
     #endregion
-	
+
+    int frame = -1;
+
     void Update () 
     {
         bool haveNewFrame = false;
-        if (DepthSensor.DepthFrame != null)
+        if (choiceStream.GetDepthFrame() != null)
         {
-            if (depthFrame != null)
+            if (frame != choiceStream.Frame)
             {
-                haveNewFrame = (depthFrame != DepthSensor.DepthFrame);
+                haveNewFrame = true;
+                frame = choiceStream.Frame;
             }
-            depthFrame = DepthSensor.DepthFrame;
-            userFrame = UserTracker.UserFrame;
-            if (haveNewFrame) ProcessFrame(depthFrame, userFrame);
+            if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame(), choiceStream.YRes, choiceStream.XRes);
         }
         else
         {
@@ -249,7 +286,7 @@ public class UserTrackerVisualization: MonoBehaviour
         }
     }
 
-    void ProcessFrame(nuitrack.DepthFrame depthFrame, nuitrack.UserFrame userFrame)
+    void ProcessFrame(int[,] depthFrame, int[,] userFrame, int rows, int cols)
     {
         for (int i = 0; i < parts; i++)
         {
@@ -262,32 +299,41 @@ public class UserTrackerVisualization: MonoBehaviour
         int pointInd = 0;
         int pointsPerVisTotal = pointsPerVis * vertsPerMesh;
 
+        int[] userID = choiceStream.GetUserID();
 
-        for (int i = 0, pointIndex = 0; i < depthFrame.Rows; i += frameStep)
+        for (int i = 0, pointIndex = 0; i < rows; i += frameStep)
         {
-            for (int j = 0; j < depthFrame.Cols; j += frameStep, ++pointIndex)
+            for (int j = 0; j < cols; j += frameStep, ++pointIndex)
             {
                 depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
 
-                uint userId = 0u; 
+                uint userId = 0u;
                 if (userFrame != null) 
                 {
-                    userId = userFrame[i * userFrame.Rows / depthFrame.Rows,
-                    j * userFrame.Cols / depthFrame.Cols];
+                    userId = (uint)userFrame[i * rows / rows,
+                    j * cols / cols];
                 }
 
                 #region RGB coloring
-                int rgbOffset = 3 * (i * depthFrame.Cols + j);
+                int rgbOffset = 3 * (i * cols + j);
                 //Color rgbCol = new Color32(depthFrame.rgb[rgbOffset + 2], depthFrame.rgb[rgbOffset + 1], depthFrame.rgb[rgbOffset + 0], 255);
                 //pointColor = rgbCol;
                 //Debug.Log(j.ToString() + ", " + i.ToString() + " : " + rgbCol);
                 #endregion
-                pointColor = userCurrentCols[userId]; //user segmentation coloring
+                //pointColor = userCurrentCols[userId]; //user segmentation coloring
                 if (userId != 0)
                 {
                     pointColor = Color.white;
                 }
 
+                pointColor = transparentColor;
+
+                try
+                {
+                    if (userFrame[i, j] == userID[userID.Length - numberUser])
+                        pointColor = Color.white;
+                }
+                catch (Exception ex) { }
 
                 segmentationColors[pointIndex] = pointColor;
             }

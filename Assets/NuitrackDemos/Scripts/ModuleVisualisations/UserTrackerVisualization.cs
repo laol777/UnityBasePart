@@ -7,6 +7,8 @@ using nuitrack.issues;
 public class UserTrackerVisualization: MonoBehaviour 
 {
     #region Fields
+    [SerializeField, Range(1, 2)]
+    int numberPlayer = 1;
 
     public Vector3 offset;
 
@@ -58,8 +60,14 @@ public class UserTrackerVisualization: MonoBehaviour
 
     ChoiceStream choiceStream;
 
+    Color transparentColor;
+    Color ones;
+
     void Start () 
     {
+
+        transparentColor = new Color(0f, 0f, 0f, 0f);
+        ones = new Color(1f, 1f, 1f, 1f);
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
         occludedUserCols = new Color[userCols.Length];
         userCurrentCols = new Color[userCols.Length];
@@ -255,14 +263,14 @@ public class UserTrackerVisualization: MonoBehaviour
                 frame = choiceStream.Frame;
             }
 
-            if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetDepthFrame(), 80, 60);
+            if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame(), 80, 60);
         }
         else
         {
             HideVisualization();
         }
     }
-  
+
     void HideVisualization()
     {
         for (int i = 0; i < parts; i++)
@@ -271,6 +279,8 @@ public class UserTrackerVisualization: MonoBehaviour
         }
     }
 
+    int[,] testArray;
+    Color pointColor = Color.white;
     void ProcessFrame(int[,] depthFrame, int[,] userFrame, int Cols, int Rows)
     {
         for (int i = 0; i < parts; i++)
@@ -278,17 +288,19 @@ public class UserTrackerVisualization: MonoBehaviour
             if (!visualizationParts[i].activeSelf) visualizationParts[i].SetActive(true);
         }
 
-        Color pointColor = Color.white;
+        
 
         int visPartInd = 0;
         int pointInd = 0;
         int pointsPerVisTotal = pointsPerVis * vertsPerMesh;
 
+        int[] userID = choiceStream.GetUserID();
 
         for (int i = 0, pointIndex = 0; i < Rows; i += frameStep)
         {
             for (int j = 0; j < Cols; j += frameStep, ++pointIndex)
             {
+                pointColor = transparentColor;
                 depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
 
                 uint userId = 0u; 
@@ -304,13 +316,30 @@ public class UserTrackerVisualization: MonoBehaviour
                 //pointColor = rgbCol;
                 //Debug.Log(j.ToString() + ", " + i.ToString() + " : " + rgbCol);
                 #endregion
-                
-                //pointColor = userCurrentCols[userId]; //user segmentation coloring
-                if (userId != 0)
-                {
-                    pointColor = Color.white;
-                }
 
+                //pointColor = userCurrentCols[userId]; //user segmentation coloring
+                //if (userId != 0)
+                //{
+                //    pointColor = Color.white;
+                //}
+
+                //try
+                //{
+                //    if (userFrame[i, j] == userID[userID.Length - numberPlayer])
+                //        pointColor = Color.white;
+                //}
+                //catch (Exception ex) { }
+
+                if (userID != null && numberPlayer <= userID.Length)
+                {
+                    
+                    if (userFrame[i, j] == userID[userID.Length - numberPlayer])
+                    {
+                        pointColor = ones;
+                    }
+                }
+                //pointColor = Color.white;
+                //pointColor = ones;
 
                 segmentationColors[pointIndex] = pointColor;
             }

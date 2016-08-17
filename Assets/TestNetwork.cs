@@ -12,11 +12,16 @@ public class TestNetwork : NetworkBehaviour
 
     [SerializeField]
     Transform camera;
+
+
+    SkeletonTracker skeletonTracker;
     // Use this for initialization
     void Start () {
         StartCoroutine(RedactPlayerPrefabName()); // hasAuthorithy change value after 1 frame
         tmpPos = new Vector3();
         startRotation = new Quaternion();
+
+        skeletonTracker = GameObject.FindObjectOfType<SkeletonTracker>();
     }
 
     IEnumerator RedactPlayerPrefabName() 
@@ -43,11 +48,11 @@ public class TestNetwork : NetworkBehaviour
     void Update()
     {
         
-        if (SkeletonTracker.CurrentSkeleton != null)
+        if (skeletonTracker.CurrentSkeleton != null)
         {
-            tmpPos.x = SkeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.X * 0.001f;
-            tmpPos.y = SkeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.Y * 0.001f;
-            tmpPos.z = SkeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.Z * 0.001f;
+            tmpPos.x = skeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.X * 0.001f;
+            tmpPos.y = skeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.Y * 0.001f;
+            tmpPos.z = skeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.Z * 0.001f;
 
             
             camera.localPosition = -tmpPos;

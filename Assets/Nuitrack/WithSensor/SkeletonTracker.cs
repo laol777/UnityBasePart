@@ -3,13 +3,16 @@ using System.Collections;
 
 public class SkeletonTracker : MonoBehaviour{
 
-    static nuitrack.SkeletonTracker skeletonTracker;
+    nuitrack.SkeletonTracker skeletonTracker;
 
-    static nuitrack.Skeleton currentSkeleton;
-    public static nuitrack.Skeleton CurrentSkeleton { get { return currentSkeleton; } }
+    nuitrack.Skeleton currentSkeleton;
+    public nuitrack.Skeleton CurrentSkeleton { get { return currentSkeleton; } }
 
-    static nuitrack.Skeleton[] skeletons;
-    public static nuitrack.Skeleton[] Skeletons { get { return skeletons; } }
+    nuitrack.Skeleton[] skeletons;
+    public nuitrack.Skeleton[] Skeletons { get { return skeletons; } }
+
+    nuitrack.SkeletonData skeletonData;
+    public nuitrack.SkeletonData SkeletonData { get { return skeletonData; } }
 
     SkeletonTracker()
     {
@@ -17,24 +20,25 @@ public class SkeletonTracker : MonoBehaviour{
         skeletonTracker.OnSkeletonUpdateEvent += HandleOnSkeletonUpdateEvent;
         Debug.Log("___SkeletonTracker.Init() success.");
     }
-    static void HandleOnSkeletonUpdateEvent(nuitrack.SkeletonData skeletonData)
+    void HandleOnSkeletonUpdateEvent(nuitrack.SkeletonData _skeletonData)
     {
-        if (skeletonData == null) return; //just in case
+        skeletonData = _skeletonData;
+        if (_skeletonData == null) return; //just in case
 
-        skeletons = skeletonData.Skeletons;
+        skeletons = _skeletonData.Skeletons;
 
         if (NuitrackManager.currentUser != 0)
         {
-            NuitrackManager.currentUser = (skeletonData.GetSkeletonByID(NuitrackManager.currentUser) == null) ? 0 : NuitrackManager.currentUser;
+            NuitrackManager.currentUser = (_skeletonData.GetSkeletonByID(NuitrackManager.currentUser) == null) ? 0 : NuitrackManager.currentUser;
         }
 
-        if (skeletonData.NumUsers == 0)
+        if (_skeletonData.NumUsers == 0)
         {
             currentSkeleton = null;
             return;
         }
 
-        currentSkeleton = skeletonData.GetSkeletonByID(NuitrackManager.currentUser);
-        currentSkeleton = skeletonData.Skeletons[0];
+        currentSkeleton = _skeletonData.GetSkeletonByID(NuitrackManager.currentUser);
+        currentSkeleton = _skeletonData.Skeletons[0];
     }
 }

@@ -28,6 +28,7 @@ public class TestJSON : MonoBehaviour {
         text.text = "press to write";
 
         userTracker = GameObject.FindObjectOfType<UserTracker>();
+        depthSensor = GameObject.FindObjectOfType<DepthSensor>();
     }
     
 
@@ -39,28 +40,28 @@ public class TestJSON : MonoBehaviour {
         if (isWrite)
         {
 
-            if (UserTracker.frame != frame && DepthSensor.DepthFrame != null)
+            if (userTracker.frame != frame && depthSensor.DepthFrame != null)
             {
                 Debug.Log(frame);
-                frame = UserTracker.frame;
+                frame = userTracker.frame;
                 
                 frameData = new JSONData();
                 //if (frameData.rows != depthSensor.DepthFrame.Rows && frameData.cols != depthSensor.DepthFrame.Cols)
                 {
-                    frameData.depth = new int[DepthSensor.DepthFrame.Rows * DepthSensor.DepthFrame.Cols];
-                    frameData.userTracker = new int[DepthSensor.DepthFrame.Rows * DepthSensor.DepthFrame.Cols];
+                    frameData.depth = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols];
+                    frameData.userTracker = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols];
                 }
 
-                frameData.YRes = DepthSensor.DepthFrame.Rows;
-                frameData.XRes = DepthSensor.DepthFrame.Cols;
+                frameData.YRes = depthSensor.DepthFrame.Rows;
+                frameData.XRes = depthSensor.DepthFrame.Cols;
 
                 for (int j = 0; j < frameData.XRes; ++j)
                     for (int i = 0; i < frameData.YRes; ++i) 
                     {
                         //try
                         {
-                            frameData.depth[i * frameData.XRes + j] = DepthSensor.DepthFrame[i, j];
-                            frameData.userTracker[i * frameData.XRes + j] = UserTracker.UserFrame[i, j];
+                            frameData.depth[i * frameData.XRes + j] = depthSensor.DepthFrame[i, j];
+                            frameData.userTracker[i * frameData.XRes + j] = userTracker.UserFrame[i, j];
                         }
                         //catch
                         //{

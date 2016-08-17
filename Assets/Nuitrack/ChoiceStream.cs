@@ -26,8 +26,8 @@ public class ChoiceStream : MonoBehaviour {
         //return;
         //nuitrack.UserFrame tt = new nuitrack.UserFrame();
 
-        int YRes = DepthSensor.DepthFrame.Rows;
-        int XRes = DepthSensor.DepthFrame.Cols;
+        int YRes = depthSensor.DepthFrame.Rows;
+        int XRes = depthSensor.DepthFrame.Cols;
 
         for (int i = 0; i < YRes; ++i)
             for (int j = 0; j < XRes; ++j)
@@ -41,15 +41,14 @@ public class ChoiceStream : MonoBehaviour {
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            //depthFrame = nuitrackManagerEmulation.DepthFrame;
-            TestConvertNuitrackObjToIntArray<int>(nuitrackManagerEmulation.DepthFrame, ref depthFrame);
+            depthFrame = nuitrackManagerEmulation.DepthFrame;
             return depthFrame;
         }
         else
         {
-            if (DepthSensor.DepthFrame != null)
+            if (depthSensor.DepthFrame != null)
             {
-                ConvertNuitrackObjToIntArray<nuitrack.DepthFrame>(DepthSensor.DepthFrame, ref depthFrame);
+                ConvertNuitrackObjToIntArray<nuitrack.DepthFrame>(depthSensor.DepthFrame, ref depthFrame);
                 return depthFrame;
             }
             else
@@ -68,9 +67,9 @@ public class ChoiceStream : MonoBehaviour {
         }
         else
         {
-            if (UserTracker.UserFrame != null)
+            if (userTracker.UserFrame != null)
             {
-                ConvertNuitrackObjToIntArray<nuitrack.UserFrame>(UserTracker.UserFrame, ref userFrame);
+                ConvertNuitrackObjToIntArray<nuitrack.UserFrame>(userTracker.UserFrame, ref userFrame);
                 return userFrame;
             }
             else
@@ -86,12 +85,12 @@ public class ChoiceStream : MonoBehaviour {
         {
             return nuitrackManagerEmulation.UsersID;
         }
-        else if (UserTracker.UserFrame != null)
+        else if (userTracker.UserFrame != null)
         {
-            int[] nuitrackId = new int[UserTracker.UserFrame.NumUsers];
+            int[] nuitrackId = new int[userTracker.UserFrame.NumUsers];
 
-            for (int i = 0; i < UserTracker.UserFrame.NumUsers; ++i)
-                nuitrackId[i] = UserTracker.UserFrame.Users[i].ID;
+            for (int i = 0; i < userTracker.UserFrame.NumUsers; ++i)
+                nuitrackId[i] = userTracker.UserFrame.Users[i].ID;
 
             return nuitrackId;
         }
@@ -114,7 +113,7 @@ public class ChoiceStream : MonoBehaviour {
             }
             else
             {
-                return DepthSensor.frame;
+                return depthSensor.frame;
             }
         }
         
@@ -130,7 +129,7 @@ public class ChoiceStream : MonoBehaviour {
             }
             else
             {
-                return DepthSensor.DepthFrame.Cols;
+                return depthSensor.DepthFrame.Cols;
             }
         }
     }
@@ -144,7 +143,7 @@ public class ChoiceStream : MonoBehaviour {
             }
             else
             {
-                return DepthSensor.DepthFrame.Rows;
+                return depthSensor.DepthFrame.Rows;
             }
         }
     }

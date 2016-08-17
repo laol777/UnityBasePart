@@ -11,6 +11,7 @@ public class UserTrackerVisualization: MonoBehaviour
     int numberPlayer = 1;
 
     public Vector3 offset;
+    public Vector3 baseRotation;
 
     DepthSensor depthSensor;
     UserTracker userTracker;
@@ -238,10 +239,11 @@ public class UserTrackerVisualization: MonoBehaviour
             visualizationParts[i] = new GameObject();
             visualizationParts[i].name = "Visualization_" + i.ToString();
             visualizationParts[i].transform.position = Vector3.zero;
+            visualizationParts[i].transform.rotation = Quaternion.identity;
 
             visualizationParts[i].transform.position += offset;
+            visualizationParts[i].transform.rotation *= Quaternion.Euler(baseRotation);
 
-            visualizationParts[i].transform.rotation = Quaternion.identity;
             visualizationParts[i].AddComponent<MeshFilter>();
             visualizationParts[i].GetComponent<MeshFilter>().mesh = visualizationMeshes[i];
             visualizationParts[i].AddComponent<MeshRenderer>();

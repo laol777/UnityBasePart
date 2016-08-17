@@ -25,13 +25,13 @@ public class TestNetwork : NetworkBehaviour
         if ((hasAuthority && isServer) || (!hasAuthority && !isServer))
         {
             gameObject.name = "hostPlayer";
-            //offset = new Vector3(0f, 0f, -2.5f);
+            offset = new Vector3(0f, 0f, -3f);
             startRotation = Quaternion.Euler(0f, 180f, 0f);
         }
         else
         {
             gameObject.name = "clientPlayer";
-            //offset = new Vector3(0f, 0f, 2.5f);
+            offset = new Vector3(0f, 0f, 3f);
             startRotation = Quaternion.Euler(0f, 0f, 0f);
         }
         transform.position += offset;
@@ -42,13 +42,15 @@ public class TestNetwork : NetworkBehaviour
 
     void Update()
     {
+        
         if (SkeletonTracker.CurrentSkeleton != null)
         {
             tmpPos.x = SkeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.X * 0.001f;
             tmpPos.y = SkeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.Y * 0.001f;
             tmpPos.z = SkeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.Z * 0.001f;
 
-            camera.localPosition = tmpPos;
+            
+            camera.localPosition = -tmpPos;
         }
     }
 }

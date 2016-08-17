@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System;
 using UnityEngine.UI;
 
-public class TestJSON : MonoBehaviour {
+public class WriteToISON : MonoBehaviour {
 
     public bool addData;
 
@@ -15,21 +15,25 @@ public class TestJSON : MonoBehaviour {
     JSONData frameData;
     List<JSONData> serializeData;
 
+    NuitrackManager nuitrackManager;
+
     DepthSensor depthSensor;
     UserTracker userTracker;
+    SkeletonTracker skeletonTracker;
 
     void Start()
     {
-        //Debug.Log(Directory.GetCurrentDirectory());
-
         serializeData = new List<JSONData>();
-
 
         text.text = "press to write";
 
+        nuitrackManager = GameObject.FindObjectOfType<NuitrackManager>();
+
         userTracker = GameObject.FindObjectOfType<UserTracker>();
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
+        skeletonTracker = GameObject.FindObjectOfType<SkeletonTracker>();
     }
+
 
 
     int frame = 0;
@@ -43,48 +47,29 @@ public class TestJSON : MonoBehaviour {
 
             if (userTracker.frame != frame && depthSensor.DepthFrame != null)
             {
-                Debug.Log(frame);
                 frame = userTracker.frame;
+                Debug.Log("Writing frame " + frame.ToString());
+                
 
                 frameData = new JSONData();
-                //if (frameData.rows != depthSensor.DepthFrame.Rows && frameData.cols != depthSensor.DepthFrame.Cols)
-                {
-                    frameData.depth = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols];
-                    frameData.userTracker = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols];
-                }
 
+                                                                                               
                 frameData.YRes = depthSensor.DepthFrame.Rows;
                 frameData.XRes = depthSensor.DepthFrame.Cols;
 
-                for (int j = 0; j < frameData.XRes; ++j)
-                    for (int i = 0; i < frameData.YRes; ++i)
+                frameData.depth = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols]; 
+                frameData.userTracker = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols];
+                for (int i = 0; i < frameData.YRes; ++i)
+                    for (int j = 0; j < frameData.XRes; ++j)
                     {
-                        //try
-                        {
-                            frameData.depth[i * frameData.XRes + j] = depthSensor.DepthFrame[i, j];
-                            frameData.userTracker[i * frameData.XRes + j] = userTracker.UserFrame[i, j];
-                        }
-                        //catch
-                        //{
-                        //    Debug.Log(i.ToString() + " " + j.ToString());
-                        //}
+                        frameData.depth[i * frameData.XRes + j] = depthSensor.DepthFrame[i, j];
+                        frameData.userTracker[i * frameData.XRes + j] = userTracker.UserFrame[i, j];
                     }
 
+                
+                frameData.userID = nuitrackManager.GetUserID();
 
-                //try
-                //{
-                //    bool test = true;
-                //    for (int i = 0; i < frameData.depth.Length; ++i)
-                //    {
-                //        if (frameData.depth[i] != prevFrameData.depth[i])
-                //            test = false;
-                //    }
-                //    Debug.Log(test);
-                //}
-                //catch
-                //{ }
 
-                //prevFrameData = frameData;
 
                 serializeData.Add(frameData);
 
@@ -116,5 +101,4 @@ public class TestJSON : MonoBehaviour {
     {
         SerializeData.SaveJSON(serializeData, "testDepthData");
     }
-
 }

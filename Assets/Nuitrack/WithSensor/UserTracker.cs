@@ -22,7 +22,6 @@ public class UserTracker : MonoBehaviour{
     void UserUpdateEvent(nuitrack.UserFrame _userFrame)
     {
         userFrame = _userFrame;
-         
         ++frame;
     }
 }

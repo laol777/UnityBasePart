@@ -54,6 +54,16 @@ public class NuitrackManager : MonoBehaviour {
         nuitrack.Nuitrack.Run();
     }
 
+    public int[] GetUserID()
+    {
+        int[] nuitrackId = new int[userTracker.UserFrame.NumUsers];
+
+        for (int i = 0; i < userTracker.UserFrame.NumUsers; ++i)
+            nuitrackId[i] = userTracker.UserFrame.Users[i].ID;
+
+        return nuitrackId;
+    }
+
     void Update()
     {
 

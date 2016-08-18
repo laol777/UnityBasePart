@@ -22,7 +22,6 @@ public class TestNetwork : NetworkBehaviour
         tmpPos = new Vector3();
         startRotation = new Quaternion();
 
-        skeletonTracker = GameObject.FindObjectOfType<SkeletonTracker>();
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
     }
 
@@ -49,6 +48,13 @@ public class TestNetwork : NetworkBehaviour
     public Vector3 tmpPos;
     public int numberUser = 1;
 
+    [SerializeField]
+    Transform head;
+    [SerializeField]
+    Transform rightWrist;
+    [SerializeField]
+    Transform rightElbow;
+
     void Update()
     {
         
@@ -56,8 +62,14 @@ public class TestNetwork : NetworkBehaviour
         {
 
             tmpPos = choiceStream.GetJoint(nuitrack.JointType.Head, numberUser) * 0.001f;
-            
-            camera.localPosition = tmpPos;
+            head.localPosition = tmpPos;
+
+            tmpPos = choiceStream.GetJoint(nuitrack.JointType.RightWrist, numberUser) * 0.001f;
+            rightWrist.localPosition = tmpPos;
+
+            tmpPos = choiceStream.GetJoint(nuitrack.JointType.RightElbow, numberUser) * 0.001f;
+            rightElbow.localPosition = tmpPos;
+
         }
     }
 }

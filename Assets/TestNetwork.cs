@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 public class TestNetwork : NetworkBehaviour
 {
 
-    Vector3 tmpPos;
+
 
     Vector3 offset;
     Quaternion startRotation;
@@ -15,6 +15,7 @@ public class TestNetwork : NetworkBehaviour
 
 
     SkeletonTracker skeletonTracker;
+    ChoiceStream choiceStream;
     // Use this for initialization
     void Start () {
         StartCoroutine(RedactPlayerPrefabName()); // hasAuthorithy change value after 1 frame
@@ -22,6 +23,7 @@ public class TestNetwork : NetworkBehaviour
         startRotation = new Quaternion();
 
         skeletonTracker = GameObject.FindObjectOfType<SkeletonTracker>();
+        choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
     }
 
     IEnumerator RedactPlayerPrefabName() 
@@ -30,13 +32,13 @@ public class TestNetwork : NetworkBehaviour
         if ((hasAuthority && isServer) || (!hasAuthority && !isServer))
         {
             gameObject.name = "hostPlayer";
-            offset = new Vector3(0f, 0f, -3f);
-            startRotation = Quaternion.Euler(0f, 180f, 0f);
+            offset = new Vector3(0f, 0f, 3f);
+            startRotation = Quaternion.Euler(0f, 0f, 0f);
         }
         else
         {
             gameObject.name = "clientPlayer";
-            offset = new Vector3(0f, 0f, 3f);
+            offset = new Vector3(0f, 0f, -3f);
             startRotation = Quaternion.Euler(0f, 0f, 0f);
         }
         transform.position += offset;
@@ -44,18 +46,18 @@ public class TestNetwork : NetworkBehaviour
     }
 
 
+    public Vector3 tmpPos;
+    public int numberUser = 1;
 
     void Update()
     {
         
-        if (skeletonTracker.CurrentSkeleton != null)
+        if (choiceStream != null)
         {
-            tmpPos.x = skeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.X * 0.001f;
-            tmpPos.y = skeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.Y * 0.001f;
-            tmpPos.z = skeletonTracker.CurrentSkeleton.GetJoint(nuitrack.JointType.Head).Real.Z * 0.001f;
 
+            tmpPos = choiceStream.GetJoint(nuitrack.JointType.Head, numberUser) * 0.001f;
             
-            camera.localPosition = -tmpPos;
+            camera.localPosition = tmpPos;
         }
     }
 }

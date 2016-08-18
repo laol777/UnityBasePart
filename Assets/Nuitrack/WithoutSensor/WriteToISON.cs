@@ -45,7 +45,7 @@ public class WriteToISON : MonoBehaviour {
         if (isWrite)
         {
 
-            if (userTracker.frame != frame && depthSensor.DepthFrame != null)
+            if (userTracker.frame != frame && depthSensor.DepthFrame != null && skeletonTracker.SkeletonData != null)
             {
                 frame = userTracker.frame;
                 Debug.Log("Writing frame " + frame.ToString());
@@ -70,6 +70,20 @@ public class WriteToISON : MonoBehaviour {
                 frameData.userID = nuitrackManager.GetUserID();
 
 
+                frameData.skeletons = new Skeleton[skeletonTracker.SkeletonData.NumUsers];
+
+                for (int i = 0; i < skeletonTracker.SkeletonData.NumUsers; ++i)
+                {
+                    frameData.skeletons[i] = new Skeleton();
+                    frameData.skeletons[i].ID = frameData.userID[i];
+                    frameData.skeletons[i].joints = new Vector3[3];
+
+
+                    GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.Head));
+                    frameData.skeletons[i].joints[0] = GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.Head));
+                    frameData.skeletons[i].joints[1] = GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.RightWrist));
+                    frameData.skeletons[i].joints[2] = GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.RightElbow));
+                }
 
                 serializeData.Add(frameData);
 
@@ -95,6 +109,19 @@ public class WriteToISON : MonoBehaviour {
             text.text = "press to write";
             writeToJson();
         }
+    }
+
+    //skeletonTracker.SkeletonData.GetSkeletonByID(NuitrackManager.currentUser)
+
+    Vector3 GetVector3Joint(nuitrack.Joint joint)
+    {
+        Vector3 returnedJoint = new Vector3();
+
+        returnedJoint.x = joint.Real.X;
+        returnedJoint.y = joint.Real.Y;
+        returnedJoint.z = joint.Real.Z;
+
+        return returnedJoint;
     }
 
     void writeToJson()

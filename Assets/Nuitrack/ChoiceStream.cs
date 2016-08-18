@@ -3,19 +3,23 @@ using System.Collections;
 using System;
 
 public class ChoiceStream : MonoBehaviour {
-
+    //when simultaneous transmission of data sensor is, out of sync when receiving the data.
     [SerializeField]NuitrackManagerEmulation nuitrackManagerEmulation;
 
     DepthSensor depthSensor;
     UserTracker userTracker;
+    SkeletonTracker skeletonTracker;
 
     public int[,] depthFrame;
     public int[,] userFrame;
+
+    //
 
     void Start()
     {
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
         userTracker = GameObject.FindObjectOfType<UserTracker>();
+        skeletonTracker = GameObject.FindObjectOfType<SkeletonTracker>();
 
         depthFrame = new int[60, 80]; //TODO set correct size
         userFrame = new int[60, 80];
@@ -79,7 +83,8 @@ public class ChoiceStream : MonoBehaviour {
         }
     }
 
-    public int[] GetUserID()
+    int[] userID;
+    public int[] GetSegmentationID()
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
@@ -101,6 +106,8 @@ public class ChoiceStream : MonoBehaviour {
         
     }
 
+
+ 
 
 
     public int Frame
@@ -146,5 +153,42 @@ public class ChoiceStream : MonoBehaviour {
                 return depthSensor.DepthFrame.Rows;
             }
         }
+    }
+
+    Vector3 GetVector3Joint(nuitrack.Joint joint)
+    {
+        Vector3 returnedJoint = new Vector3();
+
+        returnedJoint.x = joint.Real.X;
+        returnedJoint.y = joint.Real.Y;
+        returnedJoint.z = joint.Real.Z;
+
+        return returnedJoint;
+    }
+
+    public Vector3 GetJoint(nuitrack.JointType jointType, int numberUser) //number user >= 1
+    {
+        if (Application.platform == RuntimePlatform.WindowsEditor)
+        {
+            if (GetSegmentationID() != null && numberUser <= GetSegmentationID().Length)
+                return nuitrackManagerEmulation.GetJoint(jointType, GetSegmentationID().Length - numberUser);
+            else
+                return Vector3.zero;
+        }
+        else
+        {
+            if (skeletonTracker.SkeletonData != null
+                && skeletonTracker.SkeletonData.NumUsers != 0
+                && numberUser <= skeletonTracker.SkeletonData.NumUsers
+                )
+            {
+                return GetVector3Joint(skeletonTracker.SkeletonData.Skeletons[skeletonTracker.SkeletonData.NumUsers - numberUser].GetJoint(jointType));
+            }
+            else
+            {
+                return Vector3.zero;
+            }
+        }
+  
     }
 }

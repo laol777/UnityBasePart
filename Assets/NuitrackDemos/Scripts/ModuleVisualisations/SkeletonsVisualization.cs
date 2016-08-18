@@ -57,6 +57,7 @@ public class SkeletonsVisualization : MonoBehaviour
             if (!skeletonParts.ContainsKey(skeleton.ID))
             {
                 GameObject[] newJoints = new GameObject[skeleton.Joints.Length];
+               
                 for (int i = 0; i < newJoints.Length; i++)
                 {
                     newJoints[i] = (GameObject)Instantiate(jointPrefab, Vector3.zero, Quaternion.identity);

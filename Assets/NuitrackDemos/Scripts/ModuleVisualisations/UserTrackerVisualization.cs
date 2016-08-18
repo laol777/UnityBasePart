@@ -296,7 +296,7 @@ public class UserTrackerVisualization: MonoBehaviour
         int pointInd = 0;
         int pointsPerVisTotal = pointsPerVis * vertsPerMesh;
 
-        int[] userID = choiceStream.GetUserID();
+        int[] userID = choiceStream.GetSegmentationID();
 
         for (int i = 0, pointIndex = 0; i < Rows; i += frameStep)
         {

@@ -18,7 +18,7 @@ public class NuitrackManagerEmulation : MonoBehaviour {
     int[] usersID;
     public int[] UsersID { get { return usersID; } }
 
-    public int XRes, YRes; //suppose that the size constant
+    public int XRes, YRes; //suppose that this size constant
 
     void Awake()
     {
@@ -62,8 +62,21 @@ public class NuitrackManagerEmulation : MonoBehaviour {
     {
         depthFrame = UpdateDepthFrame();
         userFrame = UpdateUserTracker();
-
     }
+
+    public Vector3 GetJoint(nuitrack.JointType jointType, int numberUser) //TODO add other type joint
+    {
+        switch (jointType)
+        {
+            case nuitrack.JointType.Head:
+                return data[frame].skeletons[numberUser].joints[0];
+            case nuitrack.JointType.RightWrist:
+                return data[frame].skeletons[numberUser].joints[1];
+            case nuitrack.JointType.RightElbow:
+                return data[frame].skeletons[numberUser].joints[2];
+        }
+        return Vector3.zero;
+    } 
 
     public int[,] UpdateDepthFrame()
     {

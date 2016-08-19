@@ -14,7 +14,8 @@ public class ClientSetup : NetworkBehaviour
         base.OnStartLocalPlayer ();
         if (isLocalPlayer)
         {
-            if (PlayerTypeDecision.type == PlayerTypeDecision.PlayerType.PLAYER)
+            if (PlayerTypeDecision.type == PlayerTypeDecision.PlayerType.HOST 
+                || PlayerTypeDecision.type == PlayerTypeDecision.PlayerType.CLIENT)
             {
                 CmdSpawnPlayer();
             }

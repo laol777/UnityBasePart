@@ -5,8 +5,10 @@ public class SkeletonTracker : MonoBehaviour{
 
     nuitrack.SkeletonTracker skeletonTracker;
 
-    nuitrack.Skeleton currentSkeleton;
-    public nuitrack.Skeleton CurrentSkeleton { get { return currentSkeleton; } }
+    public nuitrack.Skeleton GetSkeletonByID(int id)
+    {
+        return skeletonData.GetSkeletonByID(id);
+    } 
 
     nuitrack.Skeleton[] skeletons;
     public nuitrack.Skeleton[] Skeletons { get { return skeletons; } }
@@ -22,9 +24,9 @@ public class SkeletonTracker : MonoBehaviour{
     }
     void HandleOnSkeletonUpdateEvent(nuitrack.SkeletonData _skeletonData)
     {
-        skeletonData = _skeletonData;
         if (_skeletonData == null) return; //just in case
 
+        skeletonData = _skeletonData;
         skeletons = _skeletonData.Skeletons;
 
         if (NuitrackManager.currentUser != 0)
@@ -32,13 +34,5 @@ public class SkeletonTracker : MonoBehaviour{
             NuitrackManager.currentUser = (_skeletonData.GetSkeletonByID(NuitrackManager.currentUser) == null) ? 0 : NuitrackManager.currentUser;
         }
 
-        if (_skeletonData.NumUsers == 0)
-        {
-            currentSkeleton = null;
-            return;
-        }
-
-        currentSkeleton = _skeletonData.GetSkeletonByID(NuitrackManager.currentUser);
-        currentSkeleton = _skeletonData.Skeletons[0];
     }
 }

@@ -24,13 +24,13 @@ public class NetworkStartMenu : MonoBehaviour
 
     public void StartHost()
     {
-        PlayerTypeDecision.type = PlayerTypeDecision.PlayerType.PLAYER;
+        PlayerTypeDecision.type = PlayerTypeDecision.PlayerType.HOST;
         NetworkManager.singleton.StartHost();
     }
 
     public void StartClient()
     {
-        PlayerTypeDecision.type = PlayerTypeDecision.PlayerType.PLAYER;
+        PlayerTypeDecision.type = PlayerTypeDecision.PlayerType.CLIENT;
         SearchGame();
         SwitchPanels();
     }

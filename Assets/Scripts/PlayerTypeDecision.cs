@@ -2,7 +2,8 @@
 {
     public enum PlayerType
     {
-        PLAYER,
+        HOST,
+        CLIENT,
         SPECTATOR
     }
 

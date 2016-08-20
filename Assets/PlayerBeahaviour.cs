@@ -2,11 +2,8 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class TestNetwork : NetworkBehaviour
+public class PlayerBeahaviour : NetworkBehaviour
 {
-
-
-
     Vector3 offset;
     Quaternion startRotation;
 
@@ -17,7 +14,8 @@ public class TestNetwork : NetworkBehaviour
     SkeletonTracker skeletonTracker;
     ChoiceStream choiceStream;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         StartCoroutine(RedactPlayerPrefabName()); // hasAuthorithy change value after 1 frame
         tmpPos = new Vector3();
         startRotation = new Quaternion();
@@ -25,7 +23,7 @@ public class TestNetwork : NetworkBehaviour
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
     }
 
-    IEnumerator RedactPlayerPrefabName() 
+    IEnumerator RedactPlayerPrefabName()
     {
         yield return new WaitForSeconds(0.1f);
         if ((hasAuthority && isServer) || (!hasAuthority && !isServer))
@@ -57,7 +55,7 @@ public class TestNetwork : NetworkBehaviour
 
     void Update()
     {
-        
+
         if (choiceStream != null)
         {
 

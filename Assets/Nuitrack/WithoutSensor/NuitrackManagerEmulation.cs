@@ -20,9 +20,14 @@ public class NuitrackManagerEmulation : MonoBehaviour {
 
     public int XRes, YRes; //suppose that this size constant
 
+    bool isSimulateStreamData = false;
+
     void Awake()
     {
-        if (Application.platform != RuntimePlatform.WindowsEditor)
+        isSimulateStreamData = Application.platform == RuntimePlatform.WindowsEditor
+            || Application.platform == RuntimePlatform.WindowsPlayer;
+
+        if (!isSimulateStreamData)
             Destroy(gameObject);
 
     }

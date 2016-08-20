@@ -15,6 +15,8 @@ public class ChoiceStream : MonoBehaviour {
 
     //
 
+    bool isSimulateStreamData = false;
+    
     void Start()
     {
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
@@ -23,6 +25,9 @@ public class ChoiceStream : MonoBehaviour {
 
         depthFrame = new int[60, 80]; //TODO set correct size
         userFrame = new int[60, 80];
+
+        isSimulateStreamData = Application.platform == RuntimePlatform.WindowsEditor
+            || Application.platform == RuntimePlatform.WindowsPlayer;
     }
 
     void ConvertNuitrackObjToIntArray<T>(T array, ref int[,] resault) where T : nuitrack.Frame<ushort>
@@ -43,7 +48,7 @@ public class ChoiceStream : MonoBehaviour {
 
     public int[,] GetDepthFrame()
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor)
+        if (isSimulateStreamData)
         {
             depthFrame = nuitrackManagerEmulation.DepthFrame;
             return depthFrame;
@@ -64,7 +69,7 @@ public class ChoiceStream : MonoBehaviour {
 
     public int[,] GetUserFrame()
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor)
+        if (isSimulateStreamData)
         {
             userFrame = nuitrackManagerEmulation.UserFrame;
             return userFrame;
@@ -86,7 +91,7 @@ public class ChoiceStream : MonoBehaviour {
     int[] userID;
     public int[] GetSegmentationID()
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor)
+        if (isSimulateStreamData)
         {
             return nuitrackManagerEmulation.UsersID;
         }
@@ -114,7 +119,7 @@ public class ChoiceStream : MonoBehaviour {
     {
         get
         {
-            if (Application.platform == RuntimePlatform.WindowsEditor)
+            if (isSimulateStreamData)
             {
                 return nuitrackManagerEmulation.Frame;
             }
@@ -130,7 +135,7 @@ public class ChoiceStream : MonoBehaviour {
     {
         get
         {
-            if (Application.platform == RuntimePlatform.WindowsEditor)
+            if (isSimulateStreamData)
             {
                 return nuitrackManagerEmulation.XRes;
             }
@@ -144,7 +149,7 @@ public class ChoiceStream : MonoBehaviour {
     {
         get
         {
-            if (Application.platform == RuntimePlatform.WindowsEditor)
+            if (isSimulateStreamData)
             {
                 return nuitrackManagerEmulation.YRes;
             }
@@ -168,7 +173,7 @@ public class ChoiceStream : MonoBehaviour {
 
     public Vector3 GetJoint(nuitrack.JointType jointType, int numberUser) //number user >= 1
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor)
+        if (isSimulateStreamData)
         {
             if (GetSegmentationID() != null && numberUser <= GetSegmentationID().Length)
                 return nuitrackManagerEmulation.GetJoint(jointType, GetSegmentationID().Length - numberUser);

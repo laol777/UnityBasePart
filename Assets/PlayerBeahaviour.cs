@@ -13,6 +13,8 @@ public class PlayerBeahaviour : NetworkBehaviour
 
     SkeletonTracker skeletonTracker;
     ChoiceStream choiceStream;
+
+    SensorRotation sensorRotation;
     // Use this for initialization
     void Start()
     {
@@ -21,16 +23,30 @@ public class PlayerBeahaviour : NetworkBehaviour
         startRotation = new Quaternion();
 
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
+        sensorRotation = GameObject.FindObjectOfType<SensorRotation>();
     }
 
     IEnumerator RedactPlayerPrefabName()
     {
         yield return new WaitForSeconds(0.1f);
+        //if ((hasAuthority && isServer) || (!hasAuthority && !isServer))
+        //{
+        //    gameObject.name = "hostPlayer";
+        //    offset = new Vector3(0f, 0f, 3f);
+        //    startRotation = Quaternion.Euler(0f, 0f, 0f);
+        //}
+        //else
+        //{
+        //    gameObject.name = "clientPlayer";
+        //    offset = new Vector3(0f, 0f, -3f);
+        //    startRotation = Quaternion.Euler(0f, 0f, 0f);
+        //}
         if ((hasAuthority && isServer) || (!hasAuthority && !isServer))
         {
             gameObject.name = "hostPlayer";
             offset = new Vector3(0f, 0f, 3f);
             startRotation = Quaternion.Euler(0f, 0f, 0f);
+            sensorRotation.SetBaseRotation(startRotation);
         }
         else
         {
@@ -38,8 +54,8 @@ public class PlayerBeahaviour : NetworkBehaviour
             offset = new Vector3(0f, 0f, -3f);
             startRotation = Quaternion.Euler(0f, 0f, 0f);
         }
+
         transform.position += offset;
-        transform.rotation *= startRotation;
     }
 
 

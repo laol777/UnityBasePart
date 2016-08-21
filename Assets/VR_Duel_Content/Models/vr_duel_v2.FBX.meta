@@ -1,0 +1,123 @@
+fileFormatVersion: 2
+guid: 424456aa1d319744ea289f7562be43d6
+timeCreated: 1468405420
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Balka01
+    100002: Balki_zdanie1
+    100004: Bloki_zdanie1
+    100006: Buildeing1
+    100008: For_Krane
+    100010: Kran_trosi
+    100012: Krane01
+    100014: Meshki_zdanie1
+    100016: Pliti_zdanie1
+    100018: Shiti_zdani1
+    100020: //RootNode
+    400000: Balka01
+    400002: Balki_zdanie1
+    400004: Bloki_zdanie1
+    400006: Buildeing1
+    400008: For_Krane
+    400010: Kran_trosi
+    400012: Krane01
+    400014: Meshki_zdanie1
+    400016: Pliti_zdanie1
+    400018: Shiti_zdani1
+    400020: //RootNode
+    2300000: Balka01
+    2300002: Balki_zdanie1
+    2300004: Bloki_zdanie1
+    2300006: Buildeing1
+    2300008: For_Krane
+    2300010: Kran_trosi
+    2300012: Krane01
+    2300014: Meshki_zdanie1
+    2300016: Pliti_zdanie1
+    2300018: Shiti_zdani1
+    3300000: Balka01
+    3300002: Balki_zdanie1
+    3300004: Bloki_zdanie1
+    3300006: Buildeing1
+    3300008: For_Krane
+    3300010: Kran_trosi
+    3300012: Krane01
+    3300014: Meshki_zdanie1
+    3300016: Pliti_zdanie1
+    3300018: Shiti_zdani1
+    4300000: Buildeing1
+    4300002: Krane01
+    4300004: For_Krane
+    4300006: Kran_trosi
+    4300008: Pliti_zdanie1
+    4300010: Balki_zdanie1
+    4300012: Meshki_zdanie1
+    4300014: Bloki_zdanie1
+    4300016: Shiti_zdani1
+    4300018: Balka01
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -124,6 +124,37 @@ public class PlayerBeahaviour : NetworkBehaviour
             Destroy(tmp, 10f);
         }
 
+        if (hasAuthority)
+        {
+            #region myPart
+            if (cursor != null)
+            {
+                float angle = Vector3.Angle(vectorShoot, new Vector3(0f, 0f, -1f));
+
+                if (angle < 30f)
+                {
+                    scalePositionCursor = true;
+                }
+                else if ((angle < 60f) && (prevScalePositionCursor))
+                {
+                    scalePositionCursor = true;
+                }
+                else
+                {
+                    scalePositionCursor = false;
+                }
+
+                if (quadCamera != null)
+                {
+                    quadCamera.SetActive(scalePositionCursor);
+                }
+
+                prevScalePositionCursor = scalePositionCursor;
+
+            }
+            #endregion
+        }
+
         /*
         if (hasAuthority)
         {

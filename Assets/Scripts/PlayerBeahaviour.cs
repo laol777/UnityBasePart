@@ -149,6 +149,11 @@ public class PlayerBeahaviour : NetworkBehaviour
                     quadCamera.SetActive(scalePositionCursor);
                 }
 
+                vectorShoot.z = 0f;
+                vectorShoot.x = -vectorShoot.x;
+
+                quadCursor.transform.localPosition = vectorShoot / 2f;
+
                 prevScalePositionCursor = scalePositionCursor;
 
             }

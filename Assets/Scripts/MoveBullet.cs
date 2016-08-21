@@ -7,6 +7,6 @@ public class MoveBullet : MonoBehaviour {
     public Vector3 vector;
 	
 	void Update () {
-        transform.position += vector * velocity * Time.deltaTime;
+        transform.localPosition += vector * velocity * Time.deltaTime;
 	}
 }

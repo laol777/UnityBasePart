@@ -42,7 +42,7 @@ public class PlayerBeahaviour : NetworkBehaviour
     IEnumerator RedactPlayerPrefabName()
     {
         yield return new WaitForSeconds(0.1f);
-        if ((hasAuthority && isServer) || (!hasAuthority && !isServer))
+        if (((hasAuthority && isServer) || (!hasAuthority && !isServer)))
         {
             gameObject.name = "hostPlayer";
             offset = new Vector3(0f, 0f, 5f);
@@ -51,7 +51,7 @@ public class PlayerBeahaviour : NetworkBehaviour
             numberUser = 1;
             if (isServer)
             {
-                rotationPivot.rotation *= startRotation;
+                //rotationPivot.rotation *= startRotation;
                 transform.position += offset;
                 sensorRotation.SetBaseRotation(Quaternion.Euler(0f, 180f, 0f));
             }
@@ -62,9 +62,10 @@ public class PlayerBeahaviour : NetworkBehaviour
             offset = new Vector3(0f, 0f, -5f);
             startRotation = Quaternion.Euler(0f, 180f, 0f);
             sensorRotation.SetBaseRotation(startRotation);
-            numberUser = 2;
-            rotationPivot.rotation *= startRotation;
+            //numberUser = 2;
+            //rotationPivot.rotation *= startRotation;
             transform.position += offset;
+            transform.rotation *= startRotation;
         }
 
         if(!hasAuthority) //disable, when is starting as remote player on current device
@@ -75,15 +76,12 @@ public class PlayerBeahaviour : NetworkBehaviour
     }
 
     public GameObject bullet;
-    public GameObject cameraAim;
     public GameObject cursor;
     public GameObject quadCamera;
     public GameObject quadCursor;
 
     bool scalePositionCursor = false;
     bool prevScalePositionCursor = false;
-
-    public Vector3 offs;
 
 
     bool isStartFail;
@@ -111,18 +109,11 @@ public class PlayerBeahaviour : NetworkBehaviour
 
         }
 
-        Vector3 vectorShoot = Vector3.Normalize(rightWrist.position - rightElbow.position);
+        Vector3 vectorShoot = Vector3.Normalize(rightWrist.localPosition - rightElbow.localPosition);
         cursor.transform.localPosition = new Vector3(vectorShoot.x * 2f, vectorShoot.y * 2f, -10f);
-
         time += Time.deltaTime;
-        if (time > 1f)
-        {
-            time = 0f;
-            GameObject tmp = (GameObject)Instantiate(bullet, rightWrist.position, Quaternion.identity);
-            tmp.GetComponent<MoveBullet>().vector = vectorShoot;
-            tmp.GetComponent<MoveBullet>().velocity = 3f;
-            Destroy(tmp, 10f);
-        }
+
+
 
         if (hasAuthority)
         {
@@ -149,6 +140,20 @@ public class PlayerBeahaviour : NetworkBehaviour
                     quadCamera.SetActive(scalePositionCursor);
                 }
 
+                if (scalePositionCursor)
+                {
+                    
+                    if (time > 1f)
+                    {
+                        time = 0f;
+                        GameObject tmp = (GameObject)Instantiate(bullet, rightWrist.position, Quaternion.identity);
+                        tmp.transform.parent = transform;
+                        tmp.GetComponent<MoveBullet>().vector = vectorShoot;
+                        tmp.GetComponent<MoveBullet>().velocity = 3f;
+                        Destroy(tmp, 10f);
+                    }
+                }
+
                 vectorShoot.z = 0f;
                 vectorShoot.x = -vectorShoot.x;
 
@@ -159,7 +164,7 @@ public class PlayerBeahaviour : NetworkBehaviour
             }
             #endregion
         }
-
+        
         /*
         if (hasAuthority)
         {

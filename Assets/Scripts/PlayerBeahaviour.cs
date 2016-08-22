@@ -29,6 +29,10 @@ public class PlayerBeahaviour : NetworkBehaviour
     [SerializeField]
     Transform rotationPivot;
 
+    [SerializeField]
+    Transform cameraAim;
+
+    BulletContainer bulletContainer;
     void Start()
     {
         StartCoroutine(RedactPlayerPrefabName()); // hasAuthorithy change value after 1 frame
@@ -37,6 +41,7 @@ public class PlayerBeahaviour : NetworkBehaviour
 
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
         sensorRotation = GameObject.FindObjectOfType<SensorRotation>();
+        bulletContainer = GameObject.FindObjectOfType<BulletContainer>();
     }
 
     IEnumerator RedactPlayerPrefabName()
@@ -62,7 +67,7 @@ public class PlayerBeahaviour : NetworkBehaviour
             offset = new Vector3(0f, 0f, -5f);
             startRotation = Quaternion.Euler(0f, 180f, 0f);
             sensorRotation.SetBaseRotation(startRotation);
-            numberUser = 2;
+            //numberUser = 2;
             //rotationPivot.rotation *= startRotation;
             transform.position += offset;
             transform.rotation *= startRotation;
@@ -72,6 +77,7 @@ public class PlayerBeahaviour : NetworkBehaviour
         {
             camera.gameObject.SetActive(false);
             cursor.SetActive(false);
+            cameraAim.gameObject.SetActive(false);
         }
     }
 
@@ -151,6 +157,7 @@ public class PlayerBeahaviour : NetworkBehaviour
                         tmp.GetComponent<MoveBullet>().vector = Vector3.Normalize(cursor.transform.localPosition - rightWrist.localPosition);
                         tmp.GetComponent<MoveBullet>().velocity = 3f;
                         Destroy(tmp, 10f);
+                        bulletContainer.AddBullet(tmp.transform);
                     }
                 }
 

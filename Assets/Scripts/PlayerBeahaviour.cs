@@ -120,46 +120,42 @@ public class PlayerBeahaviour : NetworkBehaviour
         time += Time.deltaTime;
 
 
+        float angle = Vector3.Angle(vectorShoot, new Vector3(0f, 0f, -1f));
+
+        if (angle < 30f)
+        {
+            scalePositionCursor = true;
+        }
+        else if ((angle < 60f) && (prevScalePositionCursor))
+        {
+            scalePositionCursor = true;
+        }
+        else
+        {
+            scalePositionCursor = false;
+        }
+
+
+
+        if (scalePositionCursor)
+        {
+            if (time > 1f)
+            {
+                time = 0f;
+                GameObject tmp = (GameObject)Instantiate(bullet, rightWrist.position, Quaternion.identity);
+                tmp.transform.parent = transform;
+                tmp.GetComponent<MoveBullet>().vector = Vector3.Normalize(cursor.transform.localPosition - rightWrist.localPosition);
+                tmp.GetComponent<MoveBullet>().velocity = 3f;
+                Destroy(tmp, 10f);
+                bulletContainer.AddBullet(tmp.transform);
+            }
+        }
 
         if (hasAuthority)
         {
             #region myPart
             if (cursor != null)
             {
-                float angle = Vector3.Angle(vectorShoot, new Vector3(0f, 0f, -1f));
-
-                if (angle < 30f)
-                {
-                    scalePositionCursor = true;
-                }
-                else if ((angle < 60f) && (prevScalePositionCursor))
-                {
-                    scalePositionCursor = true;
-                }
-                else
-                {
-                    scalePositionCursor = false;
-                }
-
-                if (quadCamera != null)
-                {
-                    quadCamera.SetActive(scalePositionCursor);
-                }
-
-                if (scalePositionCursor)
-                {
-                    
-                    if (time > 1f)
-                    {
-                        time = 0f;
-                        GameObject tmp = (GameObject)Instantiate(bullet, rightWrist.position, Quaternion.identity);
-                        tmp.transform.parent = transform;
-                        tmp.GetComponent<MoveBullet>().vector = Vector3.Normalize(cursor.transform.localPosition - rightWrist.localPosition);
-                        tmp.GetComponent<MoveBullet>().velocity = 3f;
-                        Destroy(tmp, 10f);
-                        bulletContainer.AddBullet(tmp.transform);
-                    }
-                }
 
                 vectorShoot.z = 0f;
                 vectorShoot.x = -vectorShoot.x;
@@ -169,71 +165,16 @@ public class PlayerBeahaviour : NetworkBehaviour
                 prevScalePositionCursor = scalePositionCursor;
 
             }
+
+            if (quadCamera != null)
+            {
+                quadCamera.SetActive(scalePositionCursor);
+            }
             #endregion
         }
-        
-        /*
-        if (hasAuthority)
-        {
-            #region myPart
+    
+    
 
-
-
-
-            if (cursor != null)
-            {
-                Vector3 vectorShoot = Vector3.Normalize(cameraAim.transform.position - rightWrist.position);
-                float angle = Vector3.Angle(vectorShoot, new Vector3(0f, 0f, 1f));
-
-                if (angle < 30f)
-                {
-                    scalePositionCursor = true;
-                }
-                else if ((angle < 60f) && (prevScalePositionCursor))
-                {
-                    scalePositionCursor = true;
-                }
-                else
-                {
-                    scalePositionCursor = false;
-                }
-
-                if (scalePositionCursor)
-                {
-                    cursor.transform.position = new Vector3(vectorShoot.x * 2f, vectorShoot.y * 2f, 11.5f);
-                }
-
-                cursor.SetActive(scalePositionCursor);
-
-                if (quadCamera != null)
-                {
-                    quadCamera.SetActive(scalePositionCursor);
-                }
-
-                Vector3 tmp = new Vector3(vectorShoot.x * 0.075f, vectorShoot.y * 0.075f, 0f);
-
-                if (quadCursor != null)
-                {
-                    quadCursor.transform.localPosition = tmp;
-                }
-                prevScalePositionCursor = scalePositionCursor;
-
-                float xOffset = (vectorShoot.x + 1f) / 2f;
-                float yOffset = (vectorShoot.y + 1f) / 2f;
-
-                tmp = Vector3.Normalize(cursor.transform.position - rightWrist.position) * 90f;
-                rightWrist.rotation = Quaternion.Euler(tmp.x, tmp.y, tmp.z);
-
-                offs.y = -30f;
-
-                rightWrist.localRotation *= Quaternion.Euler(offs);
-
-            }
-                      #endregion
-                       }
-            */
-
-
-
+    
     }
 }

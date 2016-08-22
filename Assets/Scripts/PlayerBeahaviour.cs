@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public class PlayerBeahaviour : NetworkBehaviour
 {
@@ -81,7 +82,7 @@ public class PlayerBeahaviour : NetworkBehaviour
         }
     }
 
-    public GameObject bullet;
+    public GameObject bulletPrefab;
     public GameObject cursor;
     public GameObject quadCamera;
     public GameObject quadCursor;
@@ -97,6 +98,8 @@ public class PlayerBeahaviour : NetworkBehaviour
     bool isHaveAbilityFail;
 
     float time = 0f;
+
+    List<Transform> enemyBullets;
 
     void Update()
     {
@@ -142,18 +145,22 @@ public class PlayerBeahaviour : NetworkBehaviour
             if (time > 1f)
             {
                 time = 0f;
-                GameObject tmp = (GameObject)Instantiate(bullet, rightWrist.position, Quaternion.identity);
+                GameObject tmp = (GameObject)Instantiate(bulletPrefab, rightWrist.position, Quaternion.identity);
                 tmp.transform.parent = transform;
                 tmp.GetComponent<MoveBullet>().vector = Vector3.Normalize(cursor.transform.localPosition - rightWrist.localPosition);
                 tmp.GetComponent<MoveBullet>().velocity = 3f;
+                if (!hasAuthority)
+                {
+                    tmp.GetComponent<MoveBullet>().IsLocal = false;
+                    bulletContainer.AddBullet(tmp.transform);
+                }
                 Destroy(tmp, 10f);
-                bulletContainer.AddBullet(tmp.transform);
+                
             }
         }
 
         if (hasAuthority)
         {
-            #region myPart
             if (cursor != null)
             {
 
@@ -170,7 +177,24 @@ public class PlayerBeahaviour : NetworkBehaviour
             {
                 quadCamera.SetActive(scalePositionCursor);
             }
-            #endregion
+
+            enemyBullets = bulletContainer.GetBullet();
+            for (int i = 0; i < enemyBullets.Count; ++i) 
+            {
+               
+                if (Vector3.Distance(enemyBullets[i].position, head.position) < 30f)
+                {
+
+                    float speed = Vector3.Distance(enemyBullets[i].position, head.position);
+                    enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity = 
+                        Mathf.Clamp(Mathf.Lerp(enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity, speed / 2f, 0.1f), 0.5f, 3f);
+                }
+                else
+                {
+                    enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity = 3f;
+                }
+            }
+
         }
     
     

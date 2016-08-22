@@ -13,12 +13,18 @@ public class BulletContainer : MonoBehaviour {
 
     public void AddBullet(Transform newObj)
     {
-        bullet.Add(newObj);
+        if(!newObj.GetComponent<MoveBullet>().IsLocal)
+            bullet.Add(newObj);
     }
 
     public void RemoveBullet(Transform removedOdj)
     {
          bullet.Remove(removedOdj);       
+    }
+
+    public List<Transform> GetBullet()
+    {
+        return bullet;
     }
 
 

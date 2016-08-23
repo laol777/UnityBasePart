@@ -33,11 +33,14 @@ public class BotControl : MonoBehaviour {
 
     ChoiceStream choiceStream;
     Vector3 offset;
+
+    MiniCalibration miniCalibration;
     void Start()
     {
         
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
         basePos = transform.position;
+        miniCalibration = GameObject.FindObjectOfType<MiniCalibration>();
 
         //bulletContainer = GameObject.FindObjectOfType<BulletContainer>();
         //cubeVisualization = new GameObject[60, 80];
@@ -57,16 +60,27 @@ public class BotControl : MonoBehaviour {
 
     float vel = 1f;
 
+    int iter = 0;
 
     void Update()
     {
+
+        if (miniCalibration == null)
+        {
+            miniCalibration = GameObject.FindObjectOfType<MiniCalibration>();
+        }
+
+        if (miniCalibration != null && miniCalibration.isCalibrationComplite)
+        {
+            ++iter;
+        }
 
         if(target == null && GameObject.Find("head") != null)
         {
             target = GameObject.Find("head").transform;
         }
 
-        if (startShoot && target != null)
+        if (startShoot && target != null && iter == 1 )
         {
             startShoot = false;
             StartCoroutine(ShootBehaviour());
@@ -125,7 +139,7 @@ public class BotControl : MonoBehaviour {
         bulletContainer.AddBullet(tmpBullet.transform);
         tmpBullet.GetComponent<MoveBullet>().vector = Vector3.forward + rndSize;
         Destroy(tmpBullet, 12f);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(3f);
         StartCoroutine(ShootBehaviour());
     }
 

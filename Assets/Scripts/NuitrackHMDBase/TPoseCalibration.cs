@@ -35,6 +35,8 @@ public class TPoseCalibration : MonoBehaviour
 	Vector3[] initPositions;
 	Vector3[] currentPositions;
 
+    SensorRotation sensorRotation;
+
     private static Quaternion sensorOffset = Quaternion.identity;
     public static Quaternion GetSensorOffset { get { return sensorOffset; } }
 
@@ -76,7 +78,7 @@ public class TPoseCalibration : MonoBehaviour
             || Application.platform == RuntimePlatform.WindowsPlayer)
             Destroy(this);
 
-
+        sensorRotation = GameObject.FindObjectOfType<SensorRotation>();
         playerBehaviour = gameObject.GetComponent<PlayerBeahaviour>();
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
         currentNumberPlayer = playerBehaviour.numberUser;
@@ -121,7 +123,7 @@ public class TPoseCalibration : MonoBehaviour
 
 						if (onSuccess != null) onSuccess(GetHeadAngles());
                         isCalibrationComplite = true;
-
+                        sensorRotation.SetBaseRotation(Quaternion.Euler(0f, 180f, 0f));
 
 
                     }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class BulletContainer : MonoBehaviour {
 
-    List<Transform> bullet;
+    [SerializeField]List<Transform> bullet;
 
     void Start()
     {

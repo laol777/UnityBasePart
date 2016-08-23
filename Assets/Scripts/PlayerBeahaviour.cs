@@ -34,6 +34,9 @@ public class PlayerBeahaviour : NetworkBehaviour
     Transform cameraAim;
 
     BulletContainer bulletContainer;
+
+    int[,] depthFrame;
+    int[,] userFrame;
     void Start()
     {
         StartCoroutine(RedactPlayerPrefabName()); // hasAuthorithy change value after 1 frame
@@ -101,9 +104,19 @@ public class PlayerBeahaviour : NetworkBehaviour
 
     List<Transform> enemyBullets;
 
+    public bool isEffectFail;
+
+    public bool isShootPlayer;
+
+    [SerializeField]
+    Transform bulletIndicator;
+    [SerializeField]
+    Transform depthIndicator;
+
+    bool isEffectFailProcess = false;
+
     void Update()
     {
-
         if (choiceStream != null)
         {
 
@@ -142,7 +155,7 @@ public class PlayerBeahaviour : NetworkBehaviour
 
         if (scalePositionCursor)
         {
-            if (time > 1f)
+            if (time > 1f && isShootPlayer)
             {
                 time = 0f;
                 GameObject tmp = (GameObject)Instantiate(bulletPrefab, rightWrist.position, Quaternion.identity);
@@ -179,14 +192,14 @@ public class PlayerBeahaviour : NetworkBehaviour
             }
 
             enemyBullets = bulletContainer.GetBullet();
-            for (int i = 0; i < enemyBullets.Count; ++i) 
+            for (int i = 0; i < enemyBullets.Count; ++i)
             {
-               
-                if (Vector3.Distance(enemyBullets[i].position, head.position) < 30f)
+
+                if (Vector3.Distance(enemyBullets[i].position, head.position) < 4f)
                 {
 
                     float speed = Vector3.Distance(enemyBullets[i].position, head.position);
-                    enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity = 
+                    enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity =
                         Mathf.Clamp(Mathf.Lerp(enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity, speed / 2f, 0.1f), 0.5f, 3f);
                 }
                 else
@@ -195,10 +208,108 @@ public class PlayerBeahaviour : NetworkBehaviour
                 }
             }
 
-        }
-    
-    
 
-    
+            //effectCollision
+
+            depthFrame = choiceStream.GetDepthFrame();
+            userFrame = choiceStream.GetUserFrame();
+            int userID = choiceStream.GetUserID(numberUser);
+            Vector3 depthWithOffset = Vector3.zero; 
+            Vector3 tmpDepth;
+
+            float minDist = 100f;
+            Vector3 bulletCoord = Vector3.zero;
+            Vector3 depthCoord = Vector3.zero;
+            int a = 0;
+            if (depthFrame != null && userFrame != null)
+            {
+                for (int i = 0; i < choiceStream.YRes; ++i)
+                    for (int j = 0; j < choiceStream.XRes; ++j)
+                    {
+                        if (userFrame[i, j] == userID)
+                        {
+                            a++;
+
+                            if (numberUser == 1)
+                            {
+                                tmpDepth.x = (float)((j - 40f) / (40f)) * 4f;
+                                tmpDepth.y = (float)((i - 60f) / (60f)) * 3f;
+                                tmpDepth.z = depthFrame[i, j] * 0.001f + offset.z;
+                                depthWithOffset = tmpDepth;
+                            }
+                            else
+                            {
+                                tmpDepth.x = -(float)((j - 40f) / (40f)) * 4f;
+                                tmpDepth.y = (float)((i - 60f) / (60f)) * 3f;
+                                tmpDepth.z = -depthFrame[i, j] * 0.001f + offset.z;
+                                depthWithOffset = tmpDepth;
+                            }
+                            if (enemyBullets.Count != 0)
+                            {
+                                Transform bullet = enemyBullets[0];
+                                {
+                                    if (Vector3.Distance(depthWithOffset, bullet.transform.position) < 0.2f)
+                                    {
+                                        if (!isEffectFailProcess)
+                                            StartCoroutine(EffectFail());
+                                    }
+
+                                    if (minDist > Vector3.Distance(depthWithOffset, bullet.transform.position))
+                                    {
+                                        minDist = Vector3.Distance(depthWithOffset, bullet.transform.position);
+                                        bulletCoord = bullet.transform.position;
+                                        depthCoord = depthWithOffset;
+                                    }
+
+                                }
+                            }
+                            foreach (Transform bullet in enemyBullets)
+                            {
+                                if (numberUser == 1)
+                                {
+                                    if (bullet.position.z > head.position.z)
+                                        Destroy(bullet.gameObject);
+                                }
+                                else
+                                {
+                                    if (bullet.position.z < head.position.z)
+                                        Destroy(bullet.gameObject);
+                                }
+                            }
+                        }
+                    }
+            }
+            //Debug.Log(minDist);
+            //Debug.Log(bulletCoord);
+            //Debug.Log(depthCoord);
+            //Debug.Log("________");
+            //depthIndicator.position = depthCoord;
+            //depthIndicator.position = bulletCoord;
+            //Debug.Log(depthWithOffset);
+
+            //if (isEffectFail)
+            //{
+            //    isEffectFail = false;
+            //    StartCoroutine(EffectFail());
+            //}
+        }
+
+
+
+
+    }
+
+
+    [SerializeField]
+    GameObject quadFail;
+    IEnumerator EffectFail()
+    {
+        isEffectFailProcess = true;
+        if(hasAuthority)
+            quadFail.SetActive(true);
+        yield return new WaitForSeconds(0.7f);
+        if(hasAuthority)
+            quadFail.SetActive(false);
+        isEffectFailProcess = false;
     }
 }

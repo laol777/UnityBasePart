@@ -42,7 +42,7 @@ public class SensorRotation : MonoBehaviour
 	
 	void Update ()
 	{
-		if (Input.touchCount > 1) SetBaseRotation(Quaternion.identity);
+		if (Input.touchCount > 1) SetBaseRotation(Quaternion.Euler(0f, 180f, 0f));
 	}
 	
 	void FixedUpdate () 

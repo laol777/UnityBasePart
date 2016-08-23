@@ -171,6 +171,19 @@ public class ChoiceStream : MonoBehaviour {
         return returnedJoint;
     }
 
+    public int GetUserID(int numberUser)
+    {
+        if (GetSegmentationID() != null && numberUser <= GetSegmentationID().Length)
+            return GetSegmentationID()[GetSegmentationID().Length - numberUser];
+        else
+            return 0;
+    }
+
+    public nuitrack.Skeleton[] GetSkeletons() //add to simulation
+    {
+        return skeletonTracker.SkeletonData.Skeletons;
+    }
+
     public Vector3 GetJoint(nuitrack.JointType jointType, int numberUser) //number user >= 1
     {
         if (isSimulateStreamData)

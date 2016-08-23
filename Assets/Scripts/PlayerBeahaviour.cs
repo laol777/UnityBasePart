@@ -71,7 +71,7 @@ public class PlayerBeahaviour : NetworkBehaviour
             offset = new Vector3(0f, 0f, -5f);
             startRotation = Quaternion.Euler(0f, 180f, 0f);
             sensorRotation.SetBaseRotation(startRotation);
-            //numberUser = 2;
+            numberUser = 2;
             //rotationPivot.rotation *= startRotation;
             transform.position += offset;
             transform.rotation *= startRotation;
@@ -214,7 +214,7 @@ public class PlayerBeahaviour : NetworkBehaviour
             depthFrame = choiceStream.GetDepthFrame();
             userFrame = choiceStream.GetUserFrame();
             int userID = choiceStream.GetUserID(numberUser);
-            Vector3 depthWithOffset = Vector3.zero; 
+            Vector3 depthWithOffset = Vector3.zero;
             Vector3 tmpDepth;
 
             float minDist = 100f;
@@ -232,15 +232,15 @@ public class PlayerBeahaviour : NetworkBehaviour
 
                             if (numberUser == 1)
                             {
-                                tmpDepth.x = (float)((j - 40f) / (40f)) * 4f;
-                                tmpDepth.y = (float)((i - 60f) / (60f)) * 3f;
+                                tmpDepth.x = (float)((j - 40f) / (40f)) * 3f;
+                                tmpDepth.y = (float)((i - 30f) / (30f)) * 2f;
                                 tmpDepth.z = depthFrame[i, j] * 0.001f + offset.z;
                                 depthWithOffset = tmpDepth;
                             }
                             else
                             {
-                                tmpDepth.x = -(float)((j - 40f) / (40f)) * 4f;
-                                tmpDepth.y = (float)((i - 60f) / (60f)) * 3f;
+                                tmpDepth.x = -(float)((j - 40f) / (40f)) * 3f;
+                                tmpDepth.y = (float)((i - 60f) / (60f)) * 2f;
                                 tmpDepth.z = -depthFrame[i, j] * 0.001f + offset.z;
                                 depthWithOffset = tmpDepth;
                             }
@@ -248,17 +248,10 @@ public class PlayerBeahaviour : NetworkBehaviour
                             {
                                 Transform bullet = enemyBullets[0];
                                 {
-                                    if (Vector3.Distance(depthWithOffset, bullet.transform.position) < 0.2f)
+                                    if (Vector3.Distance(depthWithOffset, bullet.transform.position) < 0.05f)
                                     {
                                         if (!isEffectFailProcess)
                                             StartCoroutine(EffectFail());
-                                    }
-
-                                    if (minDist > Vector3.Distance(depthWithOffset, bullet.transform.position))
-                                    {
-                                        minDist = Vector3.Distance(depthWithOffset, bullet.transform.position);
-                                        bulletCoord = bullet.transform.position;
-                                        depthCoord = depthWithOffset;
                                     }
 
                                 }

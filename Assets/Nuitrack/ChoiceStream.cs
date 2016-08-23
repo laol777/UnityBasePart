@@ -2,8 +2,8 @@
 using System.Collections;
 using System;
 
+
 public class ChoiceStream : MonoBehaviour {
-    //when simultaneous transmission of data sensor is, out of sync when receiving the data.
     [SerializeField]NuitrackManagerEmulation nuitrackManagerEmulation;
 
     DepthSensor depthSensor;
@@ -13,12 +13,14 @@ public class ChoiceStream : MonoBehaviour {
     public int[,] depthFrame;
     public int[,] userFrame;
 
-    //
-
     bool isSimulateStreamData = false;
-    
+
+
+
+
     void Start()
     {
+
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
         userTracker = GameObject.FindObjectOfType<UserTracker>();
         skeletonTracker = GameObject.FindObjectOfType<SkeletonTracker>();
@@ -30,7 +32,9 @@ public class ChoiceStream : MonoBehaviour {
             || Application.platform == RuntimePlatform.WindowsPlayer;
     }
 
-    void ConvertNuitrackObjToIntArray<T>(T array, ref int[,] resault) where T : nuitrack.Frame<ushort>
+
+
+    int[,] ConvertNuitrackObjToIntArray<T>(T array, int[,] resault) where T : nuitrack.Frame<ushort>
     {
         //return;
         //nuitrack.UserFrame tt = new nuitrack.UserFrame();
@@ -43,6 +47,8 @@ public class ChoiceStream : MonoBehaviour {
             {
                 resault[i, j] = array[i * XRes + j];
             }
+
+        return resault;
     }
 
 
@@ -57,12 +63,11 @@ public class ChoiceStream : MonoBehaviour {
         {
             if (depthSensor.DepthFrame != null)
             {
-                ConvertNuitrackObjToIntArray<nuitrack.DepthFrame>(depthSensor.DepthFrame, ref depthFrame);
-                return depthFrame;
+                return ConvertNuitrackObjToIntArray<nuitrack.DepthFrame>(depthSensor.DepthFrame, depthFrame);
             }
             else
             {
-                return null; 
+                return null;
             }
         }
     }
@@ -78,8 +83,7 @@ public class ChoiceStream : MonoBehaviour {
         {
             if (userTracker.UserFrame != null)
             {
-                ConvertNuitrackObjToIntArray<nuitrack.UserFrame>(userTracker.UserFrame, ref userFrame);
-                return userFrame;
+                return ConvertNuitrackObjToIntArray<nuitrack.UserFrame>(userTracker.UserFrame, userFrame);
             }
             else
             {
@@ -108,12 +112,23 @@ public class ChoiceStream : MonoBehaviour {
         {
             return null;
         }
-        
+
+    }
+    int GetValueForSpecificPlatform(int emulationValue, int sensorValue)
+    {
+        if (isSimulateStreamData)
+        {
+            return emulationValue;
+        }
+        else
+        {
+            return sensorValue;
+        }
     }
 
-
- 
-
+    //public int Frame { get { return GetValueForSpecificPlatform(nuitrackManagerEmulation.Frame, depthSensor.frame); } }  
+    //public int XRes { get { return GetValueForSpecificPlatform(nuitrackManagerEmulation.XRes, depthSensor.DepthFrame.Cols); } }
+    //public int YRes { get { return GetValueForSpecificPlatform(nuitrackManagerEmulation.YRes, depthSensor.DepthFrame.Rows); } }
 
     public int Frame
     {
@@ -128,7 +143,7 @@ public class ChoiceStream : MonoBehaviour {
                 return depthSensor.frame;
             }
         }
-        
+
     }
 
     public int XRes
@@ -179,7 +194,7 @@ public class ChoiceStream : MonoBehaviour {
             return 0;
     }
 
-    public nuitrack.Skeleton[] GetSkeletons() //add to simulation
+    public nuitrack.Skeleton[] GetSkeletons() //TODO: add simulation type
     {
         return skeletonTracker.SkeletonData.Skeletons;
     }

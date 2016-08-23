@@ -39,7 +39,7 @@ public class SensorRotation : MonoBehaviour
 	{
 		baseRotation = additionalRotation * Quaternion.Inverse(rotation);
 	}
-	
+
 	void Update ()
 	{
 		if (Input.touchCount > 1) SetBaseRotation(Quaternion.Euler(0f, 180f, 0f));

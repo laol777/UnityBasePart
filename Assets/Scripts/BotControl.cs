@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define DEDUG
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -42,6 +43,7 @@ public class BotControl : MonoBehaviour {
         basePos = transform.position;
         miniCalibration = GameObject.FindObjectOfType<MiniCalibration>();
 
+#if DEBUG
         //bulletContainer = GameObject.FindObjectOfType<BulletContainer>();
         //cubeVisualization = new GameObject[60, 80];
         //for (int i = 0; i < 60; ++i)
@@ -56,11 +58,12 @@ public class BotControl : MonoBehaviour {
 
         //offset = new Vector3(0f, 0f, 5f);
         //bulletContainer = GameObject.FindObjectOfType<BulletContainer>();
+#endif
     }
 
     float vel = 1f;
 
-    int iter = 0;
+    public int iter = 0;
 
     void Update()
     {
@@ -86,8 +89,7 @@ public class BotControl : MonoBehaviour {
             StartCoroutine(ShootBehaviour());
         }
 
-
-
+#if DEBUG
         //depthFrame = choiceStream.GetDepthFrame();
         //userFrame = choiceStream.GetUserFrame();
         //int userID = choiceStream.GetUserID(1);
@@ -125,7 +127,7 @@ public class BotControl : MonoBehaviour {
         //            }
         //        }
         //}
-
+#endif
     }
 
 
@@ -133,13 +135,13 @@ public class BotControl : MonoBehaviour {
     {
 
         GameObject tmpBullet = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
-        tmpBullet.GetComponent<MoveBullet>().velocity = 3f;
+        tmpBullet.GetComponent<MoveBullet>().velocity = 6f;
         Vector3 rndSize = new Vector3(Random.Range(-0.05f, 0.05f), Random.Range(-0.05f, 0.05f), 0f);
         tmpBullet.GetComponent<MoveBullet>().IsLocal = false;
         bulletContainer.AddBullet(tmpBullet.transform);
         tmpBullet.GetComponent<MoveBullet>().vector = Vector3.forward + rndSize;
         Destroy(tmpBullet, 12f);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
         StartCoroutine(ShootBehaviour());
     }
 

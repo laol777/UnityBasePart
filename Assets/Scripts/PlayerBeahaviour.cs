@@ -37,6 +37,9 @@ public class PlayerBeahaviour : NetworkBehaviour
 
     int[,] depthFrame;
     int[,] userFrame;
+
+    [SerializeField]
+    GameObject shootEffectPlaceVisualisation;
     void Start()
     {
         StartCoroutine(RedactPlayerPrefabName()); // hasAuthorithy change value after 1 frame
@@ -221,12 +224,19 @@ public class PlayerBeahaviour : NetworkBehaviour
             Vector3 bulletCoord = Vector3.zero;
             Vector3 depthCoord = Vector3.zero;
             int a = 0;
+
+
+            bool isBreak = false;
+
             if (depthFrame != null && userFrame != null)
             {
                 for (int i = 0; i < choiceStream.YRes; ++i)
+                {
+                    if (isBreak) break;
                     for (int j = 0; j < choiceStream.XRes; ++j)
                     {
-                        if (userFrame[i, j] == userID)
+                        if (isBreak) break;
+                        if (userFrame[i, j] != 0) //check it
                         {
                             a++;
 
@@ -251,7 +261,12 @@ public class PlayerBeahaviour : NetworkBehaviour
                                     if (Vector3.Distance(depthWithOffset, bullet.transform.position) < 0.05f)
                                     {
                                         if (!isEffectFailProcess)
+                                        {
+                                            isBreak = true;
                                             StartCoroutine(EffectFail());
+                                            GameObject tmpShootEffectPlaceVisualisation = (GameObject)Instantiate(shootEffectPlaceVisualisation, depthWithOffset, Quaternion.identity);
+                                            Destroy(tmpShootEffectPlaceVisualisation, 1f);
+                                        }
                                     }
 
                                 }
@@ -271,6 +286,7 @@ public class PlayerBeahaviour : NetworkBehaviour
                             }
                         }
                     }
+                }
             }
             //Debug.Log(minDist);
             //Debug.Log(bulletCoord);

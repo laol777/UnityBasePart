@@ -302,19 +302,6 @@ public class PlayerBeahaviour : NetworkBehaviour
                     }
                 }
             }
-            //Debug.Log(minDist);
-            //Debug.Log(bulletCoord);
-            //Debug.Log(depthCoord);
-            //Debug.Log("________");
-            //depthIndicator.position = depthCoord;
-            //depthIndicator.position = bulletCoord;
-            //Debug.Log(depthWithOffset);
-
-            //if (isEffectFail)
-            //{
-            //    isEffectFail = false;
-            //    StartCoroutine(EffectFail());
-            //}
         }
 
 

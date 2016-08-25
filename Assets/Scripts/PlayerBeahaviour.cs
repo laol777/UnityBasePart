@@ -138,11 +138,15 @@ public class PlayerBeahaviour : NetworkBehaviour
         }
 
         Vector3 vectorShoot = Vector3.Normalize(rightWrist.localPosition - rightElbow.localPosition);
-        cursor.transform.localPosition = new Vector3(vectorShoot.x * 2f, vectorShoot.y * 2f, -10f);
+
+        tmpF.x = vectorShoot.x * 2f;
+        tmpF.y = vectorShoot.y * 2f;
+        tmpF.z = - 10f;
+        cursor.transform.localPosition = tmpF;
         time += Time.deltaTime;
 
-
-        float angle = Vector3.Angle(vectorShoot, new Vector3(0f, 0f, -1f));
+        
+        float angle = Vector3.Angle(vectorShoot, Vector3.back);
 
         if (Application.platform == RuntimePlatform.Android) //TODO: del it and add to serialize data all skeleton joint
         {
@@ -278,8 +282,9 @@ public class PlayerBeahaviour : NetworkBehaviour
                                         {
                                             isBreak = true;
                                             StartCoroutine(EffectFail());
-                                            GameObject tmpShootEffectPlaceVisualisation = (GameObject)Instantiate(shootEffectPlaceVisualisation, depthWithOffset, Quaternion.identity);
-                                            Destroy(tmpShootEffectPlaceVisualisation, 1f);
+                                            //GameObject tmpShootEffectPlaceVisualisation = (GameObject)Instantiate(shootEffectPlaceVisualisation, depthWithOffset, Quaternion.identity);
+                                            //Destroy(tmpShootEffectPlaceVisualisation, 1f);
+
                                         }
                                     }
 

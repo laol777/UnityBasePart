@@ -22,6 +22,11 @@ public class NetworkStartMenu : MonoBehaviour
         status.text = "Searching for a game to connect to.";
     }
 
+    void Start()
+    {
+        StartHost();
+    }
+
     public void StartHost()
     {
         PlayerTypeDecision.type = PlayerTypeDecision.PlayerType.HOST;

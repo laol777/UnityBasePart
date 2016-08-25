@@ -49,6 +49,7 @@ public class PlayerBeahaviour : NetworkBehaviour
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
         sensorRotation = GameObject.FindObjectOfType<SensorRotation>();
         bulletContainer = GameObject.FindObjectOfType<BulletContainer>();
+        handDeltas = new Vector3[2];
     }
 
     IEnumerator RedactPlayerPrefabName()
@@ -118,6 +119,8 @@ public class PlayerBeahaviour : NetworkBehaviour
 
     bool isEffectFailProcess = false;
 
+    Vector3[] handDeltas;
+
     void Update()
     {
         if (choiceStream != null)
@@ -141,7 +144,14 @@ public class PlayerBeahaviour : NetworkBehaviour
 
         float angle = Vector3.Angle(vectorShoot, new Vector3(0f, 0f, -1f));
 
-        if (angle < 30f)
+        if (Application.platform == RuntimePlatform.Android) //TODO: del it and add to serialize data all skeleton joint
+        {
+            handDeltas[0] = choiceStream.GetJoint(nuitrack.JointType.RightWrist, 1) - choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1);
+            handDeltas[1] = choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1) - choiceStream.GetJoint(nuitrack.JointType.RightShoulder, 1);
+        }
+        float angle2 = Vector3.Angle(handDeltas[0], handDeltas[1]);
+
+        if (angle < 30f && angle2 < 30f)
         {
             scalePositionCursor = true;
         }

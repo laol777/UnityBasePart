@@ -36,9 +36,6 @@ public class ChoiceStream : MonoBehaviour {
 
     int[,] ConvertNuitrackObjToIntArray<T>(T array, int[,] resault) where T : nuitrack.Frame<ushort>
     {
-        //return;
-        //nuitrack.UserFrame tt = new nuitrack.UserFrame();
-
         int YRes = depthSensor.DepthFrame.Rows;
         int XRes = depthSensor.DepthFrame.Cols;
 

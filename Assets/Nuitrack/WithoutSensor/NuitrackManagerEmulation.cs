@@ -55,7 +55,7 @@ public class NuitrackManagerEmulation : MonoBehaviour {
         ++frame;
         if (frame >= data.Count)
             frame = 0;
-
+        frame = 7;
         UpdateDataFrame();
 
         StartCoroutine(FrameCounter());

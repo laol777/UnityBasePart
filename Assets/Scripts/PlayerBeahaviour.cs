@@ -220,7 +220,6 @@ public class PlayerBeahaviour : NetworkBehaviour
             Vector3 depthWithOffset = Vector3.zero;
             Vector3 tmpDepth;
 
-            float minDist = 100f;
             Vector3 bulletCoord = Vector3.zero;
             Vector3 depthCoord = Vector3.zero;
             int a = 0;
@@ -242,9 +241,14 @@ public class PlayerBeahaviour : NetworkBehaviour
 
                             if (numberUser == 1)
                             {
-                                tmpDepth.x = (float)((j - 40f) / (40f)) * 3f;
-                                tmpDepth.y = (float)((i - 30f) / (30f)) * 2f;
-                                tmpDepth.z = depthFrame[i, j] * 0.001f + offset.z;
+                                float fX = 0.5f / Mathf.Tan(0.5f);
+                                float fY = fX * /*80 / 60*/ 1.33f;
+
+                                tmpDepth.z = depthFrame[i, j] * 0.001f;
+                                tmpDepth.x = tmpDepth.z * (float)((j - 40f) / (80f)) / fX;
+                                tmpDepth.y = -tmpDepth.z * (float)((i - 30f) / (60f)) / fY;
+
+                                tmpDepth.z += offset.z;
                                 depthWithOffset = tmpDepth;
                             }
                             else
@@ -258,7 +262,7 @@ public class PlayerBeahaviour : NetworkBehaviour
                             {
                                 Transform bullet = enemyBullets[0];
                                 {
-                                    if (Vector3.Distance(depthWithOffset, bullet.transform.position) < 0.05f)
+                                    if (Vector3.Distance(depthWithOffset, bullet.position) < 0.05f)
                                     {
                                         if (!isEffectFailProcess)
                                         {
@@ -314,11 +318,9 @@ public class PlayerBeahaviour : NetworkBehaviour
     IEnumerator EffectFail()
     {
         isEffectFailProcess = true;
-        if(hasAuthority)
-            quadFail.SetActive(true);
+        //if(hasAuthority) quadFail.SetActive(true);
         yield return new WaitForSeconds(0.7f);
-        if(hasAuthority)
-            quadFail.SetActive(false);
+        //if(hasAuthority) quadFail.SetActive(false);
         isEffectFailProcess = false;
     }
 }

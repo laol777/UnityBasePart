@@ -137,7 +137,7 @@ public class BotControl : MonoBehaviour {
 
         GameObject tmpBullet = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
         tmpBullet.GetComponent<MoveBullet>().velocity = 6f;
-        Vector3 rndSize = new Vector3(Random.Range(-0.05f, 0.05f), Random.Range(-0.05f, 0.05f), 0f);
+        Vector3 rndSize = new Vector3(Random.Range(-0.03f, 0.03f), Random.Range(-0.05f, 0.05f), 0f);
         tmpBullet.GetComponent<MoveBullet>().IsLocal = false;
         bulletContainer.AddBullet(tmpBullet.transform);
         tmpBullet.GetComponent<MoveBullet>().vector = Vector3.forward + rndSize;

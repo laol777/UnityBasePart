@@ -64,9 +64,12 @@ public class UserTrackerVisualization: MonoBehaviour
     Color transparentColor;
     Color ones;
 
+    public int radius = 7;
+
+    public int[,] detectIndicator;
+
     void Start () 
     {
-
         transparentColor = new Color(0f, 0f, 0f, 0f);
         ones = new Color(1f, 1f, 1f, 1f);
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
@@ -84,6 +87,8 @@ public class UserTrackerVisualization: MonoBehaviour
 
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
         userTracker = GameObject.FindObjectOfType<UserTracker>();
+        detectIndicator = new int[60, 80];
+
         //nuitrack.OutputMode mode = DepthSensor.GetDepthSensor.GetOutputMode();
         //frameStep = mode.XRes / hRes;
         //if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
@@ -253,19 +258,43 @@ public class UserTrackerVisualization: MonoBehaviour
     #endregion
 
     int frame = -1;
-	
+
+    void Test()
+    {
+        int one = 0;
+        for (int i = 0; i < 60; ++i)
+        {
+            for (int j = 0; j < 80; ++j)
+            {
+                if (detectIndicator[i, j] == 1)
+                {
+                    one++;
+                }
+            }
+        }
+        if (one != 0)
+        {
+            Debug.Log(one);
+        }
+    }
+
     void Update () 
     {
+
         bool haveNewFrame = false;
         if (choiceStream.GetDepthFrame() != null)
-        {
+        {        
             if (frame != choiceStream.Frame)
             {
                 haveNewFrame = true;
                 frame = choiceStream.Frame;
             }
 
-            if (haveNewFrame) ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame(), 80, 60);
+            if (haveNewFrame)
+            {
+                //Test();
+                ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame(), 80, 60);
+            }
         }
         else
         {
@@ -285,12 +314,13 @@ public class UserTrackerVisualization: MonoBehaviour
     Color pointColor = Color.white;
     void ProcessFrame(int[,] depthFrame, int[,] userFrame, int Cols, int Rows)
     {
+
+       
+
         for (int i = 0; i < parts; i++)
         {
             if (!visualizationParts[i].activeSelf) visualizationParts[i].SetActive(true);
         }
-
-        
 
         int visPartInd = 0;
         int pointInd = 0;
@@ -342,6 +372,10 @@ public class UserTrackerVisualization: MonoBehaviour
                 }
                 //pointColor = Color.white;
                 //pointColor = ones;
+                if (detectIndicator[i, j] == 1 && userFrame[i, j] != 0)
+                {
+                    pointColor = Color.red;
+                }
 
                 segmentationColors[pointIndex] = pointColor;
             }

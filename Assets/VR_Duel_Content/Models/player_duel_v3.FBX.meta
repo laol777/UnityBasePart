@@ -1,0 +1,462 @@
+fileFormatVersion: 2
+guid: e97d118698136254cbf16eb18e99be4a
+timeCreated: 1467962826
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Base Transform
+    100002: Head
+    100004: JC_Body002
+    100006: JC_Body004
+    100008: Left Elbow
+    100010: Left Hip
+    100012: Left Knee
+    100014: Left Shoulder
+    100016: Left Wrist
+    100018: //RootNode
+    100020: Right Elbow
+    100022: Right Hip
+    100024: Right Knee
+    100026: Right Shoulder
+    100028: Right Wrist
+    100030: SheK
+    100032: SheKLArmCollarbone
+    100034: SheKLLegDigit01
+    100036: SheKLLegPalm
+    100038: SheKLLegPlatform
+    100040: SheKNeck1
+    100042: SheKNeck2
+    100044: SheKRArmCollarbone
+    100046: SheKRibcage
+    100048: SheKRLegDigit01
+    100050: SheKRLegPalm
+    100052: SheKRLegPlatform
+    100054: SheKSpine1
+    100056: SheKSpine2
+    100058: Torso
+    400000: Base Transform
+    400002: Head
+    400004: JC_Body002
+    400006: JC_Body004
+    400008: Left Elbow
+    400010: Left Hip
+    400012: Left Knee
+    400014: Left Shoulder
+    400016: Left Wrist
+    400018: //RootNode
+    400020: Right Elbow
+    400022: Right Hip
+    400024: Right Knee
+    400026: Right Shoulder
+    400028: Right Wrist
+    400030: SheK
+    400032: SheKLArmCollarbone
+    400034: SheKLLegDigit01
+    400036: SheKLLegPalm
+    400038: SheKLLegPlatform
+    400040: SheKNeck1
+    400042: SheKNeck2
+    400044: SheKRArmCollarbone
+    400046: SheKRibcage
+    400048: SheKRLegDigit01
+    400050: SheKRLegPalm
+    400052: SheKRLegPlatform
+    400054: SheKSpine1
+    400056: SheKSpine2
+    400058: Torso
+    4300000: JC_Body002
+    4300002: JC_Body004
+    9500000: //RootNode
+    13700000: JC_Body002
+    13700002: JC_Body004
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human:
+    - boneName: Base Transform
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Left Hip
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Right Hip
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Left Knee
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Right Knee
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: SheKLLegPalm
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: SheKRLegPalm
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: SheKSpine2
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Torso
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: SheKNeck1
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: SheKNeck2
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: SheKLArmCollarbone
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: SheKRArmCollarbone
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Left Shoulder
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Right Shoulder
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Left Elbow
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Right Elbow
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Left Wrist
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Right Wrist
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: SheKLLegDigit01
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: SheKRLegDigit01
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Head
+      humanName: RightEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: player_duel_v3(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: JC_Body002
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0.00000008146034, y: 0, z: 0, w: 1}
+      scale: {x: 0.39370078, y: 0.39370078, z: 0.39370078}
+      transformModified: 1
+    - name: JC_Body004
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0.00000008146034, y: 0, z: 0, w: 1}
+      scale: {x: 0.39370078, y: 0.39370078, z: 0.39370078}
+      transformModified: 1
+    - name: SheK
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0.50000006, y: -0.50000006, z: -0.49999997, w: 0.49999997}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: SheKLLegPlatform
+      position: {x: -0.09117767, y: 0.000095901, z: 0.0005252877}
+      rotation: {x: 0.54868937, y: -0.54868937, z: -0.44602686, w: 0.44602686}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: SheKRLegPlatform
+      position: {x: 0.08274081, y: -0.0000000116712, z: -0.00018087414}
+      rotation: {x: 0.44602695, y: -0.44602695, z: -0.5486893, w: 0.5486893}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Base Transform
+      position: {x: 0.000000027927099, y: 0.5503566, z: 0.01219205}
+      rotation: {x: 0.52702373, y: -0.47142982, z: -0.5270236, w: 0.47142977}
+      scale: {x: 1, y: 0.99999994, z: 1}
+      transformModified: 1
+    - name: Left Hip
+      position: {x: -0, y: 0.0069107427, z: 0.058981314}
+      rotation: {x: -0.08562445, y: 0.9932812, z: 0.06813348, w: 0.037667185}
+      scale: {x: 1, y: 1.0000002, z: 1}
+      transformModified: 1
+    - name: Left Knee
+      position: {x: -0.23119955, y: -0.000000006055832, z: 0.000000006055832}
+      rotation: {x: -0.000058814974, y: 0.023954995, z: 0.17768191, w: 0.98379636}
+      scale: {x: 1.0000004, y: 0.9999999, z: 1}
+      transformModified: 1
+    - name: SheKLLegPalm
+      position: {x: -0.2653093, y: 0.000000003027916, z: 0}
+      rotation: {x: -0.024947163, y: -0.038812075, z: -0.45791492, w: 0.887798}
+      scale: {x: 1.0000017, y: 0.9999973, z: 1.0000004}
+      transformModified: 1
+    - name: SheKLLegDigit01
+      position: {x: -0.07233925, y: 0, z: 0}
+      rotation: {x: -0.051371045, y: 0.00637168, z: -0.43603212, w: 0.8984411}
+      scale: {x: 0.9999997, y: 1.0000002, z: 0.9999999}
+      transformModified: 1
+    - name: SheKSpine1
+      position: {x: -0.0055946195, y: -0.004621935, z: 5.1228854e-10}
+      rotation: {x: 0.00000001590836, y: -0.000000070293595, z: -0.028159568, w: 0.99960345}
+      scale: {x: 1.0000002, y: 1.0000004, z: 1.0000001}
+      transformModified: 1
+    - name: SheKSpine2
+      position: {x: -0.08411221, y: -0.000000006055832, z: -5.7752913e-15}
+      rotation: {x: -0.0000000013948698, y: 0.00000009456419, z: 0.2153563, w: 0.97653556}
+      scale: {x: 1, y: 1.0000001, z: 1}
+      transformModified: 1
+    - name: Torso
+      position: {x: -0.08411768, y: 0, z: 0}
+      rotation: {x: 0.000000005222583, y: 0.000000035912258, z: 0.052506838, w: 0.99862057}
+      scale: {x: 0.9999998, y: 0.9999999, z: 0.9999999}
+      transformModified: 1
+    - name: SheKRibcage
+      position: {x: -0.08582684, y: 0, z: 0}
+      rotation: {x: -0.000000017094923, y: -0.00000005606813, z: -0.08356788, w: 0.9965021}
+      scale: {x: 0.9999998, y: 0.9999998, z: 1}
+      transformModified: 1
+    - name: SheKNeck1
+      position: {x: -0.03521684, y: 0.0034599996, z: -4.054543e-11}
+      rotation: {x: 0.0000000031481409, y: 0.00000007173342, z: -0.087334536, w: 0.99617904}
+      scale: {x: 0.99999976, y: 0.99999964, z: 0.9999999}
+      transformModified: 1
+    - name: SheKNeck2
+      position: {x: -0.04777877, y: 0.000000001513958, z: 1.15505826e-14}
+      rotation: {x: 0.000000013304996, y: -0.000000014022775, z: -0.10384023, w: 0.99459404}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+      transformModified: 1
+    - name: Head
+      position: {x: -0.047778673, y: 0, z: 0}
+      rotation: {x: -0.0000000032684608, y: -0.000000026396064, z: 0.040103436, w: 0.9991955}
+      scale: {x: 1.0000002, y: 1.0000004, z: 1.0000001}
+      transformModified: 1
+    - name: SheKRArmCollarbone
+      position: {x: -0.021292644, y: 0.07018846, z: -0.017762301}
+      rotation: {x: -0.1190144, y: -0.68448204, z: 0.09672351, w: 0.7127163}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
+      transformModified: 1
+    - name: Right Shoulder
+      position: {x: -0.07772429, y: 0.000000072669984, z: 0}
+      rotation: {x: -0.18686253, y: 0.0062560737, z: -0.1852941, w: 0.9647328}
+      scale: {x: 0.9999998, y: 1, z: 1}
+      transformModified: 1
+    - name: Right Elbow
+      position: {x: -0.16465645, y: 0.00000027856825, z: 0}
+      rotation: {x: 0.17394827, y: 0.03562524, z: 0.005587029, w: 0.9840944}
+      scale: {x: 1.0000001, y: 1.0000031, z: 0.9999968}
+      transformModified: 1
+    - name: Right Wrist
+      position: {x: -0.13802421, y: 0.0000003027916, z: -0.000000048446655}
+      rotation: {x: 0.6249596, y: -0.013547441, z: -0.03412921, w: 0.779793}
+      scale: {x: 1.0000002, y: 0.9999984, z: 1.0000013}
+      transformModified: 1
+    - name: SheKLArmCollarbone
+      position: {x: -0.021292644, y: 0.07018847, z: 0.0177623}
+      rotation: {x: 0.11901452, y: 0.6844818, z: 0.09672342, w: 0.7127165}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.9999999}
+      transformModified: 1
+    - name: Left Shoulder
+      position: {x: -0.0777243, y: 0.00000009689331, z: 0}
+      rotation: {x: 0.18926132, y: -0.0077992324, z: -0.1835378, w: 0.9645897}
+      scale: {x: 1.0000001, y: 0.9999999, z: 0.99999994}
+      transformModified: 1
+    - name: Left Elbow
+      position: {x: -0.16465645, y: -0.00000027856825, z: 0.00000009689331}
+      rotation: {x: -0.17389484, y: -0.03518604, z: 0.0047434485, w: 0.98412406}
+      scale: {x: 1, y: 0.99999684, z: 1.0000032}
+      transformModified: 1
+    - name: Left Wrist
+      position: {x: -0.13802418, y: -0.00000029067994, z: -0.00000009689331}
+      rotation: {x: -0.62511414, y: 0.017147802, z: 0.031156642, w: 0.77972275}
+      scale: {x: 1.0000001, y: 1.0000017, z: 0.9999985}
+      transformModified: 1
+    - name: Right Hip
+      position: {x: -0, y: 0.0069107367, z: -0.058981314}
+      rotation: {x: -0.084103055, y: 0.9901849, z: -0.10659894, w: -0.033125203}
+      scale: {x: 1, y: 1.0000002, z: 1}
+      transformModified: 1
+    - name: Right Knee
+      position: {x: -0.23119959, y: 0, z: 0}
+      rotation: {x: 0.000058151956, y: -0.023983818, z: 0.17789517, w: 0.98375714}
+      scale: {x: 1, y: 1.0000001, z: 1}
+      transformModified: 1
+    - name: SheKRLegPalm
+      position: {x: -0.26530933, y: -0.00000037243365, z: 0.000000054502486}
+      rotation: {x: -0.013682551, y: 0.035124782, z: -0.46020004, w: 0.8870146}
+      scale: {x: 0.99999976, y: 1.0000008, z: 1.0000001}
+      transformModified: 1
+    - name: SheKRLegDigit01
+      position: {x: -0.072339244, y: 0.000000040876866, z: -0.000000024223327}
+      rotation: {x: 0.05135152, y: -0.0063584824, z: -0.43641227, w: 0.89825773}
+      scale: {x: 1.0000004, y: 0.9999998, z: 1}
+      transformModified: 1
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

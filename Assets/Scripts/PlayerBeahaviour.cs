@@ -37,9 +37,13 @@ public class PlayerBeahaviour : NetworkBehaviour
 
     int[,] depthFrame;
     int[,] userFrame;
+    int[,] detectIndicator;
 
     [SerializeField]
     GameObject shootEffectPlaceVisualisation;
+
+    UserTrackerVisualization[] userTrackerVisualization;
+
     void Start()
     {
         StartCoroutine(RedactPlayerPrefabName()); // hasAuthorithy change value after 1 frame
@@ -50,7 +54,10 @@ public class PlayerBeahaviour : NetworkBehaviour
         sensorRotation = GameObject.FindObjectOfType<SensorRotation>();
         bulletContainer = GameObject.FindObjectOfType<BulletContainer>();
         handDeltas = new Vector3[2];
+        userTrackerVisualization = GameObject.FindObjectsOfType<UserTrackerVisualization>();
     }
+
+
 
     IEnumerator RedactPlayerPrefabName()
     {
@@ -280,6 +287,7 @@ public class PlayerBeahaviour : NetworkBehaviour
                                     {
                                         if (!isEffectFailProcess)
                                         {
+                                            SetIndicator(i, j);
                                             isBreak = true;
                                             StartCoroutine(EffectFail());
                                             //GameObject tmpShootEffectPlaceVisualisation = (GameObject)Instantiate(shootEffectPlaceVisualisation, depthWithOffset, Quaternion.identity);
@@ -294,7 +302,7 @@ public class PlayerBeahaviour : NetworkBehaviour
                             {
                                 if (numberUser == 1)
                                 {
-                                    if (bullet.position.z > head.position.z)
+                                    if (bullet.position.z > head.position.z + 0.2f)
                                         Destroy(bullet.gameObject);
                                 }
                                 else
@@ -314,15 +322,52 @@ public class PlayerBeahaviour : NetworkBehaviour
 
     }
 
+    void SetIndicator(int a0, int b0)
+    {
+        
+        foreach (UserTrackerVisualization utv in userTrackerVisualization)
+        {
+            int count = 0;
+            int raduis = utv.radius;
+            for (int i = 0; i < 60; ++i)
+            {
+                for (int j = 0; j < 80; ++j)
+                {
+                    if (Mathf.Sqrt((i - a0) * (i - a0) + (j - b0) * (j - b0)) < raduis)
+                    {
+                        utv.detectIndicator[i, j] = 1;
+                    }
+                }
+            }
+           
+        }
+        
+    }
+
+
+    void ClearIndicator()
+    {
+        foreach (UserTrackerVisualization utv in userTrackerVisualization)
+        {
+            for (int i = 0; i < 60; ++i)
+            {
+                for (int j = 0; j < 80; ++j)
+                {
+                    utv.detectIndicator[i, j] = 0;
+                }
+            }
+        }
+    }
 
     [SerializeField]
     GameObject quadFail;
     IEnumerator EffectFail()
     {
         isEffectFailProcess = true;
-        //if(hasAuthority) quadFail.SetActive(true);
+        if (hasAuthority) quadFail.SetActive(true);
         yield return new WaitForSeconds(0.7f);
-        //if(hasAuthority) quadFail.SetActive(false);
+        if (hasAuthority) quadFail.SetActive(false);
         isEffectFailProcess = false;
+        ClearIndicator();
     }
 }

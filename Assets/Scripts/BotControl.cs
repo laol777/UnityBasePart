@@ -86,6 +86,8 @@ public class BotControl : MonoBehaviour {
             StartCoroutine(ShootBehaviour());
         }
 
+        target.position = Vector3.Lerp(target.position, targetNextPose, Time.deltaTime * 5f);
+
 #if DEDUG_TEST
         depthFrame = choiceStream.GetDepthFrame();
         userFrame = choiceStream.GetUserFrame();
@@ -131,16 +133,31 @@ public class BotControl : MonoBehaviour {
 #endif
     }
 
+    [SerializeField]
+    Transform target;
+    Vector3 targetNextPose;
+    [SerializeField]
+    Transform rightWrist;
 
     IEnumerator ShootBehaviour()
     {
 
-        GameObject tmpBullet = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
-        tmpBullet.GetComponent<MoveBullet>().velocity = 6f;
+        
+
         Vector3 rndSize = new Vector3(Random.Range(-0.03f, 0.03f), Random.Range(-0.05f, 0.05f), 0f);
+        targetNextPose = new Vector3(rndSize.x * 33f, rndSize.y * 33f, 0f);
+
+        yield return new WaitForSeconds(0.5f);
+
+
+        GameObject tmpBullet = (GameObject)Instantiate(bullet, rightWrist.position, Quaternion.identity);
         tmpBullet.GetComponent<MoveBullet>().IsLocal = false;
         bulletContainer.AddBullet(tmpBullet.transform);
+
+
+        tmpBullet.GetComponent<MoveBullet>().velocity = 6f;
         tmpBullet.GetComponent<MoveBullet>().vector = Vector3.forward + rndSize;
+
         Destroy(tmpBullet, 12f);
         yield return new WaitForSeconds(1.5f);
         StartCoroutine(ShootBehaviour());

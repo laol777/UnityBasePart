@@ -164,7 +164,7 @@ public class PlayerBeahaviour : NetworkBehaviour
 
         if (miniCalibraion.isCalibrationComplite
            && (Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.x - choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).x) > 500f
-           || Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.z - choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).z) > 500f) )
+           || Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.z - choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).z) > 500f))
         {
             isStartDrop = true;
         }
@@ -179,18 +179,18 @@ public class PlayerBeahaviour : NetworkBehaviour
                 Application.LoadLevel(Application.loadedLevel - 1);
             }
         }
-        
+
         transform.position = offset; //change after calibration
 
         Vector3 vectorShoot = Vector3.Normalize(rightWrist.localPosition - rightElbow.localPosition);
 
         tmpF.x = vectorShoot.x * 2f;
         tmpF.y = vectorShoot.y * 2f;
-        tmpF.z = - 10f;
+        tmpF.z = -10f;
         cursor.transform.localPosition = tmpF;
         time += Time.deltaTime;
 
-        
+
         float angle = Vector3.Angle(vectorShoot, Vector3.back);
 
         if (Application.platform == RuntimePlatform.Android) //TODO: del it and add to serialize data all skeleton joint
@@ -198,7 +198,11 @@ public class PlayerBeahaviour : NetworkBehaviour
             handDeltas[0] = choiceStream.GetJoint(nuitrack.JointType.RightWrist, 1) - choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1);
             handDeltas[1] = choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1) - choiceStream.GetJoint(nuitrack.JointType.RightShoulder, 1);
         }
-        float angle2 = Vector3.Angle(handDeltas[0], handDeltas[1]);
+        float angle2 = Vector3.Angle(handDeltas[0], handDeltas[1]); 
+        if (Application.platform == RuntimePlatform.WindowsEditor) //hack - not have serialize data
+        {
+            angle2 = 0f;
+        }
 
         if (angle < 30f && angle2 < 30f)
         {

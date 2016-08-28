@@ -11,14 +11,17 @@ public class MiniCalibration : MonoBehaviour {
     Vector3[] handDeltas;
 
     public bool isCalibrationComplite = false;
+    public Vector3 positionCollarAfterCalibration;
 
     SensorRotation sensorRotation;
+
+    PlayerBeahaviour playerBehaviuor;
     void Start () {
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
         handDeltas = new Vector3[6];
 
         sensorRotation = GameObject.FindObjectOfType<SensorRotation>();
-
+        playerBehaviuor = gameObject.GetComponent<PlayerBeahaviour>();
     }
 
     float time = 0f;
@@ -50,6 +53,9 @@ public class MiniCalibration : MonoBehaviour {
             time = 0f;
             sensorRotation.SetBaseRotation(Quaternion.Euler(0f, 180f, 0f));
             isCalibrationComplite = true;
+            playerBehaviuor.Offset = playerBehaviuor.BaseOffset - new Vector3(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).x * 0.001f, 0f, 
+                                                                              choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).z * 0.001f - 2.8f);
+            positionCollarAfterCalibration = choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1);
         }
 
 

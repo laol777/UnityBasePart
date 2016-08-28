@@ -24,8 +24,13 @@ public class NetworkStartMenu : MonoBehaviour
 
     void Start()
     {
+        discovery.StopDiscovery();
+        NetworkManager.singleton.StopHost();
+        NetworkManager.singleton.StopClient();
+        NetworkManager.singleton.StopServer();
+        NetworkManager.singleton.StopAllCoroutines();
         StartHost();
-    }
+    }//debug
 
     public void StartHost()
     {

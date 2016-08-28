@@ -48,6 +48,12 @@ public class PlayerBeahaviour : NetworkBehaviour
 
     UserTrackerVisualization[] userTrackerVisualization;
     MiniCalibration miniCalibraion;
+
+    [SerializeField]
+    AudioSource soundFailing;
+    [SerializeField]
+    AudioSource soundHit;
+
     void Start()
     {
         StartCoroutine(RedactPlayerPrefabName()); // hasAuthorithy change value after 1 frame
@@ -60,6 +66,7 @@ public class PlayerBeahaviour : NetworkBehaviour
         handDeltas = new Vector3[2];
         userTrackerVisualization = GameObject.FindObjectsOfType<UserTrackerVisualization>();
         miniCalibraion = gameObject.GetComponent<MiniCalibration>();
+        soundFailing = gameObject.GetComponent<AudioSource>();
     }
 
 
@@ -164,7 +171,8 @@ public class PlayerBeahaviour : NetworkBehaviour
 
         if (miniCalibraion.isCalibrationComplite
            && (Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.x - choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).x) > 500f
-           || Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.z - choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).z) > 500f))
+           || Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.z - choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).z) > 500f)
+           )
         {
             isStartDrop = true;
         }
@@ -332,6 +340,7 @@ public class PlayerBeahaviour : NetworkBehaviour
                                             SetIndicator(i, j);
                                             isBreak = true;
                                             StartCoroutine(EffectFail());
+                                            soundHit.Play();
                                             //GameObject tmpShootEffectPlaceVisualisation = (GameObject)Instantiate(shootEffectPlaceVisualisation, depthWithOffset, Quaternion.identity);
                                             //Destroy(tmpShootEffectPlaceVisualisation, 1f);
 

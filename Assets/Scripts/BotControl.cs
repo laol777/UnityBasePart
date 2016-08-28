@@ -80,7 +80,7 @@ public class BotControl : MonoBehaviour {
             ++iter;
         }
 
-        if (startShoot && iter == 1 )
+        if (startShoot && iter == 2 )
         {
             startShoot = false;
             StartCoroutine(ShootBehaviour());

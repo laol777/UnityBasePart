@@ -12,6 +12,8 @@ public class IKControl : MonoBehaviour
     public bool ikActive = false;
     public Transform rightHandObj = null;
     public Transform leftHandObj = null;
+    public Transform leftFootObj = null;
+    public Transform rightFootObj = null;
 
     public Transform lookObj = null;
 
@@ -52,6 +54,22 @@ public class IKControl : MonoBehaviour
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
                     animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position);
                     animator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandObj.rotation);
+                }
+
+                if (leftFootObj != null)
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
+                    animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 1);
+                    animator.SetIKPosition(AvatarIKGoal.LeftFoot, leftFootObj.position);
+                    animator.SetIKRotation(AvatarIKGoal.LeftFoot, leftFootObj.rotation);
+                }
+
+                if (rightFootObj != null)
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightFoot, 1);
+                    animator.SetIKPosition(AvatarIKGoal.RightFoot, rightFootObj.position);
+                    animator.SetIKRotation(AvatarIKGoal.RightFoot, rightFootObj.rotation);
                 }
 
             }

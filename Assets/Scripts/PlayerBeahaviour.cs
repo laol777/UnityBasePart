@@ -378,7 +378,6 @@ public class PlayerBeahaviour : NetworkBehaviour
         
         foreach (UserTrackerVisualization utv in userTrackerVisualization)
         {
-            int count = 0;
             int raduis = utv.radius;
             for (int i = 0; i < 60; ++i)
             {

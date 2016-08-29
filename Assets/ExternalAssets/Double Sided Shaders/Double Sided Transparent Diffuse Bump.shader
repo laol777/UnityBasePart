@@ -14,6 +14,7 @@ Shader "Ciconia Studio/Double Sided/Transparent/Diffuse Bump" {
         _SpecIntensity ("Spec Intensity", Range(0, 2)) = 1
         _Gloss ("Gloss", Range(0, 1)) = 0.5
         _Transparency ("Transparency", Range(0, 1)) = 0.5
+		_TransparentPattern("TransparentPattern", 2D) = "white" {}
         [HideInInspector]_Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
     }
     SubShader {
@@ -46,6 +47,7 @@ Shader "Ciconia Studio/Double Sided/Transparent/Diffuse Bump" {
             uniform sampler2D _NormalMap; uniform float4 _NormalMap_ST;
             uniform float _NormalIntensity;
             uniform sampler2D _SpecularMap; uniform float4 _SpecularMap_ST;
+			uniform sampler2D _TransparentPattern;
             uniform float4 _Speccolor;
             uniform float _SpecIntensity;
             uniform float _Gloss;

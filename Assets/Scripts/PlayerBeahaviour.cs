@@ -96,6 +96,8 @@ public class PlayerBeahaviour : NetworkBehaviour
                 transform.position += offset;
                 sensorRotation.SetBaseRotation(Quaternion.Euler(0f, 180f, 0f));
             }
+
+            cameraAim.transform.parent = gameObject.transform.parent; //up from children hierarhy -> cameraIming have cost position
         }
         //else
         //{

@@ -1,21 +1,15 @@
 fileFormatVersion: 2
-guid: 15540d4858b82614dbee6cf67406be24
-timeCreated: 1472480394
+guid: 9fdf82070f8866a4c96f8f5ce5f7fc5c
+timeCreated: 1472542645
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Cinema4D_Editor
-    100002: Cylinder_1_34
-    100004: //RootNode
-    400000: Cinema4D_Editor
-    400002: Cylinder_1_34
-    400004: //RootNode
-    2300000: Cylinder_1_34
-    3300000: Cylinder_1_34
-    4300000: Cylinder_1_34
-    7400000: Take 001
-    9500000: //RootNode
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Cylinder001
   materials:
     importMaterials: 1
     materialName: 0
@@ -74,7 +68,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

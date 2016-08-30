@@ -218,7 +218,7 @@ public class PlayerBeahaviour : NetworkBehaviour
         {
             scalePositionCursor = true;
         }
-        else if ((angle < 60f) && (prevScalePositionCursor))
+        else if ((angle < 40f) && (prevScalePositionCursor))
         {
             scalePositionCursor = true;
         }

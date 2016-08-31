@@ -240,6 +240,8 @@ public class PlayerBeahaviour : NetworkBehaviour
                 time = 0f;
                 GameObject tmp = (GameObject)Instantiate(bulletPrefab, rightWrist.position, Quaternion.identity);
                 tmp.transform.parent = transform;
+                Destroy(tmp.GetComponent<AudioSource>());
+                //tmp.GetComponent<AudioSource>().enabled = false;
                 tmp.GetComponent<MoveBullet>().vector = Vector3.Normalize(cursor.transform.localPosition - rightWrist.localPosition);
                 tmp.GetComponent<MoveBullet>().velocity = 3f;
                 if (!hasAuthority)

@@ -151,6 +151,7 @@ public class BotControl : MonoBehaviour {
 
 
         GameObject tmpBullet = (GameObject)Instantiate(bullet, rightWrist.position, Quaternion.identity);
+        tmpBullet.GetComponent<AudioSource>().Play();
         tmpBullet.GetComponent<MoveBullet>().IsLocal = false;
         bulletContainer.AddBullet(tmpBullet.transform);
 

@@ -53,6 +53,10 @@ public class PlayerBeahaviour : NetworkBehaviour
     AudioSource soundFailing;
     [SerializeField]
     AudioSource soundHit;
+    [SerializeField]
+    AudioSource soundShoot;
+    [SerializeField]
+    GameObject paticleEffect;
 
     void Start()
     {
@@ -242,7 +246,9 @@ public class PlayerBeahaviour : NetworkBehaviour
                 {
                     tmp.GetComponent<MoveBullet>().IsLocal = false;
                     bulletContainer.AddBullet(tmp.transform);
+                    
                 }
+                soundShoot.Play();
                 Destroy(tmp, 10f);
                 
             }
@@ -343,6 +349,8 @@ public class PlayerBeahaviour : NetworkBehaviour
                                             isBreak = true;
                                             StartCoroutine(EffectFail());
                                             soundHit.Play();
+                                            //GameObject tmpPaticle = (GameObject)Instantiate(paticleEffect, depthWithOffset, Quaternion.Euler(0f, 180f, 180f));
+                                            //Destroy(tmpPaticle, 1.3f);
                                             //GameObject tmpShootEffectPlaceVisualisation = (GameObject)Instantiate(shootEffectPlaceVisualisation, depthWithOffset, Quaternion.identity);
                                             //Destroy(tmpShootEffectPlaceVisualisation, 1f);
 

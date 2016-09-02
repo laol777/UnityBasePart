@@ -90,7 +90,7 @@ public class ChoiceStream : MonoBehaviour {
     }
 
     int[] userID;
-    public int[] GetSegmentationID()
+    public int[] GetArrayIDSegmentation()
     {
         if (isSimulateStreamData)
         {
@@ -185,8 +185,8 @@ public class ChoiceStream : MonoBehaviour {
 
     public int GetUserID(int numberUser)
     {
-        if (GetSegmentationID() != null && numberUser <= GetSegmentationID().Length)
-            return GetSegmentationID()[GetSegmentationID().Length - numberUser];
+        if (GetArrayIDSegmentation() != null && numberUser <= GetArrayIDSegmentation().Length)
+            return GetArrayIDSegmentation()[numberUser - 1];
         else
             return 0;
     }
@@ -200,8 +200,8 @@ public class ChoiceStream : MonoBehaviour {
     {
         if (isSimulateStreamData)
         {
-            if (GetSegmentationID() != null && numberUser <= GetSegmentationID().Length)
-                return nuitrackManagerEmulation.GetJoint(jointType, GetSegmentationID().Length - numberUser);
+            if (GetArrayIDSegmentation() != null && numberUser <= GetArrayIDSegmentation().Length)
+                return nuitrackManagerEmulation.GetJoint(jointType, numberUser - 1);
             else
                 return Vector3.zero;
         }
@@ -212,7 +212,7 @@ public class ChoiceStream : MonoBehaviour {
                 && numberUser <= skeletonTracker.SkeletonData.NumUsers
                 )
             {
-                return GetVector3Joint(skeletonTracker.SkeletonData.Skeletons[skeletonTracker.SkeletonData.NumUsers - numberUser].GetJoint(jointType));
+                return GetVector3Joint(skeletonTracker.SkeletonData.Skeletons[numberUser - 1].GetJoint(jointType));
             }
             else
             {

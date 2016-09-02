@@ -4,10 +4,11 @@ using System.Collections.Generic;
 
 public class NuitrackManagerEmulation : MonoBehaviour {
 
-    public List<JSONData> data;
 
     int frame = 0;
     public int Frame { get { return frame; } }
+
+    public List<JSONData> data;
 
     int[,] depthFrame;
     public int[,] DepthFrame { get { return depthFrame; } }

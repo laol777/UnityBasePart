@@ -106,7 +106,7 @@ public class TPoseCalibration : MonoBehaviour
 		}
 		else if (calibrationAllowed)
 		{
-			if (choiceStream.GetSegmentationID() != null)
+			if (choiceStream.GetArrayIDSegmentation() != null)
 			{
 				if (!calibrationStarted)
 				{

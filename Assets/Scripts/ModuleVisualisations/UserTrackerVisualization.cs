@@ -334,7 +334,7 @@ public class UserTrackerVisualization : MonoBehaviour
         int pointInd = 0;
         int pointsPerVisTotal = pointsPerVis * vertsPerMesh;
 
-        int[] userID = choiceStream.GetSegmentationID();
+        int[] userID = choiceStream.GetArrayIDSegmentation();
 
         for (int i = 0, pointIndex = 0; i < Rows; i += frameStep)
         {
@@ -373,7 +373,7 @@ public class UserTrackerVisualization : MonoBehaviour
                 if (userID != null && numberPlayer <= userID.Length)
                 {
                     
-                    if (userFrame[i, j] == userID[userID.Length - numberPlayer])
+                    if (userFrame[i, j] ==  choiceStream.GetUserID(numberPlayer))
                     {
                         pointColor = ones;
                     }

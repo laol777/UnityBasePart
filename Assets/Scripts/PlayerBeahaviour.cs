@@ -250,6 +250,8 @@ public class PlayerBeahaviour : NetworkBehaviour
                     bulletContainer.AddBullet(tmp.transform);
                     
                 }
+                GameObject tmpPaticle = (GameObject)Instantiate(paticleEffect, rightWrist.position, Quaternion.identity);
+                Destroy(tmpPaticle, 1.3f);
                 soundShoot.Play();
                 Destroy(tmp, 10f);
                 
@@ -351,8 +353,7 @@ public class PlayerBeahaviour : NetworkBehaviour
                                             isBreak = true;
                                             StartCoroutine(EffectFail());
                                             soundHit.Play();
-                                            //GameObject tmpPaticle = (GameObject)Instantiate(paticleEffect, depthWithOffset, Quaternion.Euler(0f, 180f, 180f));
-                                            //Destroy(tmpPaticle, 1.3f);
+
                                             //GameObject tmpShootEffectPlaceVisualisation = (GameObject)Instantiate(shootEffectPlaceVisualisation, depthWithOffset, Quaternion.identity);
                                             //Destroy(tmpShootEffectPlaceVisualisation, 1f);
 

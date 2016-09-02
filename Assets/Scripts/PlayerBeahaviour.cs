@@ -251,6 +251,7 @@ public class PlayerBeahaviour : NetworkBehaviour
                     
                 }
                 GameObject tmpPaticle = (GameObject)Instantiate(paticleEffect, rightWrist.position, Quaternion.identity);
+                tmpPaticle.transform.parent = rightWrist.transform;
                 Destroy(tmpPaticle, 1.3f);
                 soundShoot.Play();
                 Destroy(tmp, 10f);

@@ -13,18 +13,16 @@ public class PlayerBeahaviour : MonoBehaviour
     public Vector3 Offset { set { offset = value; }  get { return offset; } }
     Quaternion startRotation;
 
-    [SerializeField]
-    Transform camera;
-
 
     SkeletonTracker skeletonTracker;
     ChoiceStream choiceStream;
-
     SensorRotation sensorRotation;
 
 
     public Vector3 tmpPos;
-    public int numberUser = 1;
+    [Range(1, 2)]
+    public
+    int numberUser = 1;
 
     [SerializeField]
     Transform head;
@@ -38,7 +36,8 @@ public class PlayerBeahaviour : MonoBehaviour
     [SerializeField]
     Transform cameraAim;
 
-    BulletContainer bulletContainer;
+    public BulletContainer bulletContainerPlayer;
+    public BulletContainer bulletContainerBot;
 
     int[,] depthFrame;
     int[,] userFrame;
@@ -70,7 +69,6 @@ public class PlayerBeahaviour : MonoBehaviour
 
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
         sensorRotation = GameObject.FindObjectOfType<SensorRotation>();
-        bulletContainer = GameObject.FindObjectOfType<BulletContainer>();
         handDeltas = new Vector3[2];
         userTrackerVisualization = GameObject.FindObjectsOfType<UserTrackerVisualization>();
         miniCalibraion = gameObject.GetComponent<MiniCalibration>();
@@ -92,7 +90,6 @@ public class PlayerBeahaviour : MonoBehaviour
             startRotation = Quaternion.Euler(0f, 0f, 0f);
             if(sensorRotation != null)
                 sensorRotation.SetBaseRotation(startRotation);
-            numberUser = 1;
 
             try
             {
@@ -111,24 +108,6 @@ public class PlayerBeahaviour : MonoBehaviour
 
             cameraAim.transform.parent = gameObject.transform.parent; //up from children hierarhy -> cameraIming have cost position
         }
-        //else
-        //{
-        //    gameObject.name = "clientPlayer";
-        //    offset = new Vector3(0f, 0f, -5f);
-        //    startRotation = Quaternion.Euler(0f, 180f, 0f);
-        //    sensorRotation.SetBaseRotation(startRotation);
-        //    numberUser = 2;
-        //    //rotationPivot.rotation *= startRotation;
-        //    transform.position += offset;
-        //    transform.rotation *= startRotation;
-        //}
-
-        //if(!hasAuthority) //disable, when is starting as remote player on current device
-        //{
-        //    camera.gameObject.SetActive(false);
-        //    cursor.SetActive(false);
-        //    cameraAim.gameObject.SetActive(false);
-        //}
     }
 
     public GameObject bulletPrefab;
@@ -243,7 +222,7 @@ public class PlayerBeahaviour : MonoBehaviour
 
         if (scalePositionCursor)
         {
-            if (time > 1f && isShootPlayer)
+            if (time > 2.5f && isShootPlayer)
             {
                 time = 0f;
                 GameObject tmp = (GameObject)Instantiate(bulletPrefab, rightWrist.position, Quaternion.identity);
@@ -254,9 +233,7 @@ public class PlayerBeahaviour : MonoBehaviour
                 tmp.GetComponent<MoveBullet>().velocity = 3f;
                 //if (!hasAuthority)
                 {
-                    tmp.GetComponent<MoveBullet>().IsLocal = false;
-                    bulletContainer.AddBullet(tmp.transform);
-                    
+                    bulletContainerPlayer.AddBullet(tmp.transform);
                 }
                 GameObject tmpPaticle = (GameObject)Instantiate(paticleEffect, rightWrist.position, Quaternion.identity);
                 tmpPaticle.transform.parent = rightWrist.transform;
@@ -286,20 +263,22 @@ public class PlayerBeahaviour : MonoBehaviour
                 quadCamera.SetActive(scalePositionCursor);
             }
 
-            enemyBullets = bulletContainer.GetBullet();
+            enemyBullets = bulletContainerBot.GetBullet();
             for (int i = 0; i < enemyBullets.Count; ++i)
             {
-
-                if (Vector3.Distance(enemyBullets[i].position, head.position) < 4f)
+                if (enemyBullets[i] != null)
                 {
+                    if ( Vector3.Distance(enemyBullets[i].position, head.position) < 4f)
+                    {
 
-                    float speed = Vector3.Distance(enemyBullets[i].position, head.position);
-                    enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity =
-                        Mathf.Clamp(Mathf.Lerp(enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity, speed / 2f, 0.1f), 0.5f, 3f);
-                }
-                else
-                {
-                    enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity = 3f;
+                        float speed = Vector3.Distance(enemyBullets[i].position, head.position);
+                        enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity =
+                            Mathf.Clamp(Mathf.Lerp(enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity, speed / 2f, 0.1f), 0.5f, 3f);
+                    }
+                    else
+                    {
+                        enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity = 3f;
+                    }
                 }
             }
 
@@ -353,12 +332,12 @@ public class PlayerBeahaviour : MonoBehaviour
                             if (enemyBullets.Count != 0)
                             {
                                 Transform bullet = enemyBullets[0];
+                                if(bullet != null)
                                 {
                                     if (Vector3.Distance(depthWithOffset, bullet.position) < 0.05f)
                                     {
                                         if (!isEffectFailProcess)
                                         {
-                                            SetIndicator(i, j);
                                             isBreak = true;
                                             StartCoroutine(EffectFail());
                                             soundHit.Play();
@@ -379,15 +358,18 @@ public class PlayerBeahaviour : MonoBehaviour
                             }
                             foreach (Transform bullet in enemyBullets)
                             {
-                                if (numberUser == 1)
+                                if (bullet != null)
                                 {
-                                    if (bullet.position.z > head.position.z + 0.2f)
-                                        Destroy(bullet.gameObject);
-                                }
-                                else
-                                {
-                                    if (bullet.position.z < head.position.z)
-                                        Destroy(bullet.gameObject);
+                                    if (numberUser == 1)
+                                    {
+                                        if (bullet.position.z > head.position.z + 0.2f)
+                                            Destroy(bullet.gameObject);
+                                    }
+                                    else
+                                    {
+                                        if (bullet.position.z < head.position.z)
+                                            Destroy(bullet.gameObject);
+                                    }
                                 }
                             }
                         }
@@ -401,42 +383,6 @@ public class PlayerBeahaviour : MonoBehaviour
 
     }
 
-    void SetIndicator(int a0, int b0)
-    {
-        
-        foreach (UserTrackerVisualization utv in userTrackerVisualization)
-        {
-            int raduis = utv.radius;
-            for (int i = 0; i < 60; ++i)
-            {
-                for (int j = 0; j < 80; ++j)
-                {
-                    if (Mathf.Sqrt((i - a0) * (i - a0) + (j - b0) * (j - b0)) < raduis)
-                    {
-                        utv.detectIndicator[i, j] = 1;
-                    }
-                }
-            }
-           
-        }
-        
-    }
-
-
-    void ClearIndicator()
-    {
-        foreach (UserTrackerVisualization utv in userTrackerVisualization)
-        {
-            for (int i = 0; i < 60; ++i)
-            {
-                for (int j = 0; j < 80; ++j)
-                {
-                    utv.detectIndicator[i, j] = 0;
-                }
-            }
-        }
-    }
-
     [SerializeField]
     GameObject quadFail;
     IEnumerator EffectFail()
@@ -448,6 +394,5 @@ public class PlayerBeahaviour : MonoBehaviour
         //if (hasAuthority)
             quadFail.SetActive(false);
         isEffectFailProcess = false;
-        ClearIndicator();
     }
 }

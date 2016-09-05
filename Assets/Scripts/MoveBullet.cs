@@ -8,9 +8,6 @@ public class MoveBullet : NetworkBehaviour {
     public static int numberUser;
     public Vector3 vector;
 
-    bool isLocal = true;
-    public bool IsLocal { set {isLocal = value;} get { return isLocal; } }
-
     void Start()
     {
         if (PlayerTypeDecision.type == PlayerTypeDecision.PlayerType.HOST)

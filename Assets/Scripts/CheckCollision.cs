@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
-using nuitrack.issues;
 
-public class UserTrackerVisualization : MonoBehaviour
+public class CheckCollision : MonoBehaviour
 {
     #region Fields
     [SerializeField, Range(1, 2)]
@@ -19,17 +17,22 @@ public class UserTrackerVisualization : MonoBehaviour
     nuitrack.DepthFrame depthFrame = null;
     nuitrack.UserFrame userFrame = null;
 
-    [SerializeField]int hRes;
+    [SerializeField]
+    int hRes;
     int frameStep;
     float depthToScale;
 
     //visualization fields
-    [SerializeField]Color[] userCols;
+    [SerializeField]
+    Color[] userCols;
     Color[] occludedUserCols;
 
-    [SerializeField]Mesh sampleMesh;
-    [SerializeField]float meshScaling = 1f;
-    [SerializeField]Material visualizationMaterial;
+    [SerializeField]
+    Mesh sampleMesh;
+    [SerializeField]
+    float meshScaling = 1f;
+    [SerializeField]
+    Material visualizationMaterial;
 
     int pointsPerVis, parts;
 
@@ -61,14 +64,12 @@ public class UserTrackerVisualization : MonoBehaviour
 
     ChoiceStream choiceStream;
 
-    Color transparentColor;
+    Color zeros;
     Color ones;
-
-    public PlayerBeahaviour playerBehaviour;
 
     void Start()
     {
-        transparentColor = new Color(0f, 0f, 0f, 0f);
+        zeros = new Color(0f, 0f, 0f, 0f);
         ones = new Color(1f, 1f, 1f, 1f);
         choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
         occludedUserCols = new Color[userCols.Length];
@@ -86,19 +87,6 @@ public class UserTrackerVisualization : MonoBehaviour
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
         userTracker = GameObject.FindObjectOfType<UserTracker>();
 
-        //nuitrack.OutputMode mode = DepthSensor.GetDepthSensor.GetOutputMode();
-        //frameStep = mode.XRes / hRes;
-        //if (frameStep <= 0) frameStep = 1; // frameStep should be greater then 0
-        //hRes = mode.XRes / frameStep;
-
-        //depthToScale = meshScaling * 2f * Mathf.Tan (0.5f * mode.HFOV) / hRes;
-
-        //InitMeshes( 
-        //    ((mode.XRes / frameStep) + (mode.XRes % frameStep == 0 ? 0 : 1)),
-        //    ((mode.YRes / frameStep) + (mode.YRes % frameStep == 0 ? 0 : 1)),
-        //    mode.HFOV
-        //    );
-
         int XRes = 80;
         int YRes = 60;
         int HFOV = 1;
@@ -114,8 +102,6 @@ public class UserTrackerVisualization : MonoBehaviour
             ((YRes / frameStep) + (YRes % frameStep == 0 ? 0 : 1)),
             HFOV
             );
-
-        playerBehaviour = GameObject.FindObjectOfType<PlayerBeahaviour>();
     }
 
     #region Mesh generation and mesh update methods
@@ -262,7 +248,7 @@ public class UserTrackerVisualization : MonoBehaviour
     {
         bool haveNewFrame = false;
         if (choiceStream.GetDepthFrame() != null)
-        {        
+        {
             if (frame != choiceStream.Frame)
             {
                 haveNewFrame = true;
@@ -271,7 +257,6 @@ public class UserTrackerVisualization : MonoBehaviour
 
             if (haveNewFrame)
             {
-                //Test();
                 ProcessFrame(choiceStream.GetDepthFrame(), choiceStream.GetUserFrame(), 80, 60);
             }
         }
@@ -297,14 +282,6 @@ public class UserTrackerVisualization : MonoBehaviour
         for (int i = 0; i < parts; i++)
         {
             if (!visualizationParts[i].activeSelf) visualizationParts[i].SetActive(true);
-            if (playerBehaviour != null)
-            {
-                visualizationParts[i].transform.position = playerBehaviour.Offset;
-            }
-            else
-            {
-                playerBehaviour = GameObject.FindObjectOfType<PlayerBeahaviour>();
-            }
         }
 
         int visPartInd = 0;
@@ -317,46 +294,20 @@ public class UserTrackerVisualization : MonoBehaviour
         {
             for (int j = 0; j < Cols; j += frameStep, ++pointIndex)
             {
-                pointColor = transparentColor;
+                pointColor = zeros;
                 depthColors[pointIndex].r = depthFrame[i, j] / 16384f;
 
-                uint userId = 0u; 
-                if (userFrame != null) 
-                {
-                    userId = (uint)userFrame[i * Rows / Rows,
-                    j * Cols / Cols];
-                }
-
-                #region RGB coloring
-                int rgbOffset = 3 * (i * Cols + j);
-                //Color rgbCol = new Color32(depthFrame.rgb[rgbOffset + 2], depthFrame.rgb[rgbOffset + 1], depthFrame.rgb[rgbOffset + 0], 255);
-                //pointColor = rgbCol;
-                //Debug.Log(j.ToString() + ", " + i.ToString() + " : " + rgbCol);
-                #endregion
-
-                //pointColor = userCurrentCols[userId]; //user segmentation coloring
-                //if (userId != 0)
-                //{
-                //    pointColor = Color.white;
-                //}
-
-                //try
-                //{
-                //    if (userFrame[i, j] == userID[userID.Length - numberPlayer])
-                //        pointColor = Color.white;
-                //}
-                //catch (Exception ex) { }
+                
+                //int rgbOffset = 3 * (i * Cols + j);
 
                 if (userID != null && numberPlayer <= userID.Length)
                 {
-                    
-                    if (userFrame[i, j] ==  choiceStream.GetUserID(numberPlayer))
+
+                    if (userFrame[i, j] == choiceStream.GetUserID(numberPlayer))
                     {
                         pointColor = ones;
                     }
                 }
-                //pointColor = Color.white;
-                //pointColor = ones;
 
                 segmentationColors[pointIndex] = pointColor;
             }
@@ -367,7 +318,7 @@ public class UserTrackerVisualization : MonoBehaviour
         depthTexture.Apply();
         segmentationTexture.Apply();
     }
-	
+
     void OnDestroy()
     {
         if (depthTexture != null) Destroy(depthTexture);

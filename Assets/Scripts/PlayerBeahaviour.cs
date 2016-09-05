@@ -90,7 +90,8 @@ public class PlayerBeahaviour : MonoBehaviour
             baseOffset = new Vector3(0f, 0f, 5f);
             offset = baseOffset;
             startRotation = Quaternion.Euler(0f, 0f, 0f);
-            sensorRotation.SetBaseRotation(startRotation);
+            if(sensorRotation != null)
+                sensorRotation.SetBaseRotation(startRotation);
             numberUser = 1;
 
             try
@@ -104,7 +105,8 @@ public class PlayerBeahaviour : MonoBehaviour
             {
                 //rotationPivot.rotation *= startRotation;
                 transform.position += offset;
-                sensorRotation.SetBaseRotation(Quaternion.Euler(0f, 180f, 0f));
+                if (sensorRotation != null)
+                    sensorRotation.SetBaseRotation(Quaternion.Euler(0f, 180f, 0f));
             }
 
             cameraAim.transform.parent = gameObject.transform.parent; //up from children hierarhy -> cameraIming have cost position

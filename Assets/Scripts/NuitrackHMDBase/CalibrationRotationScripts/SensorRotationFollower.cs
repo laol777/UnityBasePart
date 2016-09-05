@@ -20,7 +20,8 @@ public class SensorRotationFollower : MonoBehaviour
   {
     //if (this.isLocalPlayer)
     {
-      follower.localRotation = sensorRotation.Rotation;
+            if(sensorRotation != null)
+                follower.localRotation = sensorRotation.Rotation;
       //CmdUpdateHead(follower.position, follower.localRotation);
     }
   }

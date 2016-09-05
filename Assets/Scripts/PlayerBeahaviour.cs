@@ -2,8 +2,9 @@
 using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
-public class PlayerBeahaviour : NetworkBehaviour
+public class PlayerBeahaviour : MonoBehaviour
 {
 
     Vector3 baseOffset;
@@ -58,6 +59,9 @@ public class PlayerBeahaviour : NetworkBehaviour
     [SerializeField]
     GameObject paticleEffect;
 
+    [SerializeField]
+    Text countLifeText;
+
     void Start()
     {
         StartCoroutine(RedactPlayerPrefabName()); // hasAuthorithy change value after 1 frame
@@ -74,11 +78,13 @@ public class PlayerBeahaviour : NetworkBehaviour
     }
 
 
+    [SerializeField]int countLife = 5;
+
 
     IEnumerator RedactPlayerPrefabName()
     {
         yield return new WaitForSeconds(0.1f);
-        if (((hasAuthority && isServer) || (!hasAuthority && !isServer)))
+        //if (((hasAuthority && isServer) || (!hasAuthority && !isServer)))
         {
             gameObject.name = "hostPlayer";
             baseOffset = new Vector3(0f, 0f, 5f);
@@ -94,7 +100,7 @@ public class PlayerBeahaviour : NetworkBehaviour
 
             catch { }
 
-            if (isServer)
+            //if (isServer)
             {
                 //rotationPivot.rotation *= startRotation;
                 transform.position += offset;
@@ -244,7 +250,7 @@ public class PlayerBeahaviour : NetworkBehaviour
                 //tmp.GetComponent<AudioSource>().enabled = false;
                 tmp.GetComponent<MoveBullet>().vector = Vector3.Normalize(cursor.transform.localPosition - rightWrist.localPosition);
                 tmp.GetComponent<MoveBullet>().velocity = 3f;
-                if (!hasAuthority)
+                //if (!hasAuthority)
                 {
                     tmp.GetComponent<MoveBullet>().IsLocal = false;
                     bulletContainer.AddBullet(tmp.transform);
@@ -259,7 +265,7 @@ public class PlayerBeahaviour : NetworkBehaviour
             }
         }
 
-        if (hasAuthority)
+        //if (hasAuthority)
         {
             if (cursor != null)
             {
@@ -354,6 +360,12 @@ public class PlayerBeahaviour : NetworkBehaviour
                                             isBreak = true;
                                             StartCoroutine(EffectFail());
                                             soundHit.Play();
+                                            --countLife;
+                                            countLifeText.text = "countLife " + countLife.ToString();
+                                            if (countLife < 0)
+                                            {
+                                                Application.LoadLevel(Application.loadedLevel - 1);
+                                            }
 
                                             //GameObject tmpShootEffectPlaceVisualisation = (GameObject)Instantiate(shootEffectPlaceVisualisation, depthWithOffset, Quaternion.identity);
                                             //Destroy(tmpShootEffectPlaceVisualisation, 1f);
@@ -428,9 +440,11 @@ public class PlayerBeahaviour : NetworkBehaviour
     IEnumerator EffectFail()
     {
         isEffectFailProcess = true;
-        if (hasAuthority) quadFail.SetActive(true);
+        //if (hasAuthority)
+            quadFail.SetActive(true);
         yield return new WaitForSeconds(0.7f);
-        if (hasAuthority) quadFail.SetActive(false);
+        //if (hasAuthority)
+            quadFail.SetActive(false);
         isEffectFailProcess = false;
         ClearIndicator();
     }

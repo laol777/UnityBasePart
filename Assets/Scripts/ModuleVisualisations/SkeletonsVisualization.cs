@@ -9,16 +9,19 @@ public class SkeletonsVisualization : MonoBehaviour
     Dictionary<int, GameObject[]> skeletonParts; //dictionary to keep and manage GameObjects for joints;
 
     SkeletonTracker skeletonTracker;
+    ChoiceStream choiceStream;
 
     void Start () 
     {
         skeletonParts = new Dictionary<int, GameObject[]>();
         skeletonTracker = GameObject.FindObjectOfType<SkeletonTracker>();
+        choiceStream = GameObject.FindObjectOfType<ChoiceStream>();
+
     }
 	
     void Update()
     {
-        ProcessSkeletons(skeletonTracker.SkeletonData);
+        ProcessSkeletons(choiceStream.GetSkeletonData());
     }
 	
     void HideAllSkeletons()

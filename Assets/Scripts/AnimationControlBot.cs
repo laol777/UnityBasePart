@@ -37,7 +37,7 @@ public class AnimationControlBot : MonoBehaviour {
 
 
         idleOrActive = minDistance < 4f ? LerpValue(idleOrActive, 1f) : LerpValue(idleOrActive, 0f);
-        leftOrRight = nearBullet.x > 0f ? LerpValue(leftOrRight, 0f) : LerpValue(leftOrRight, 1f);
+        leftOrRight = nearBullet.x < 0f ? LerpValue(leftOrRight, 0f) : LerpValue(leftOrRight, 1f);
 
         animator.SetFloat("actionOrIdle", idleOrActive);
         animator.SetFloat("leftOrRight", leftOrRight);

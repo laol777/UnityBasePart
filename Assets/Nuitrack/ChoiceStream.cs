@@ -16,7 +16,7 @@ public class ChoiceStream : MonoBehaviour {
     bool isSimulateStreamData = false;
 
 
-
+    nuitrack.Joint zeroJoint;
 
     void Start()
     {
@@ -30,6 +30,8 @@ public class ChoiceStream : MonoBehaviour {
 
         isSimulateStreamData = Application.platform == RuntimePlatform.WindowsEditor
             || Application.platform == RuntimePlatform.WindowsPlayer;
+
+        zeroJoint = new nuitrack.Joint();
     }
 
 
@@ -172,6 +174,19 @@ public class ChoiceStream : MonoBehaviour {
         }
     }
 
+    public nuitrack.SkeletonData GetSkeletonData()
+    {
+        if (isSimulateStreamData)
+        {
+            return nuitrackManagerEmulation.GetSkeletonData();
+        }
+        else
+        {
+            return skeletonTracker.SkeletonData;
+        }
+
+    }
+
     Vector3 GetVector3Joint(nuitrack.Joint joint)
     {
         Vector3 returnedJoint = new Vector3();
@@ -196,14 +211,14 @@ public class ChoiceStream : MonoBehaviour {
         return skeletonTracker.SkeletonData.Skeletons;
     }
 
-    public Vector3 GetJoint(nuitrack.JointType jointType, int numberUser) //number user >= 1
+    public nuitrack.Joint GetJoint(nuitrack.JointType jointType, int numberUser) //number user >= 1
     {
         if (isSimulateStreamData)
         {
             if (GetArrayIDSegmentation() != null && numberUser <= GetArrayIDSegmentation().Length)
                 return nuitrackManagerEmulation.GetJoint(jointType, numberUser - 1);
             else
-                return Vector3.zero;
+                return zeroJoint;
         }
         else
         {
@@ -212,13 +227,18 @@ public class ChoiceStream : MonoBehaviour {
                 && numberUser <= skeletonTracker.SkeletonData.NumUsers
                 )
             {
-                return GetVector3Joint(skeletonTracker.SkeletonData.Skeletons[numberUser - 1].GetJoint(jointType));
+                return skeletonTracker.SkeletonData.Skeletons[numberUser - 1].GetJoint(jointType);
             }
             else
             {
-                return Vector3.zero;
+                return zeroJoint;
             }
         }
   
+    }
+
+    public nuitrack.Joint GetJoint(nuitrack.JointType jointType)
+    {
+        return skeletonTracker.SkeletonData.Skeletons[0].GetJoint(jointType);
     }
 }

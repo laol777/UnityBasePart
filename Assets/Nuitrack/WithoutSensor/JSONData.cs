@@ -14,6 +14,8 @@ public class JSONData{
 
     public Skeleton[] skeletons;
 
+    public nuitrack.SkeletonData skeletonData;
+
 }
 
 [System.Serializable]
@@ -56,5 +58,6 @@ public class Skeleton
     //    };
 
     public Vector3[] joints;
+    public nuitrack.Joint[] joint;
 
 }

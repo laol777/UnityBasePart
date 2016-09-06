@@ -85,9 +85,9 @@ public class PlayerBeahaviour : MonoBehaviour
         //if (((hasAuthority && isServer) || (!hasAuthority && !isServer)))
         {
             gameObject.name = "hostPlayer";
-            baseOffset = new Vector3(0f, 0f, 5f);
+            baseOffset = new Vector3(0f, 0f, -5f);
             offset = baseOffset;
-            startRotation = Quaternion.Euler(0f, 0f, 0f);
+            startRotation = Quaternion.Euler(0f, 180f, 0f);
             if(sensorRotation != null)
                 sensorRotation.SetBaseRotation(startRotation);
 
@@ -144,30 +144,39 @@ public class PlayerBeahaviour : MonoBehaviour
 
     public bool isStartDrop;
     float timeDrop;
+    Vector3 GetVector3Joint(nuitrack.Joint joint)
+    {
+        Vector3 returnedJoint = new Vector3();
 
+        returnedJoint.x = joint.Real.X;
+        returnedJoint.y = joint.Real.Y;
+        returnedJoint.z = joint.Real.Z;
+
+        return returnedJoint;
+    }
 
     void Update()
     {
         if (choiceStream != null)
         {
 
-            tmpPos = choiceStream.GetJoint(nuitrack.JointType.Head, numberUser) * 0.001f;
+            tmpPos = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.Head, numberUser)) * 0.001f;
             head.localPosition = tmpPos;
 
-            tmpPos = choiceStream.GetJoint(nuitrack.JointType.RightWrist, numberUser) * 0.001f;
+            tmpPos = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightWrist, numberUser)) * 0.001f;
             rightWrist.localPosition = tmpPos;
 
-            tmpPos = choiceStream.GetJoint(nuitrack.JointType.RightElbow, numberUser) * 0.001f;
+            tmpPos = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightElbow, numberUser)) * 0.001f;
             rightElbow.localPosition = tmpPos;
 
         }
 
         if (miniCalibraion.isCalibrationComplite
-           && (Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.x - choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).x) > 500f
-           || Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.z - choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).z) > 500f)
+           && (Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.x - GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).x) > 500f
+           || Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.z - GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).z) > 500f)
            )
         {
-            isStartDrop = true;
+            //isStartDrop = true;
         }
         //Debug.Log(Mathf.Abs(miniCalibraion.positionCollarAfterCalibration.x - choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).x));
 
@@ -194,10 +203,10 @@ public class PlayerBeahaviour : MonoBehaviour
 
         float angle = Vector3.Angle(vectorShoot, Vector3.back);
 
-        if (Application.platform == RuntimePlatform.Android) //TODO: del it and add to serialize data all skeleton joint
+        //if (Application.platform == RuntimePlatform.Android) //TODO: del it and add to serialize data all skeleton joint
         {
-            handDeltas[0] = choiceStream.GetJoint(nuitrack.JointType.RightWrist, 1) - choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1);
-            handDeltas[1] = choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1) - choiceStream.GetJoint(nuitrack.JointType.RightShoulder, 1);
+            handDeltas[0] = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightWrist, 1)) - GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1));
+            handDeltas[1] = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1)) - GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightShoulder, 1));
         }
         float angle2 = Vector3.Angle(handDeltas[0], handDeltas[1]); 
         if (Application.platform == RuntimePlatform.WindowsEditor) //hack - not have serialize data

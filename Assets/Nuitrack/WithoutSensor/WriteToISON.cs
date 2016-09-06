@@ -32,7 +32,11 @@ public class WriteToISON : MonoBehaviour {
         userTracker = GameObject.FindObjectOfType<UserTracker>();
         depthSensor = GameObject.FindObjectOfType<DepthSensor>();
         skeletonTracker = GameObject.FindObjectOfType<SkeletonTracker>();
-    }
+
+
+
+       
+}
 
 
 
@@ -49,15 +53,15 @@ public class WriteToISON : MonoBehaviour {
             {
                 frame = userTracker.frame;
                 Debug.Log("Writing frame " + frame.ToString());
-                
+
 
                 frameData = new JSONData();
 
-                                                                                               
+
                 frameData.YRes = depthSensor.DepthFrame.Rows;
                 frameData.XRes = depthSensor.DepthFrame.Cols;
 
-                frameData.depth = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols]; 
+                frameData.depth = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols];
                 frameData.userTracker = new int[depthSensor.DepthFrame.Rows * depthSensor.DepthFrame.Cols];
                 for (int i = 0; i < frameData.YRes; ++i)
                     for (int j = 0; j < frameData.XRes; ++j)
@@ -66,24 +70,30 @@ public class WriteToISON : MonoBehaviour {
                         frameData.userTracker[i * frameData.XRes + j] = userTracker.UserFrame[i, j];
                     }
 
-                
+
                 frameData.userID = nuitrackManager.GetUserID();
 
 
-                frameData.skeletons = new Skeleton[skeletonTracker.SkeletonData.NumUsers];
+                //frameData.skeletons = new Skeleton[skeletonTracker.SkeletonData.NumUsers];
 
-                for (int i = 0; i < skeletonTracker.SkeletonData.NumUsers; ++i)
-                {
-                    frameData.skeletons[i] = new Skeleton();
-                    frameData.skeletons[i].ID = frameData.userID[i];
-                    frameData.skeletons[i].joints = new Vector3[3];
+                //for (int i = 0; i < skeletonTracker.SkeletonData.NumUsers; ++i)
+                //{
+                //    frameData.skeletons[i] = new Skeleton();
+                //    frameData.skeletons[i].ID = frameData.userID[i];
+                //    frameData.skeletons[i].joints = new Vector3[3];
 
 
-                    GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.Head));
-                    frameData.skeletons[i].joints[0] = GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.Head));
-                    frameData.skeletons[i].joints[1] = GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.RightWrist));
-                    frameData.skeletons[i].joints[2] = GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.RightElbow));
-                }
+                //    GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.Head));
+                //    frameData.skeletons[i].joints[0] = GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.Head));
+                //    frameData.skeletons[i].joints[1] = GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.RightWrist));
+                //    frameData.skeletons[i].joints[2] = GetVector3Joint(skeletonTracker.SkeletonData.GetSkeletonByID(frameData.userID[i]).GetJoint(nuitrack.JointType.RightElbow));
+
+                //}
+
+                //frameData.joint = skeletonTracker.SkeletonData.Skeletons[0].GetJoint(nuitrack.JointType.Head);
+
+              
+                frameData.skeletonData = skeletonTracker.SkeletonData;
 
                 serializeData.Add(frameData);
 

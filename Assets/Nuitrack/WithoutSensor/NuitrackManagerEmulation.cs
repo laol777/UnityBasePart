@@ -32,7 +32,7 @@ public class NuitrackManagerEmulation : MonoBehaviour {
             Destroy(gameObject);
 
     }
-
+    Vector3 tmp;
     void Start()
     {
 
@@ -45,6 +45,8 @@ public class NuitrackManagerEmulation : MonoBehaviour {
         userFrame = new int[YRes, XRes];
 
         StartCoroutine(FrameCounter());
+
+        Vector3 tmp = new Vector3();
     }
 
     [SerializeField]
@@ -70,18 +72,30 @@ public class NuitrackManagerEmulation : MonoBehaviour {
         userFrame = UpdateUserTracker();
     }
 
-    public Vector3 GetJoint(nuitrack.JointType jointType, int numberUser) //TODO add other type joint
+    public nuitrack.SkeletonData GetSkeletonData()
     {
-        switch (jointType)
-        {
-            case nuitrack.JointType.Head:
-                return data[frame].skeletons[numberUser].joints[0];
-            case nuitrack.JointType.RightWrist:
-                return data[frame].skeletons[numberUser].joints[1];
-            case nuitrack.JointType.RightElbow:
-                return data[frame].skeletons[numberUser].joints[2];
-        }
-        return Vector3.zero;
+        return data[frame].skeletonData;
+    }
+
+    public nuitrack.Joint GetJoint(nuitrack.JointType jointType, int numberUser) //TODO add other type joint
+    {
+        //switch (jointType)
+        //{
+        //    case nuitrack.JointType.Head:
+        //        return data[frame].skeletons[numberUser].joints[0];
+        //    case nuitrack.JointType.RightWrist:
+        //        return data[frame].skeletons[numberUser].joints[1];
+        //    case nuitrack.JointType.RightElbow:
+        //        return data[frame].skeletons[numberUser].joints[2];
+        //}
+        //return Vector3.zero;
+
+        
+        //tmp.x = data[frame].skeletonData.Skeletons[numberUser].GetJoint(jointType).Real.X;
+        //tmp.y = data[frame].skeletonData.Skeletons[numberUser].GetJoint(jointType).Real.Y;
+        //tmp.z = data[frame].skeletonData.Skeletons[numberUser].GetJoint(jointType).Real.Z;
+
+        return data[frame].skeletonData.Skeletons[numberUser].GetJoint(jointType);
     } 
 
     public int[,] UpdateDepthFrame()

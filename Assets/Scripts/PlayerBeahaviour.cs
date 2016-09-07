@@ -155,6 +155,9 @@ public class PlayerBeahaviour : MonoBehaviour
         return returnedJoint;
     }
 
+    [SerializeField]
+    GameObject cube;
+
     void Update()
     {
         if (choiceStream != null)
@@ -203,16 +206,10 @@ public class PlayerBeahaviour : MonoBehaviour
 
         float angle = Vector3.Angle(vectorShoot, Vector3.back);
 
-        //if (Application.platform == RuntimePlatform.Android) //TODO: del it and add to serialize data all skeleton joint
-        {
-            handDeltas[0] = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightWrist, 1)) - GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1));
-            handDeltas[1] = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1)) - GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightShoulder, 1));
-        }
+        handDeltas[0] = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightWrist, 1)) - GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1));
+        handDeltas[1] = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightElbow, 1)) - GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.RightShoulder, 1));
+
         float angle2 = Vector3.Angle(handDeltas[0], handDeltas[1]); 
-        if (Application.platform == RuntimePlatform.WindowsEditor) //hack - not have serialize data
-        {
-            angle2 = 0f;
-        }
 
         if (angle < 30f && angle2 < 30f)
         {
@@ -324,20 +321,20 @@ public class PlayerBeahaviour : MonoBehaviour
                                 float fX = 0.5f / Mathf.Tan(0.5f);
                                 float fY = fX * /*80 / 60*/ 1.33f;
 
-                                tmpDepth.z = depthFrame[i, j] * 0.001f;
+                                tmpDepth.z = -depthFrame[i, j] * 0.001f;
                                 tmpDepth.x = tmpDepth.z * (float)((j - 40f) / (80f)) / fX;
-                                tmpDepth.y = -tmpDepth.z * (float)((i - 30f) / (60f)) / fY;
+                                tmpDepth.y = tmpDepth.z * (float)((i - 30f) / (60f)) / fY;
 
                                 tmpDepth.z += offset.z;
                                 depthWithOffset = tmpDepth;
                             }
-                            else
-                            {
-                                tmpDepth.x = -(float)((j - 40f) / (40f)) * 3f;
-                                tmpDepth.y = (float)((i - 60f) / (60f)) * 2f;
-                                tmpDepth.z = -depthFrame[i, j] * 0.001f + offset.z;
-                                depthWithOffset = tmpDepth;
-                            }
+                            //else
+                            //{
+                            //    tmpDepth.x = -(float)((j - 40f) / (40f)) * 3f;
+                            //    tmpDepth.y = (float)((i - 60f) / (60f)) * 2f;
+                            //    tmpDepth.z = depthFrame[i, j] * 0.001f + offset.z;
+                            //    depthWithOffset = tmpDepth;
+                            //}
                             if (enemyBullets.Count != 0)
                             {
                                 Transform bullet = enemyBullets[0];
@@ -371,7 +368,7 @@ public class PlayerBeahaviour : MonoBehaviour
                                 {
                                     if (numberUser == 1)
                                     {
-                                        if (bullet.position.z > head.position.z + 0.2f)
+                                        if (bullet.position.z < head.position.z - 0.2f)
                                             Destroy(bullet.gameObject);
                                     }
                                     else

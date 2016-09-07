@@ -86,10 +86,13 @@ public class MiniCalibration : MonoBehaviour {
         {
             time = 0f;
             StartCoroutine(DelayBetweenCalibration());
+            if(sensorRotation != null)
             sensorRotation.SetBaseRotation(Quaternion.Euler(0f, 180f, 0f));
             isCalibrationComplite = true;
-            //playerBehaviuor.Offset = playerBehaviuor.BaseOffset + new Vector3(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).x * 0.001f, 0f, 
-            //                                                                  choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1).z * 0.001f - 2.8f);
+            playerBehaviuor.Offset = playerBehaviuor.BaseOffset + new Vector3(GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).x * 0.001f, 0f,
+                                                                              GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).z * 0.001f - 2.8f);
+
+            netPlayerMotionController.OnSuccessCalibration(Quaternion.identity);
             positionCollarAfterCalibration = GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1));
 
             //netPlayerMotionController.OnSuccessCalibration(Quaternion.identity);

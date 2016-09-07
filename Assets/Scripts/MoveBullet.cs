@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class MoveBullet : NetworkBehaviour {
+public class MoveBullet : MonoBehaviour {
 
     public float velocity = 1f;
     public static int numberUser;
@@ -23,18 +23,18 @@ public class MoveBullet : NetworkBehaviour {
     }
 
 
-    [Command(channel = 0)]
-    void CmdUpdatePosition(Vector3 vector, float velocity)
-    {
-        transform.localPosition += vector * velocity * Time.deltaTime;
-        RpcUpdatePosition(vector, velocity);
-    }
+    //[Command(channel = 0)]
+    //void CmdUpdatePosition(Vector3 vector, float velocity)
+    //{
+    //    transform.localPosition += vector * velocity * Time.deltaTime;
+    //    RpcUpdatePosition(vector, velocity);
+    //}
 
 
-    [ClientRpc(channel = 0)]
-    void RpcUpdatePosition(Vector3 vector, float velocity)
-    {
-        transform.localPosition += vector * velocity * Time.deltaTime;
-    }
+    //[ClientRpc(channel = 0)]
+    //void RpcUpdatePosition(Vector3 vector, float velocity)
+    //{
+    //    transform.localPosition += vector * velocity * Time.deltaTime;
+    //}
 
 }

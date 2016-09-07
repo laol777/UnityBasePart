@@ -236,9 +236,4 @@ public class ChoiceStream : MonoBehaviour {
         }
   
     }
-
-    public nuitrack.Joint GetJoint(nuitrack.JointType jointType)
-    {
-        return skeletonTracker.SkeletonData.Skeletons[0].GetJoint(jointType);
-    }
 }

@@ -164,8 +164,8 @@ public class NetPlayerMotionController : MonoBehaviour
 
     public void OnSuccessCalibration(Quaternion a)
     {
-        offsetPosition = Vector3.zero - new Vector3(GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).x * 0.001f, 0f,
-                                                                              -GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).z * 0.001f + 2.8f);
+        offsetPosition = Vector3.zero + new Vector3(GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).x * 0.001f, 0f,
+                                                                              GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).z * 0.001f - 2.8f);
     }
 
     void UpdatePlayerPositions()
@@ -183,12 +183,12 @@ public class NetPlayerMotionController : MonoBehaviour
 
     }
     Vector3 offset;
-
     void UpdateTargetPositions()
     {
 
-        baseTransform.localPosition = new Vector3(-GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).x * 0.001f, 0f,
-                                                                              -GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).z * 0.001f);
+        baseTransform.position = new Vector3(-GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).x * 0.001f,
+                                                -1.04f,
+                                                -5f -GetVector3Joint(choiceStream.GetJoint(nuitrack.JointType.LeftCollar, 1)).z * 0.001f);
 
         if (choiceStream != null && choiceStream.GetArrayIDSegmentation() != null && choiceStream.GetArrayIDSegmentation().Length != 0)
         {
@@ -207,7 +207,7 @@ public class NetPlayerMotionController : MonoBehaviour
                 nuitrack.JointType jointType = jointsOrder[i];
                 if ((jointType == nuitrack.JointType.Head) || (jointType == nuitrack.JointType.LeftWrist) || (jointType == nuitrack.JointType.RightWrist))
                     continue;
-                nuitrack.Joint joint = choiceStream.GetJoint(jointType);
+                nuitrack.Joint joint = choiceStream.GetJoint(jointType, 1);
                 if (joint.Confidence > 0.5f)
                 {
                     //signs changed below == 180 degrees rotation around Y axis (we need joint rotations from human perspective, not from sensor's)
@@ -227,8 +227,15 @@ public class NetPlayerMotionController : MonoBehaviour
                 targetOrientations[jointType] = offsetOrientation * /* CalibratedInfo.SensorOrientation **/ Quaternion.identity;
             }
         }
+        if (sensorRotation != null)
+        {
+            targetOrientations[nuitrack.JointType.Head] = offsetOrientation * sensorRotation.Rotation * baseRotationHead;//head is special :)
+        }
+        else
+        {
+            targetOrientations[nuitrack.JointType.Head] = offsetOrientation * baseRotationHead;//head is special :)
+        }
 
-        targetOrientations[nuitrack.JointType.Head] = offsetOrientation * sensorRotation.Rotation * baseRotationHead;//head is special :)
     }
 
 

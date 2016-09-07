@@ -27,7 +27,7 @@ public class BulletContainer : MonoBehaviour {
     }
 
 
-    void Update ()
+    void Update()
     {
         RemoveBullet(null);
 	}

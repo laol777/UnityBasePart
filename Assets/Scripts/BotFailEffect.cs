@@ -5,9 +5,9 @@ using UnityEngine.UI;
 public class BotFailEffect : MonoBehaviour {
 
     [SerializeField]
-    Text text;
+    TextMesh text;
 
-    int countCollision;
+    static int countCollision;
 
     void OnTriggerEnter(Collider other)
     {

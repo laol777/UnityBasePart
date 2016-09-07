@@ -62,6 +62,10 @@ public class PlayerCollisionDetect : MonoBehaviour {
 #endif
     }
 
+    public float maxSpeed = 6f;
+    public float minSpeed = 0.25f;
+    public float distanceEffectFreeze = 2.6f;
+
     void Update () {
 
 
@@ -70,16 +74,17 @@ public class PlayerCollisionDetect : MonoBehaviour {
         {
             if (enemyBullets[i] != null)
             {
-                if (Vector3.Distance(enemyBullets[i].position, head.position) < 4f)
+                if (Vector3.Distance(enemyBullets[i].position, head.position) < distanceEffectFreeze)
                 {
 
-                    float speed = Vector3.Distance(enemyBullets[i].position, head.position);
+                    float distance = Vector3.Distance(enemyBullets[i].position, head.position);
                     enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity =
-                        Mathf.Clamp(Mathf.Lerp(enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity, speed / 2f, 0.1f), 0.5f, 3f);
+                        Mathf.Clamp(Mathf.Lerp(enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity, distance / distanceEffectFreeze, 0.1f), 
+                                    minSpeed  , maxSpeed);
                 }
                 else
                 {
-                    enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity = 3f;
+                    enemyBullets[i].gameObject.GetComponent<MoveBullet>().velocity = 6f;
                 }
             }
         }

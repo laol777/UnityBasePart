@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PlayerCollisionDetect : MonoBehaviour {
 
     [SerializeField]
-    int countLife = 5;
+    int countLife = 10;
     [SerializeField]AudioSource soundHit;
 
     PlayerBeahaviour playerBeahaviour;
@@ -29,6 +29,9 @@ public class PlayerCollisionDetect : MonoBehaviour {
 
     Vector3 offset;
     public Vector3 Offset { set { offset = value; } get { return offset; } }
+
+    [SerializeField]
+    GameObject[] visualLife;
 
 
     [SerializeField]
@@ -141,9 +144,10 @@ public class PlayerCollisionDetect : MonoBehaviour {
                                         isBreak = true;
                                         StartCoroutine(EffectFail());
                                         soundHit.Play();
+                                        visualLife[countLife].SetActive(false);
                                         --countLife;
                                         countLifeText.text = "countLife " + countLife.ToString();
-                                        if (countLife < 0)
+                                        if (countLife <= 0)
                                         {
                                             Application.LoadLevel(Application.loadedLevel - 1);
                                         }

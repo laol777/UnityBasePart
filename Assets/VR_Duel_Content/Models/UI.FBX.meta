@@ -1,0 +1,198 @@
+fileFormatVersion: 2
+guid: 521730973a7861b47a120fa2aed146f4
+timeCreated: 1473325131
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Big_Menu
+    100002: Enemy_life_text1
+    100004: LifeBar_0
+    100006: LifeBar_091
+    100008: LifeBar_10
+    100010: LifeBar_20
+    100012: LifeBar_30
+    100014: LifeBar_40
+    100016: LifeBar_50
+    100018: LifeBar_60
+    100020: LifeBar_70
+    100022: LifeBar_80
+    100024: LifeBar_90
+    100026: LifeBar_Enemy_0
+    100028: LifeBar_Enemy_10
+    100030: LifeBar_Enemy_100
+    100032: LifeBar_Enemy_20
+    100034: LifeBar_Enemy_30
+    100036: LifeBar_Enemy_40
+    100038: LifeBar_Enemy_50
+    100040: LifeBar_Enemy_60
+    100042: LifeBar_Enemy_70
+    100044: LifeBar_Enemy_80
+    100046: LifeBar_Enemy_90
+    100048: Text_menu
+    100050: //RootNode
+    400000: Big_Menu
+    400002: Enemy_life_text1
+    400004: LifeBar_0
+    400006: LifeBar_091
+    400008: LifeBar_10
+    400010: LifeBar_20
+    400012: LifeBar_30
+    400014: LifeBar_40
+    400016: LifeBar_50
+    400018: LifeBar_60
+    400020: LifeBar_70
+    400022: LifeBar_80
+    400024: LifeBar_90
+    400026: LifeBar_Enemy_0
+    400028: LifeBar_Enemy_10
+    400030: LifeBar_Enemy_100
+    400032: LifeBar_Enemy_20
+    400034: LifeBar_Enemy_30
+    400036: LifeBar_Enemy_40
+    400038: LifeBar_Enemy_50
+    400040: LifeBar_Enemy_60
+    400042: LifeBar_Enemy_70
+    400044: LifeBar_Enemy_80
+    400046: LifeBar_Enemy_90
+    400048: Text_menu
+    400050: //RootNode
+    2300000: Big_Menu
+    2300002: Enemy_life_text1
+    2300004: LifeBar_0
+    2300006: LifeBar_091
+    2300008: LifeBar_10
+    2300010: LifeBar_20
+    2300012: LifeBar_30
+    2300014: LifeBar_40
+    2300016: LifeBar_50
+    2300018: LifeBar_60
+    2300020: LifeBar_70
+    2300022: LifeBar_80
+    2300024: LifeBar_90
+    2300026: LifeBar_Enemy_0
+    2300028: LifeBar_Enemy_10
+    2300030: LifeBar_Enemy_100
+    2300032: LifeBar_Enemy_20
+    2300034: LifeBar_Enemy_30
+    2300036: LifeBar_Enemy_40
+    2300038: LifeBar_Enemy_50
+    2300040: LifeBar_Enemy_60
+    2300042: LifeBar_Enemy_70
+    2300044: LifeBar_Enemy_80
+    2300046: LifeBar_Enemy_90
+    2300048: Text_menu
+    3300000: Big_Menu
+    3300002: Enemy_life_text1
+    3300004: LifeBar_0
+    3300006: LifeBar_091
+    3300008: LifeBar_10
+    3300010: LifeBar_20
+    3300012: LifeBar_30
+    3300014: LifeBar_40
+    3300016: LifeBar_50
+    3300018: LifeBar_60
+    3300020: LifeBar_70
+    3300022: LifeBar_80
+    3300024: LifeBar_90
+    3300026: LifeBar_Enemy_0
+    3300028: LifeBar_Enemy_10
+    3300030: LifeBar_Enemy_100
+    3300032: LifeBar_Enemy_20
+    3300034: LifeBar_Enemy_30
+    3300036: LifeBar_Enemy_40
+    3300038: LifeBar_Enemy_50
+    3300040: LifeBar_Enemy_60
+    3300042: LifeBar_Enemy_70
+    3300044: LifeBar_Enemy_80
+    3300046: LifeBar_Enemy_90
+    3300048: Text_menu
+    4300000: Text_menu
+    4300002: LifeBar_0
+    4300004: LifeBar_10
+    4300006: LifeBar_20
+    4300008: LifeBar_30
+    4300010: LifeBar_40
+    4300012: LifeBar_50
+    4300014: LifeBar_60
+    4300016: LifeBar_70
+    4300018: LifeBar_80
+    4300020: LifeBar_90
+    4300022: LifeBar_091
+    4300024: Big_Menu
+    4300026: LifeBar_Enemy_50
+    4300028: LifeBar_Enemy_0
+    4300030: LifeBar_Enemy_10
+    4300032: LifeBar_Enemy_20
+    4300034: LifeBar_Enemy_30
+    4300036: LifeBar_Enemy_40
+    4300038: LifeBar_Enemy_60
+    4300040: LifeBar_Enemy_70
+    4300042: LifeBar_Enemy_80
+    4300044: LifeBar_Enemy_90
+    4300046: Enemy_life_text1
+    4300048: LifeBar_Enemy_100
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

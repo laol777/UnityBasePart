@@ -82,7 +82,6 @@ public class PlayerBeahaviour : MonoBehaviour
         {
             if (!isProcessDrop)
             {
-                Debug.Log("2313");
                 StartCoroutine(ProcessDrop());
             }
         }

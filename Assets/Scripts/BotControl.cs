@@ -72,6 +72,8 @@ public class BotControl : MonoBehaviour {
     [SerializeField]
     Transform rightWrist;
 
+    float timeBeetwenShootBot = 2f; // >0.5f
+
     IEnumerator ShootBehaviour()
     {
 
@@ -79,6 +81,7 @@ public class BotControl : MonoBehaviour {
         targetNextPose = new Vector3(rndSize.x * 33f, rndSize.y * 33f, 0f);
 
         yield return new WaitForSeconds(0.5f);
+        //yield return new WaitForSeconds(0.1f);
 
         GameObject tmpBullet = (GameObject)Instantiate(bullet, rightWrist.position, Quaternion.identity);
         tmpBullet.GetComponent<AudioSource>().Play();
@@ -89,7 +92,8 @@ public class BotControl : MonoBehaviour {
         tmpBullet.GetComponent<MoveBullet>().vector = Vector3.back + rndSize;
 
         Destroy(tmpBullet, 12f);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(timeBeetwenShootBot - 0.5f);
+
         StartCoroutine(ShootBehaviour());
     }
 

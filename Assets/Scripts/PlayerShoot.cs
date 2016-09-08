@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerShoot : MonoBehaviour {
 
+    [SerializeField]
+    Animator shootMeshEffect;
 
     [SerializeField]
     Transform cameraAim;
@@ -110,6 +112,8 @@ public class PlayerShoot : MonoBehaviour {
                 tmpPaticle.transform.parent = rightWrist.transform;
                 Destroy(tmpPaticle, 1.3f);
                 soundShoot.Play();
+                //shootMeshEffect.Play("shoot");
+                shootMeshEffect.SetTime(0);
                 Destroy(tmp, 10f);
 
             }

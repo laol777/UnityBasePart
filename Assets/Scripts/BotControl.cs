@@ -77,7 +77,7 @@ public class BotControl : MonoBehaviour {
     IEnumerator ShootBehaviour()
     {
 
-        Vector3 rndSize = new Vector3(Random.Range(-0.03f, 0.03f), Random.Range(-0.05f, 0.05f), 0f);
+        Vector3 rndSize = new Vector3(Random.Range(-0.025f, 0.025f), Random.Range(-0.03f, 0.02f), 0f);
         targetNextPose = new Vector3(rndSize.x * 33f, rndSize.y * 33f, 0f);
 
         yield return new WaitForSeconds(0.5f);

@@ -69,7 +69,7 @@ public class NetPlayerMotionController : MonoBehaviour
         //offsetPosition = new Vector3(0f, 0f, 5f);
 
         sensorRotation = FindObjectOfType<SensorRotation>();
-        baseRotationHead = Quaternion.Euler(0f, 180f, 0f);
+        baseRotationHead = Quaternion.Euler(0f, 0f, 0f);
         offsetPosition = new Vector3(0f, 0f, -5f);
 
         //////////////////
